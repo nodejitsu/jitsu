@@ -1,5 +1,6 @@
 
 
+
 # noc 
 (**N**odejitsu **O**perations **C**ontroller)
 
@@ -14,7 +15,7 @@
 ## USAGE
 
  1. Get an account.
- 2. Prepare an package.json for your application OR select an application from the <a href="#marketplace">marketplace</a>
+ 2. Prepare your application for deployment OR pick an app from the <a href="#marketplace">marketplace</a>.
  3. Boom! Deploy.
 
 
@@ -29,9 +30,9 @@
 
 ### Creating a new user
 
-    noc user create [username] [password] [email] [pathToSSHkey] [invitecode]
+    noc user create [username] [password] [email] [invite code]
 
-*invite code is optional. If you don't provide a valid invitecode, you will be provided one via email.*
+*invite code is optional. If you don't provide a valid invite code, you will be provided one via email.*
 
 ### Confirming an account
 
@@ -45,12 +46,28 @@
 
 *sends a reset password email to username*
 
+### Managing SSH keys
+
+    noc user keys [username]
+
+*lists local path and location of all known .ssh keys for username*
+
+### Adding SSH keys
+
+    noc user keys [username] -a /pathTo/id_rsa.pub
+
+### Removing SSH keys
+
+    noc user keys [username] -r /pathTo/id_rsa.pub
+
 
 ## Application API
 
 ### Listing applications
 
-    noc app ls 
+    noc app ls|list 
+
+*lists all the user's current applications*
 
 ### Starting / Stopping / Restarting applications
 
@@ -65,17 +82,17 @@
 
 */pathTo/myapp/ must point to a folder which contains a valid package.json <a href="#prepare">Read More</a>*
 
-### Deploying applications from the Marketplace
-
-     noc market buy [appname]
-
-*prompts user to specify a domain name*
-
 ## Marketplace API
 
 ### Listing Marketplace applications
 
-    noc market ls
+    noc market ls|list
+
+### Deploying applications from the Marketplace
+
+     noc market buy [appname]
+
+*prompts user to specify a domain name / internal appname*
 
 ### Publishing your own application to the Marketplace
 
