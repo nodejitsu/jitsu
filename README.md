@@ -1,11 +1,5 @@
-
-
-
-# noc 
-(**N**odejitsu **O**perations **C**ontroller)
-
-## noc is a CLI tool for easily deploying node.js applications on the Nodejitsu platform 
-
+# jitsu
+CLI tool for easily deploying node.js applications on the Nodejitsu platform 
 
 ## INSTALLATION
 
