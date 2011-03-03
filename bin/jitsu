@@ -1,0 +1,19 @@
+#!/usr/bin/env node
+
+require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
+
+var eyes = require('eyes'),
+    argv = require('optimist').argv,
+    jitsu = require('jitsu');
+
+var resources = [
+  'apps',
+  'snapshots'
+];
+
+var operations = [
+  'password', 
+  
+]; 
+
+jitsu.start(argv._.join(''));

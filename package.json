@@ -1,0 +1,23 @@
+{
+  "name": "jitsu",
+  "description": "CLI tool for working with the Nodejitsu Cloud Platform-as-a-Service",
+  "version": "0.1.0",
+  "author": "Charlie Robbins <charlie.robbins@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/nodejitsu/jitsu.git" 
+  },
+  "keywords": ["cli", "nodejitsu", "cloud hosting", "platform-as-a-service", "deployment"],
+  "dependencies": {
+    "async": ">= 0.1.8",
+    "colors": ">= 0.3.0",
+    "optimist": ">= 0.0.6",
+    "request": ">= 1.9.0",
+    "vows": ">= 0.5.2",
+    "winston": ">= 0.2.1"
+  },
+  "bin": { "jitsu": "./bin/jitsu" },
+  "main": "./lib/jitsu",
+  "scripts": { "test": "vows test/*-test.js --spec" },
+  "engines": { "node": ">= 0.4.0" }
+}
