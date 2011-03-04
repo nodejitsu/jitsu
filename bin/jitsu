@@ -16,4 +16,6 @@ var operations = [
   
 ]; 
 
-jitsu.start(argv._.join(''));
+jitsu.start(argv._.join(''), function () {
+  
+});
