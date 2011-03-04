@@ -1,0 +1,112 @@
+<!DOCTYPE html>  <html> <head>   <title>prompt.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="../docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="..//jitsu/apps.html">                 jitsu/apps.html               </a>                                           <a class="source" href="..//jitsu/client.html">                 jitsu/client.html               </a>                                           <a class="source" href="..//jitsu/commands/apps.html">                 jitsu/commands/apps.html               </a>                                           <a class="source" href="..//jitsu/commands/config.html">                 jitsu/commands/config.html               </a>                                           <a class="source" href="..//jitsu/commands.html">                 jitsu/commands.html               </a>                                           <a class="source" href="..//jitsu/config.html">                 jitsu/config.html               </a>                                           <a class="source" href="..//jitsu/log.html">                 jitsu/log.html               </a>                                           <a class="source" href="..//jitsu/prompt.html">                 jitsu/prompt.html               </a>                                           <a class="source" href="..//jitsu/users.html">                 jitsu/users.html               </a>                                           <a class="source" href="..//jitsu/utils/base64.html">                 jitsu/utils/base64.html               </a>                                           <a class="source" href="..//jitsu/utils/index.html">                 jitsu/utils/index.html               </a>                                           <a class="source" href="..//jitsu.html">                 jitsu.html               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               prompt.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="cm">/*</span>
+<span class="cm"> * prompt.js: Tools for interacting with a prompt in the jitsu CLI.</span>
+<span class="cm"> *</span>
+<span class="cm"> * (C) 2010, Nodejitsu Inc.</span>
+<span class="cm"> *</span>
+<span class="cm"> */</span>
+
+<span class="kd">var</span> <span class="nx">async</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;async&#39;</span><span class="p">),</span>
+    <span class="nx">colors</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;colors&#39;</span><span class="p">),</span>
+    <span class="nx">winston</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;winston&#39;</span><span class="p">),</span>
+    <span class="nx">readline</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;readline&#39;</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h3>@private function capitalize (str)</h3>
+
+<h4>str {string} String to capitalize</h4>
+
+<p>Capitalizes the string supplied.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kd">function</span> <span class="nx">capitalize</span><span class="p">(</span><span class="nx">str</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">str</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="nx">toUpperCase</span><span class="p">()</span> <span class="o">+</span> <span class="nx">str</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">prompt</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">,</span>
+    <span class="nx">started</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nx">paused</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nx">linereader</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <h3>function start ()</h3>
+
+<p>Starts the prompt by opening stdin and
+creating an interface for the <code>readline</code> module.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">prompt</span><span class="p">.</span><span class="nx">start</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">started</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+  <span class="nx">process</span><span class="p">.</span><span class="nx">openStdin</span><span class="p">();</span>
+  <span class="nx">linereader</span> <span class="o">=</span> <span class="nx">readline</span><span class="p">.</span><span class="nx">createInterface</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">stdin</span><span class="p">,</span> <span class="nx">process</span><span class="p">.</span><span class="nx">stdout</span><span class="p">);</span>
+  <span class="nx">started</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+  
+  <span class="k">return</span> <span class="nx">prompt</span><span class="p">;</span>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <h3>function pause ()</h3>
+
+<p>Pauses input coming in from stdin</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">prompt</span><span class="p">.</span><span class="nx">pause</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">started</span> <span class="o">||</span> <span class="nx">paused</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+  <span class="nx">process</span><span class="p">.</span><span class="nx">stdin</span><span class="p">.</span><span class="nx">pause</span><span class="p">();</span>
+  <span class="nx">paused</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+  <span class="k">return</span> <span class="nx">prompt</span><span class="p">;</span>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <h3>function resume ()</h3>
+
+<p>Resumes input coming in from stdin </p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">prompt</span><span class="p">.</span><span class="nx">resume</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">started</span> <span class="o">||</span> <span class="o">!</span><span class="nx">paused</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+  <span class="nx">process</span><span class="p">.</span><span class="nx">stdin</span><span class="p">.</span><span class="nx">resume</span><span class="p">();</span>
+  <span class="nx">paused</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="k">return</span> <span class="nx">prompt</span><span class="p">;</span>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <h3>function get (msg, [validator,] callback)</h3>
+
+<h4>@msg {Array|string} Set of variables to get input for.</h4>
+
+<h4>@validator {function} Validation function to check input received against.</h4>
+
+<h4>@callback {function} Continuation to pass control to when complete.</h4>
+
+<p>Gets input from the user via stdin for the specified message(s) <code>msg</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">prompt</span><span class="p">.</span><span class="nx">get</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="cm">/* msg, [validator,] callback */</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">args</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">arguments</span><span class="p">),</span>
+      <span class="nx">msg</span> <span class="o">=</span> <span class="nx">args</span><span class="p">.</span><span class="nx">shift</span><span class="p">(),</span>
+      <span class="nx">callback</span> <span class="o">=</span> <span class="nx">args</span><span class="p">.</span><span class="nx">pop</span><span class="p">(),</span>
+      <span class="nx">validator</span> <span class="o">=</span> <span class="nx">args</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+      <span class="nx">vars</span> <span class="o">=</span> <span class="k">typeof</span> <span class="nx">msg</span> <span class="o">===</span> <span class="s1">&#39;string&#39;</span> <span class="o">?</span> <span class="p">[</span><span class="nx">msg</span><span class="p">]</span> <span class="o">:</span> <span class="nx">msg</span><span class="p">,</span>
+      <span class="nx">result</span> <span class="o">=</span> <span class="p">{};</span>
+  
+  <span class="nx">vars</span> <span class="o">=</span> <span class="nx">vars</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">s</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">s</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">();</span>
+  <span class="p">});</span>
+  
+  <span class="kd">function</span> <span class="nx">get</span><span class="p">(</span><span class="nx">promptMsg</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">prompt</span><span class="p">.</span><span class="nx">getInput</span><span class="p">(</span><span class="nx">capitalize</span><span class="p">(</span><span class="nx">promptMsg</span><span class="p">),</span> <span class="nx">validator</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">line</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">result</span><span class="p">[</span><span class="nx">promptMsg</span><span class="p">]</span> <span class="o">=</span> <span class="nx">line</span><span class="p">;</span>
+      <span class="nx">next</span><span class="p">();</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+  
+  <span class="nx">async</span><span class="p">.</span><span class="nx">forEachSeries</span><span class="p">(</span><span class="nx">vars</span><span class="p">,</span> <span class="nx">get</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">callback</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <h3>function getInput (msg, validator, callback)</h3>
+
+<h4>@msg {string} Variables to get input for.</h4>
+
+<h4>@validator {function} Validation function to check input received against.</h4>
+
+<h4>@callback {function} Continuation to pass control to when complete.</h4>
+
+<p>Gets input from the user via stdin for the specified message <code>msg</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">prompt</span><span class="p">.</span><span class="nx">getInput</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">msg</span><span class="p">,</span> <span class="nx">validator</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">raw</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;prompt&#39;</span><span class="p">,</span> <span class="s1">&#39;: &#39;</span> <span class="o">+</span> <span class="nx">msg</span> <span class="o">+</span> <span class="s1">&#39;: &#39;</span><span class="p">],</span>
+      <span class="nx">length</span> <span class="o">=</span> <span class="nx">raw</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">length</span><span class="p">,</span>
+      <span class="nx">promptMsg</span><span class="p">;</span>
+  </pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>Colorize the prompt now that we have the raw length</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">raw</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nx">raw</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">magenta</span><span class="p">;</span>
+  <span class="nx">promptMsg</span> <span class="o">=</span> <span class="nx">raw</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+  
+  <span class="nx">linereader</span><span class="p">.</span><span class="nx">once</span><span class="p">(</span><span class="s1">&#39;line&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">line</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>TODO (indexzero): Validate this result</p>             </td>             <td class="code">               <div class="highlight"><pre>    
+    <span class="nx">prompt</span><span class="p">.</span><span class="nx">pause</span><span class="p">();</span>
+    <span class="nx">winston</span><span class="p">.</span><span class="nx">input</span><span class="p">(</span><span class="nx">line</span><span class="p">.</span><span class="nx">yellow</span><span class="p">);</span>
+    <span class="nx">callback</span><span class="p">(</span><span class="nx">line</span><span class="p">);</span>
+  <span class="p">});</span>
+  
+  <span class="nx">linereader</span><span class="p">.</span><span class="nx">setPrompt</span><span class="p">(</span><span class="nx">promptMsg</span><span class="p">,</span> <span class="nx">length</span><span class="p">);</span>
+  <span class="nx">linereader</span><span class="p">.</span><span class="nx">prompt</span><span class="p">();</span>
+  <span class="nx">prompt</span><span class="p">.</span><span class="nx">resume</span><span class="p">();</span>
+  <span class="k">return</span> <span class="nx">prompt</span><span class="p">;</span>
+<span class="p">};</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
