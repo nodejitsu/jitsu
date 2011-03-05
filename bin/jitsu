@@ -3,19 +3,11 @@
 require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
 
 var eyes = require('eyes'),
+    colors = require('colors'),
+    winston = require('winston'),
     argv = require('optimist').argv,
     jitsu = require('jitsu');
 
-var resources = [
-  'apps',
-  'snapshots'
-];
-
-var operations = [
-  'password', 
-  
-]; 
-
 jitsu.start(argv._.join(' '), function () {
-  
+  winston.info('Nodejitsu'.grey + ' ok'.yellow.bold);
 });

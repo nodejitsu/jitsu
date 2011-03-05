@@ -10,20 +10,33 @@
 <span class="kd">var</span> <span class="nx">snapshots</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">;</span>
 
 <span class="nx">snapshots</span><span class="p">.</span><span class="nx">list</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">jitsu</span><span class="p">.</span><span class="nx">snapshots</span><span class="p">.</span><span class="nx">list</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">snapshots</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">rows</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="s1">&#39;created&#39;</span><span class="p">,</span> <span class="s1">&#39;md5&#39;</span><span class="p">]],</span>
-        <span class="nx">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;underline&#39;</span><span class="p">,</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;grey&#39;</span><span class="p">];</span>
-    
-    <span class="nx">snapshots</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">snap</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">rows</span><span class="p">.</span><span class="nx">push</span><span class="p">([</span>
-        <span class="nx">snap</span><span class="p">.</span><span class="nx">filename</span><span class="p">,</span>
-        <span class="nx">jitsu</span><span class="p">.</span><span class="nx">utils</span><span class="p">.</span><span class="nx">snapshotTime</span><span class="p">(</span><span class="nx">snap</span><span class="p">.</span><span class="nx">filename</span><span class="p">),</span>
-        <span class="nx">snap</span><span class="p">.</span><span class="nx">md5</span>
-      <span class="p">]);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">callback</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nx">jitsu</span><span class="p">.</span><span class="nx">utils</span><span class="p">.</span><span class="nx">readPackage</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">cwd</span><span class="p">(),</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="kr">package</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">name</span> <span class="o">=</span> <span class="kr">package</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+      <span class="nx">executeList</span><span class="p">();</span>
     <span class="p">});</span>
-    
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">jitsu</span><span class="p">.</span><span class="nx">log</span><span class="p">.</span><span class="nx">stringifyRows</span><span class="p">(</span><span class="nx">rows</span><span class="p">,</span> <span class="nx">colors</span><span class="p">));</span>
-  <span class="p">});</span>
+  <span class="p">}</span>
+  
+  <span class="kd">function</span> <span class="nx">executeList</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">jitsu</span><span class="p">.</span><span class="nx">snapshots</span><span class="p">.</span><span class="nx">list</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">snapshots</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">rows</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="s1">&#39;created&#39;</span><span class="p">,</span> <span class="s1">&#39;md5&#39;</span><span class="p">]],</span>
+          <span class="nx">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;underline&#39;</span><span class="p">,</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;grey&#39;</span><span class="p">];</span>
+
+      <span class="nx">snapshots</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">snap</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">rows</span><span class="p">.</span><span class="nx">push</span><span class="p">([</span>
+          <span class="nx">snap</span><span class="p">.</span><span class="nx">filename</span><span class="p">,</span>
+          <span class="nx">jitsu</span><span class="p">.</span><span class="nx">utils</span><span class="p">.</span><span class="nx">snapshotTime</span><span class="p">(</span><span class="nx">snap</span><span class="p">.</span><span class="nx">filename</span><span class="p">),</span>
+          <span class="nx">snap</span><span class="p">.</span><span class="nx">md5</span>
+        <span class="p">]);</span>
+      <span class="p">});</span>
+
+      <span class="nx">jitsu</span><span class="p">.</span><span class="nx">log</span><span class="p">.</span><span class="nx">logRows</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="nx">rows</span><span class="p">,</span> <span class="nx">colors</span><span class="p">);</span>
+      <span class="nx">callback</span><span class="p">();</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+  
+  <span class="nx">executeList</span><span class="p">();</span>
 <span class="p">};</span>
 
 <span class="nx">snapshots</span><span class="p">.</span><span class="nx">create</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>

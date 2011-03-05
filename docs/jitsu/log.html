@@ -82,6 +82,12 @@ is the headers for the rows</p>             </td>             <td class="code"> 
   <span class="p">});</span>
   
   <span class="k">return</span> <span class="nx">output</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;\n&#39;</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="nx">log</span><span class="p">.</span><span class="nx">logRows</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">level</span><span class="p">,</span> <span class="nx">rows</span><span class="p">,</span> <span class="nx">colors</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">log</span><span class="p">.</span><span class="nx">stringifyRows</span><span class="p">(</span><span class="nx">rows</span><span class="p">,</span> <span class="nx">colors</span><span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;\n&#39;</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">str</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">winston</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">level</span><span class="p">,</span> <span class="nx">str</span><span class="p">);</span>
+  <span class="p">});</span>
 <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <h3>function putObjects (objs, properties, colors)</h3>
 
 <h4>@objs {Array} List of objects to create output for</h4>

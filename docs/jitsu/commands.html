@@ -35,7 +35,7 @@
 check the arguments length then execute the command.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">parts</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">callback</span><span class="p">);</span>
   <span class="nx">expected</span> <span class="o">=</span> <span class="nx">resource</span><span class="p">[</span><span class="nx">action</span><span class="p">].</span><span class="nx">length</span><span class="p">;</span>
   
-  <span class="k">if</span> <span class="p">(</span><span class="nx">parts</span><span class="p">.</span><span class="nx">length</span> <span class="o">!==</span> <span class="nx">expected</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">parts</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="nx">expected</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;Wrong number of arguments: &#39;</span> <span class="o">+</span> <span class="nx">parts</span><span class="p">.</span><span class="nx">length</span> <span class="o">+</span> <span class="s1">&#39; for &#39;</span> <span class="o">+</span> <span class="nx">expected</span><span class="p">))</span>
   <span class="p">}</span>
   

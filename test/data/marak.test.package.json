@@ -1,0 +1,20 @@
+{
+   "name": "test",
+   "subdomain": "marak.test",
+   "state": "stopped",
+   "scripts": {
+       "start": "server.js"
+   },
+   "user": "marak",
+   "domains": [
+       "www.marak-test.com",
+       "marak-test.com"
+   ],
+   "snapshots": [
+       {
+           "md5": "0123456789",
+           "filename": "marak-test-1299292915587.tgz"
+       }
+   ],
+   "mtime": 1299292946874
+}

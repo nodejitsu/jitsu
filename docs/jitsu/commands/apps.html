@@ -5,7 +5,8 @@
 <span class="cm"> *</span>
 <span class="cm"> */</span>
  
-<span class="kd">var</span> <span class="nx">jitsu</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;jitsu&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">winston</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;winston&#39;</span><span class="p">),</span>
+    <span class="nx">jitsu</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;jitsu&#39;</span><span class="p">);</span>
 
 <span class="kd">var</span> <span class="nx">apps</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">;</span>
 
@@ -24,7 +25,7 @@
       <span class="p">]);</span>
     <span class="p">});</span>
     
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">jitsu</span><span class="p">.</span><span class="nx">log</span><span class="p">.</span><span class="nx">stringifyRows</span><span class="p">(</span><span class="nx">rows</span><span class="p">,</span> <span class="nx">colors</span><span class="p">));</span>
+    <span class="nx">jitsu</span><span class="p">.</span><span class="nx">log</span><span class="p">.</span><span class="nx">logRows</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="nx">rows</span><span class="p">,</span> <span class="nx">colors</span><span class="p">);</span>
   <span class="p">});</span>
 <span class="p">};</span>
 
