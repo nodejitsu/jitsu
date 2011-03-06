@@ -5,11 +5,17 @@
 <span class="cm"> *</span>
 <span class="cm"> */</span>
  
-<span class="kd">var</span> <span class="nx">jitsu</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;jitsu&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">winston</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;winston&#39;</span><span class="p">),</span>
+    <span class="nx">jitsu</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;jitsu&#39;</span><span class="p">);</span>
 
-<span class="kd">var</span> <span class="nx">snapshots</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">snapshots</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h3>function list (name, callback)</h3>
 
-<span class="nx">snapshots</span><span class="p">.</span><span class="nx">list</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+<h4>@name {string} <strong>optional</strong> Name of the application to create</h4>
+
+<h4>@callback {function} Continuation to pass control to when complete.</h4>
+
+<p>Lists the snapshots for the application belonging for the authenticated user.
+If <code>name</code> is not supplied the value for name in <code>package.name</code> will be used.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">snapshots</span><span class="p">.</span><span class="nx">list</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">callback</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
     <span class="k">return</span> <span class="nx">jitsu</span><span class="p">.</span><span class="nx">utils</span><span class="p">.</span><span class="nx">readPackage</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">cwd</span><span class="p">(),</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="kr">package</span><span class="p">)</span> <span class="p">{</span>
@@ -37,13 +43,36 @@
   <span class="p">}</span>
   
   <span class="nx">executeList</span><span class="p">();</span>
-<span class="p">};</span>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <h3>function create (name, callback)</h3>
 
-<span class="nx">snapshots</span><span class="p">.</span><span class="nx">create</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
-  
-<span class="p">};</span>
+<h4>@name {string} <strong>optional</strong> Name of the application to create</h4>
 
-<span class="nx">snapshots</span><span class="p">.</span><span class="nx">destroy</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+<h4>@callback {function} Continuation to pass control to when complete.</h4>
+
+<p>Creates a snapshots for the application belonging for the authenticated user
+using the data in the current directory. If <code>name</code> is not supplied the
+value for name in <code>package.name</code> will be used.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">snapshots</span><span class="p">.</span><span class="nx">create</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>    </pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>TODO (indexzero): Ensure <code>snapshot create ../../</code> works </p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">jitsu</span><span class="p">.</span><span class="nx">utils</span><span class="p">.</span><span class="nx">createPackage</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">cwd</span><span class="p">(),</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">pkg</span><span class="p">,</span> <span class="nx">filename</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">callback</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+      <span class="nx">name</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span> <span class="o">||</span> <span class="nx">pkg</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+    <span class="nx">winston</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s1">&#39;Creating snapshot for &#39;</span> <span class="o">+</span> <span class="nx">name</span><span class="p">.</span><span class="nx">magenta</span><span class="p">);</span>
+    <span class="nx">winston</span><span class="p">.</span><span class="nx">silly</span><span class="p">(</span><span class="s1">&#39;Filename: &#39;</span> <span class="o">+</span> <span class="nx">filename</span><span class="p">);</span>
+    <span class="nx">jitsu</span><span class="p">.</span><span class="nx">snapshots</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">filename</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">snapshots</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">winston</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s1">&#39;Done creating snapshot &#39;</span> <span class="o">+</span> <span class="nx">name</span><span class="p">.</span><span class="nx">magenta</span><span class="p">);</span>
+      <span class="k">return</span> <span class="nx">err</span> <span class="o">?</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="o">:</span> <span class="nx">callback</span><span class="p">();</span>
+    <span class="p">});</span>
+  <span class="p">});</span>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <h3>function destroy (count, callback)</h3>
+
+<h4>@count {string} <strong>optional</strong> Number of snapshots to destroy</h4>
+
+<h4>@callback {function} Continuation to pass control to when complete.</h4>
+
+<p>Destroys the specified number of snapshots for the application in the current
+directory. If <code>count</code> is not supplied one snapshot will be destroyed. </p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">snapshots</span><span class="p">.</span><span class="nx">destroy</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">count</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
   
 <span class="p">};</span>
 

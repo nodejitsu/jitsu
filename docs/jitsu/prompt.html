@@ -107,6 +107,30 @@ creating an interface for the <code>readline</code> module.</p>             </td
   <span class="nx">linereader</span><span class="p">.</span><span class="nx">prompt</span><span class="p">();</span>
   <span class="nx">prompt</span><span class="p">.</span><span class="nx">resume</span><span class="p">();</span>
   <span class="k">return</span> <span class="nx">prompt</span><span class="p">;</span>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <h3>function addProperties (obj, properties, callback)</h3>
+
+<h4>@obj {Object} Object to add properties to</h4>
+
+<h4>@properties {Array} List of properties to get values for</h4>
+
+<h4>@callback {function} Continuation to pass control to when complete.</h4>
+
+<p>Prompts the user for values each of the <code>properties</code> if <code>obj</code> does not already
+have a value for the property. Responds with the modified object.  </p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">prompt</span><span class="p">.</span><span class="nx">addProperties</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="nx">properties</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">properties</span> <span class="o">=</span> <span class="nx">properties</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">prop</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">prop</span><span class="p">]</span> <span class="o">===</span> <span class="s1">&#39;undefined&#39;</span><span class="p">;</span>
+  <span class="p">});</span>
+  
+  <span class="k">if</span> <span class="p">(</span><span class="nx">properties</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">obj</span><span class="p">);</span>
+  <span class="p">}</span>
+  
+  <span class="nx">prompt</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">properties</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">results</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">results</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">obj</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">results</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
+      <span class="nx">callback</span><span class="p">(</span><span class="nx">obj</span><span class="p">);</span>
+    <span class="p">});</span>
+  <span class="p">});</span>
 <span class="p">};</span>
 
 </pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

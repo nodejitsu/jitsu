@@ -5,26 +5,39 @@
 <span class="cm"> *</span>
 <span class="cm"> */</span>
  
-<span class="kd">var</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">),</span>
+<span class="kd">var</span> <span class="nx">jitsu</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;jitsu&#39;</span><span class="p">),</span>
+    <span class="nx">util</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;util&#39;</span><span class="p">),</span>
+    <span class="nx">spawn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;child_process&#39;</span><span class="p">).</span><span class="nx">spawn</span><span class="p">,</span>
+    <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">),</span>
     <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">);</span>
  
 <span class="kd">var</span> <span class="nx">utils</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">;</span>
 
-<span class="nx">utils</span><span class="p">.</span><span class="nx">base64</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./base64&#39;</span><span class="p">);</span>
+<span class="nx">utils</span><span class="p">.</span><span class="nx">base64</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./base64&#39;</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h3>function snapshotTime (name)</h3>
 
-<span class="nx">utils</span><span class="p">.</span><span class="nx">snapshotTime</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+<h4>@name {string} Filename for the snapshot</h4>
+
+<p>Returns a formatted date string for the unix time 
+in the snapshot filename.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">utils</span><span class="p">.</span><span class="nx">snapshotTime</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">time</span> <span class="o">=</span> <span class="nx">name</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/[\w|\-]+-[\w|\-]+-(\d+)/</span><span class="p">)[</span><span class="mi">1</span><span class="p">];</span>
   <span class="k">return</span> <span class="nx">utils</span><span class="p">.</span><span class="nx">formatTime</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">time</span><span class="p">)));</span>
-<span class="p">};</span>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <h3>function formatTime (obj)</h3>
 
-<span class="nx">utils</span><span class="p">.</span><span class="nx">formatTime</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+<h4>@obj {Date} Date to format</h4>
+
+<p>Returns a formatted date string for <code>obj</code> in the format
+YYYY/MM/DD HH:MM:SS</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">utils</span><span class="p">.</span><span class="nx">formatTime</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">date</span> <span class="o">=</span> <span class="p">[</span><span class="nx">obj</span><span class="p">.</span><span class="nx">getFullYear</span><span class="p">(),</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">getMonth</span><span class="p">(),</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">getDate</span><span class="p">()].</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">),</span>
       <span class="nx">time</span> <span class="o">=</span> <span class="p">[</span><span class="nx">obj</span><span class="p">.</span><span class="nx">getHours</span><span class="p">(),</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">getMinutes</span><span class="p">(),</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">getSeconds</span><span class="p">()].</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">);</span>
   
   <span class="k">return</span> <span class="p">[</span><span class="nx">date</span><span class="p">,</span> <span class="nx">time</span><span class="p">].</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">);</span>
-<span class="p">};</span>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <h3>function readPackage (dir, callback)</h3>
 
-<span class="nx">utils</span><span class="p">.</span><span class="nx">readPackage</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">dir</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+<h4>@dir {string} Directory to read the package.json from</h4>
+
+<h4>@callback {function} Continuation to pass control to when complete</h4>
+
+<p>Attempts to read the package.json file out of the specified directory.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">utils</span><span class="p">.</span><span class="nx">readPackage</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">dir</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">file</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">dir</span><span class="p">,</span> <span class="s1">&#39;package.json&#39;</span><span class="p">);</span>
   
   <span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="nx">file</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
@@ -38,6 +51,41 @@
     <span class="k">catch</span> <span class="p">(</span><span class="nx">ex</span><span class="p">)</span> <span class="p">{</span>
       <span class="nx">callback</span><span class="p">(</span><span class="nx">ex</span><span class="p">);</span>
     <span class="p">}</span>
+  <span class="p">});</span>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <h3>function createPackage (dir, callback)</h3>
+
+<h4>@dir {string} Directory to create the package *.tgz file from</h4>
+
+<h4>@callback {function} Continuation to pass control to when complete</h4>
+
+<p>Creates a *.tgz package file from the specified directory <code>dir</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">utils</span><span class="p">.</span><span class="nx">createPackage</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">dir</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">utils</span><span class="p">.</span><span class="nx">readPackage</span><span class="p">(</span><span class="nx">dir</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">pkg</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="nx">dir</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">===</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span> <span class="nx">dir</span> <span class="o">=</span> <span class="nx">dir</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">parent</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">dirname</span><span class="p">(</span><span class="nx">dir</span><span class="p">),</span>
+        <span class="nx">base</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">basename</span><span class="p">(</span><span class="nx">dir</span><span class="p">),</span>
+        <span class="nx">tarball</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">settings</span><span class="p">.</span><span class="nx">tmproot</span><span class="p">,</span> <span class="p">[</span><span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">username</span><span class="p">,</span> <span class="nx">pkg</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()].</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.tgz&#39;</span><span class="p">),</span>
+        <span class="nx">target</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">createWriteStream</span><span class="p">(</span><span class="nx">tarball</span><span class="p">),</span>
+        <span class="nx">tarargs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-cvf&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;--exclude&#39;</span><span class="p">,</span> <span class="s1">&#39;.git&#39;</span><span class="p">,</span> <span class="s1">&#39;-C&#39;</span><span class="p">,</span> <span class="nx">parent</span><span class="p">,</span> <span class="nx">base</span><span class="p">];</span>
+        </pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>TODO (indexzero) Support for <code>.jitsuignore</code> files and support for package.json files</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">tar</span> <span class="o">=</span> <span class="nx">spawn</span><span class="p">(</span><span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">settings</span><span class="p">.</span><span class="nx">tar</span><span class="p">,</span> <span class="nx">tarargs</span><span class="p">),</span> 
+        <span class="nx">gzip</span> <span class="o">=</span> <span class="nx">spawn</span><span class="p">(</span><span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">settings</span><span class="p">.</span><span class="nx">gzipbin</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;--stdout&quot;</span><span class="p">]),</span> 
+        <span class="nx">errState</span><span class="p">;</span>
+        </pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>TODO (indexzero) Make this piping more robust</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">util</span><span class="p">.</span><span class="nx">pump</span><span class="p">(</span><span class="nx">tar</span><span class="p">.</span><span class="nx">stdout</span><span class="p">,</span> <span class="nx">gzip</span><span class="p">.</span><span class="nx">stdin</span><span class="p">);</span>
+    <span class="nx">util</span><span class="p">.</span><span class="nx">pump</span><span class="p">(</span><span class="nx">gzip</span><span class="p">.</span><span class="nx">stdout</span><span class="p">,</span> <span class="nx">target</span><span class="p">);</span>
+    
+    <span class="nx">target</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;close&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">ok</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">errState</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span>
+      <span class="p">}</span>
+      <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">errState</span> <span class="o">=</span> <span class="nx">err</span><span class="p">)</span>
+      <span class="p">}</span>
+      
+      <span class="nx">callback</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">pkg</span><span class="p">,</span> <span class="nx">tarball</span><span class="p">);</span>
+    <span class="p">});</span>
   <span class="p">});</span>
 <span class="p">};</span>
 

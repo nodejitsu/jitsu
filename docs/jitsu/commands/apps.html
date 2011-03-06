@@ -8,48 +8,117 @@
 <span class="kd">var</span> <span class="nx">winston</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;winston&#39;</span><span class="p">),</span>
     <span class="nx">jitsu</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;jitsu&#39;</span><span class="p">);</span>
 
-<span class="kd">var</span> <span class="nx">apps</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">apps</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h3>function list (callback)</h3>
 
-<span class="nx">apps</span><span class="p">.</span><span class="nx">list</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+<h4>@callback {function} Continuation to pass control to when complete.</h4>
+
+<p>Lists the applications for the authenticated user.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">apps</span><span class="p">.</span><span class="nx">list</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">jitsu</span><span class="p">.</span><span class="nx">apps</span><span class="p">.</span><span class="nx">list</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">apps</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+    <span class="p">}</span>
+    
     <span class="kd">var</span> <span class="nx">rows</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;state&#39;</span><span class="p">,</span> <span class="s1">&#39;subdomain&#39;</span><span class="p">,</span> <span class="s1">&#39;start&#39;</span><span class="p">,</span> <span class="s1">&#39;latest&#39;</span><span class="p">]],</span>
         <span class="nx">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;underline&#39;</span><span class="p">,</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">];</span>
     
     <span class="nx">apps</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">app</span><span class="p">)</span> <span class="p">{</span>
       <span class="nx">rows</span><span class="p">.</span><span class="nx">push</span><span class="p">([</span>
         <span class="nx">app</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span>
-        <span class="nx">app</span><span class="p">.</span><span class="nx">state</span><span class="p">,</span>
+        <span class="nx">app</span><span class="p">.</span><span class="nx">state</span> <span class="o">||</span> <span class="s1">&#39;stopped&#39;</span><span class="p">,</span>
         <span class="nx">app</span><span class="p">.</span><span class="nx">subdomain</span><span class="p">,</span>
-        <span class="nx">app</span><span class="p">.</span><span class="nx">scripts</span><span class="p">.</span><span class="nx">start</span><span class="p">,</span>
-        <span class="nx">app</span><span class="p">.</span><span class="nx">snapshots</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">filename</span>
+        <span class="nx">app</span><span class="p">.</span><span class="nx">scripts</span><span class="p">.</span><span class="nx">start</span> <span class="o">||</span> <span class="s1">&#39;---&#39;</span><span class="p">,</span>
+        <span class="nx">app</span><span class="p">.</span><span class="nx">snapshots</span> <span class="o">&amp;&amp;</span> <span class="nx">app</span><span class="p">.</span><span class="nx">snapshots</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">?</span> <span class="nx">app</span><span class="p">.</span><span class="nx">snapshots</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">filename</span> <span class="o">:</span> <span class="s1">&#39;---&#39;</span>
       <span class="p">]);</span>
     <span class="p">});</span>
     
     <span class="nx">jitsu</span><span class="p">.</span><span class="nx">log</span><span class="p">.</span><span class="nx">logRows</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="nx">rows</span><span class="p">,</span> <span class="nx">colors</span><span class="p">);</span>
+    <span class="nx">callback</span><span class="p">();</span>
   <span class="p">});</span>
-<span class="p">};</span>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <h3>function list (callback)</h3>
 
-<span class="nx">apps</span><span class="p">.</span><span class="nx">create</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
-  
-<span class="p">};</span>
+<h4>@name {string} <strong>optional</strong> Name of the application to create</h4>
 
-<span class="nx">apps</span><span class="p">.</span><span class="nx">update</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+<h4>@callback {function} Continuation to pass control to when complete.</h4>
+
+<p>Creates an application for the package.json in the current directory
+using <code>name</code> if supplied and falling back to <code>package.name</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">apps</span><span class="p">.</span><span class="nx">create</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">jitsu</span><span class="p">.</span><span class="nx">utils</span><span class="p">.</span><span class="nx">readPackage</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">cwd</span><span class="p">(),</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">pkg</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">callback</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+      <span class="nx">name</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nx">pkg</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span> <span class="o">||</span> <span class="nx">pkg</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+    <span class="nx">jitsu</span><span class="p">.</span><span class="nx">apps</span><span class="p">.</span><span class="nx">list</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">apps</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">existing</span> <span class="o">=</span> <span class="nx">apps</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">a</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">a</span><span class="p">.</span><span class="nx">name</span> <span class="o">===</span> <span class="nx">pkg</span><span class="p">.</span><span class="nx">name</span> <span class="p">});</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">existing</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">winston</span><span class="p">.</span><span class="nx">warn</span><span class="p">(</span><span class="s1">&#39;Cannot create duplicate application &#39;</span> <span class="o">+</span> <span class="nx">pkg</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">magenta</span><span class="p">);</span>
+      <span class="p">}</span>
+      </pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>TODO (indexzero): Configure this default value in nodejitsu APIs</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">pkg</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="s1">&#39;stopped&#39;</span><span class="p">;</span>
+      <span class="nx">winston</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s1">&#39;Validating package.json for &#39;</span> <span class="o">+</span> <span class="nx">pkg</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">magenta</span><span class="p">);</span>
+      <span class="nx">jitsu</span><span class="p">.</span><span class="nx">prompt</span><span class="p">.</span><span class="nx">addProperties</span><span class="p">(</span><span class="nx">pkg</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;subdomain&#39;</span><span class="p">],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">updated</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">winston</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s1">&#39;Creating app &#39;</span> <span class="o">+</span> <span class="nx">pkg</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">magenta</span><span class="p">);</span>
+        <span class="nx">jitsu</span><span class="p">.</span><span class="nx">apps</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">updated</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">winston</span><span class="p">.</span><span class="nx">silly</span><span class="p">(</span><span class="s1">&#39;Done creating app &#39;</span> <span class="o">+</span> <span class="nx">pkg</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">magenta</span><span class="p">);</span>
+          <span class="k">return</span> <span class="nx">err</span> <span class="o">?</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="o">:</span> <span class="nx">callback</span><span class="p">();</span>
+        <span class="p">});</span>
+      <span class="p">});</span>
+    <span class="p">});</span>
+  <span class="p">});</span>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <h3>function list (callback)</h3>
+
+<h4>@name {string} <strong>optional</strong> Name of the application to create</h4>
+
+<h4>@callback {function} Continuation to pass control to when complete.</h4>
+
+<p>Lists the applications for the authenticated user.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">apps</span><span class="p">.</span><span class="nx">update</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">callback</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
   <span class="p">}</span>
   
   
-<span class="p">};</span>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <h3>function destroy (callback)</h3>
 
-<span class="nx">apps</span><span class="p">.</span><span class="nx">destroy</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+<h4>@name {string} <strong>optional</strong> Name of the application to destroy.</h4>
+
+<h4>@callback {function} Continuation to pass control to when complete.</h4>
+
+<p>Destroys the application specified by <code>name</code>. If no name is supplied
+this will destroy the application in the current directory.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">apps</span><span class="p">.</span><span class="nx">destroy</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">callback</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nx">jitsu</span><span class="p">.</span><span class="nx">utils</span><span class="p">.</span><span class="nx">readPackage</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">cwd</span><span class="p">(),</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="kr">package</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">name</span> <span class="o">=</span> <span class="kr">package</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+      <span class="nx">executeDestroy</span><span class="p">();</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
   
-<span class="p">};</span>
-
-<span class="nx">apps</span><span class="p">.</span><span class="nx">start</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">function</span> <span class="nx">executeDestroy</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">winston</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s1">&#39;Destroying app &#39;</span> <span class="o">+</span> <span class="nx">name</span><span class="p">.</span><span class="nx">magenta</span><span class="p">);</span>
+    <span class="nx">jitsu</span><span class="p">.</span><span class="nx">apps</span><span class="p">.</span><span class="nx">destroy</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">winston</span><span class="p">.</span><span class="nx">silly</span><span class="p">(</span><span class="s1">&#39;Done destroying app &#39;</span> <span class="o">+</span> <span class="nx">name</span><span class="p">.</span><span class="nx">magenta</span><span class="p">);</span>
+      <span class="k">return</span> <span class="nx">err</span> <span class="o">?</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="o">:</span> <span class="nx">callback</span><span class="p">();</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
   
-<span class="p">};</span>
+  <span class="nx">executeDestroy</span><span class="p">();</span>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <h3>function start (callback)</h3>
 
-<span class="nx">apps</span><span class="p">.</span><span class="nx">stop</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+<h4>@name {string} <strong>optional</strong> Name of the application to start.</h4>
+
+<h4>@callback {function} Continuation to pass control to when complete.</h4>
+
+<p>Starts the application specified by <code>name</code>. If no name is supplied
+this will start the application in the current directory.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">apps</span><span class="p">.</span><span class="nx">start</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+  
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <h3>function stop (callback)</h3>
+
+<h4>@name {string} <strong>optional</strong> Name of the application to stop.</h4>
+
+<h4>@callback {function} Continuation to pass control to when complete.</h4>
+
+<p>Stops the application specified by <code>name</code>. If no name is supplied
+this will stop the application in the current directory.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">apps</span><span class="p">.</span><span class="nx">stop</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
   
 <span class="p">};</span>
 

@@ -73,6 +73,11 @@ off of <code>/lib/broodmother/slave/service.js</code></p>             </td>     
     <span class="k">if</span> <span class="p">(</span><span class="nx">err</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="sr">/403/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">message</span><span class="p">))</span> <span class="p">{</span>
       <span class="nx">winston</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;Error running command &#39;</span> <span class="o">+</span> <span class="nx">command</span><span class="p">.</span><span class="nx">magenta</span><span class="p">);</span>
       <span class="nx">winston</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">stack</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">err</span><span class="p">.</span><span class="nx">stack</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;\n&#39;</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">trace</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">winston</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">trace</span><span class="p">);</span>
+        <span class="p">})</span>
+      <span class="p">}</span>
       <span class="k">return</span>
     <span class="p">}</span>
     </pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>TODO (indexzero): Something here</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">callback</span><span class="p">();</span>

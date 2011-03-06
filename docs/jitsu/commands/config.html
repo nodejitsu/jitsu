@@ -9,23 +9,37 @@
     <span class="nx">winston</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;winston&#39;</span><span class="p">);</span>
  
 <span class="kd">var</span> <span class="nx">config</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">,</span>
-    <span class="nx">noDelete</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;root&#39;</span><span class="p">,</span> <span class="s1">&#39;remoteUri&#39;</span><span class="p">,</span> <span class="s1">&#39;userconfig&#39;</span><span class="p">,</span> <span class="s1">&#39;auth&#39;</span><span class="p">];</span>
+    <span class="nx">noDelete</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;root&#39;</span><span class="p">,</span> <span class="s1">&#39;remoteUri&#39;</span><span class="p">,</span> <span class="s1">&#39;userconfig&#39;</span><span class="p">,</span> <span class="s1">&#39;auth&#39;</span><span class="p">,</span> <span class="s1">&#39;tmproot&#39;</span><span class="p">,</span> <span class="s1">&#39;tar&#39;</span><span class="p">,</span> <span class="s1">&#39;gzipbin&#39;</span><span class="p">];</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h3>function set (key, value, callback)</h3>
 
-<span class="nx">config</span><span class="p">.</span><span class="nx">set</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+<h4>@key {string} Key to set in jitsu config.</h4>
+
+<h4>@value {string} Value to set the key to.</h4>
+
+<h4>@callback {function} Continuation to pass control to when complete</h4>
+
+<p>Sets the specified <code>key</code> in jitsu config to <code>value</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">config</span><span class="p">.</span><span class="nx">set</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">settings</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
   <span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="nx">callback</span><span class="p">);</span>
-<span class="p">};</span>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <h3>function get (key, callback)</h3>
 
-<span class="nx">config</span><span class="p">.</span><span class="nx">get</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+<h4>@key {string} Key to get in jitsu config.</h4>
+
+<h4>@callback {function} Continuation to pass control to when complete</h4>
+
+<p>Gets the specified <code>key</code> in jitsu config.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">config</span><span class="p">.</span><span class="nx">get</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">settings</span><span class="p">[</span><span class="nx">key</span><span class="p">])</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">winston</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;No configuration value for &#39;</span> <span class="o">+</span> <span class="nx">key</span><span class="p">.</span><span class="nx">yellow</span><span class="p">);</span>
   <span class="p">}</span>
   
-  <span class="nx">winston</span><span class="p">.</span><span class="nx">info</span><span class="p">([</span><span class="nx">key</span><span class="p">.</span><span class="nx">yellow</span><span class="p">,</span> <span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">settings</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">magenta</span><span class="p">].</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">));</span>
+  <span class="nx">winston</span><span class="p">.</span><span class="nx">data</span><span class="p">([</span><span class="nx">key</span><span class="p">.</span><span class="nx">yellow</span><span class="p">,</span> <span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">settings</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">magenta</span><span class="p">].</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">));</span>
   <span class="nx">callback</span><span class="p">();</span>
-<span class="p">};</span>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <h3>function delete (key, callback)</h3>
 
-<span class="nx">config</span><span class="p">.</span><span class="k">delete</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+<h4>@key {string} Key to delete, in jitsu config.</h4>
+
+<h4>@callback {function} Continuation to pass control to when complete</h4>
+
+<p>Deletes the specified <code>key</code> in jitsu config.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">config</span><span class="p">.</span><span class="k">delete</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">settings</span><span class="p">[</span><span class="nx">key</span><span class="p">])</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">winston</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;No configuration value for &#39;</span> <span class="o">+</span> <span class="nx">key</span><span class="p">.</span><span class="nx">yellow</span><span class="p">);</span>
   <span class="p">}</span>
@@ -37,17 +51,19 @@
   
   <span class="k">delete</span> <span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">settings</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
   <span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="nx">callback</span><span class="p">);</span>
-<span class="p">};</span>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <h3>function list (callback)</h3>
 
-<span class="nx">config</span><span class="p">.</span><span class="nx">list</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+<h4>@callback {function} Continuation to pass control to when complete</h4>
+
+<p>Lists all the key-value pairs in jitsu config.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">config</span><span class="p">.</span><span class="nx">list</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">function</span> <span class="nx">listObject</span> <span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="nx">prefix</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">prefix</span> <span class="o">=</span> <span class="nx">prefix</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
     <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">obj</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
       <span class="k">if</span> <span class="p">(</span><span class="nb">Array</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">obj</span><span class="p">[</span><span class="nx">key</span><span class="p">]))</span> <span class="p">{</span>
-        <span class="nx">winston</span><span class="p">.</span><span class="nx">info</span><span class="p">((</span><span class="nx">prefix</span> <span class="o">+</span> <span class="nx">key</span><span class="p">).</span><span class="nx">yellow</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">).</span><span class="nx">magenta</span><span class="p">);</span>
+        <span class="nx">winston</span><span class="p">.</span><span class="nx">data</span><span class="p">((</span><span class="nx">prefix</span> <span class="o">+</span> <span class="nx">key</span><span class="p">).</span><span class="nx">yellow</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">).</span><span class="nx">magenta</span><span class="p">);</span>
       <span class="p">}</span>
       <span class="k">else</span> <span class="p">{</span>
-        <span class="nx">winston</span><span class="p">.</span><span class="nx">info</span><span class="p">((</span><span class="nx">prefix</span> <span class="o">+</span> <span class="nx">key</span><span class="p">).</span><span class="nx">yellow</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">toString</span><span class="p">().</span><span class="nx">magenta</span><span class="p">);</span>
+        <span class="nx">winston</span><span class="p">.</span><span class="nx">data</span><span class="p">((</span><span class="nx">prefix</span> <span class="o">+</span> <span class="nx">key</span><span class="p">).</span><span class="nx">yellow</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">toString</span><span class="p">().</span><span class="nx">magenta</span><span class="p">);</span>
       <span class="p">}</span>
     <span class="p">});</span>
   <span class="p">}</span>
