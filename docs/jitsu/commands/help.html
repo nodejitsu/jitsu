@@ -1,0 +1,48 @@
+<!DOCTYPE html>  <html> <head>   <title>help.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="../../docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="../..//jitsu/api/apps.html">                 jitsu/api/apps.html               </a>                                           <a class="source" href="../..//jitsu/api/client.html">                 jitsu/api/client.html               </a>                                           <a class="source" href="../..//jitsu/api/snapshots.html">                 jitsu/api/snapshots.html               </a>                                           <a class="source" href="../..//jitsu/api/users.html">                 jitsu/api/users.html               </a>                                           <a class="source" href="../..//jitsu/commands/apps.html">                 jitsu/commands/apps.html               </a>                                           <a class="source" href="../..//jitsu/commands/config.html">                 jitsu/commands/config.html               </a>                                           <a class="source" href="../..//jitsu/commands/help.html">                 jitsu/commands/help.html               </a>                                           <a class="source" href="../..//jitsu/commands/snapshots.html">                 jitsu/commands/snapshots.html               </a>                                           <a class="source" href="../..//jitsu/commands.html">                 jitsu/commands.html               </a>                                           <a class="source" href="../..//jitsu/config.html">                 jitsu/config.html               </a>                                           <a class="source" href="../..//jitsu/log.html">                 jitsu/log.html               </a>                                           <a class="source" href="../..//jitsu/prompt.html">                 jitsu/prompt.html               </a>                                           <a class="source" href="../..//jitsu/utils/base64.html">                 jitsu/utils/base64.html               </a>                                           <a class="source" href="../..//jitsu/utils/index.html">                 jitsu/utils/index.html               </a>                                           <a class="source" href="../..//jitsu.html">                 jitsu.html               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               help.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="cm">/*</span>
+<span class="cm"> * help.js: Command related to jitsu help and usage</span>
+<span class="cm"> *</span>
+<span class="cm"> * (C) 2010, Nodejitsu Inc.</span>
+<span class="cm"> *</span>
+<span class="cm"> */</span>
+ 
+<span class="kd">var</span> <span class="nx">winston</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;winston&#39;</span><span class="p">),</span>
+    <span class="nx">jitsu</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;jitsu&#39;</span><span class="p">);</span>
+ 
+<span class="kd">var</span> <span class="nx">help</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">;</span>
+
+<span class="nx">help</span><span class="p">.</span><span class="nx">show</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">action</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">usage</span><span class="p">,</span> <span class="nx">resource</span> <span class="o">=</span> <span class="nx">jitsu</span><span class="p">.</span><span class="nx">commands</span><span class="p">.</span><span class="nx">commands</span><span class="p">[</span><span class="nx">name</span><span class="p">];</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nx">action</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">resource</span><span class="p">[</span><span class="nx">action</span><span class="p">])</span> <span class="p">{</span>
+    <span class="nx">winston</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;No help for command &#39;</span> <span class="o">+</span> <span class="p">[</span><span class="nx">name</span><span class="p">,</span> <span class="nx">action</span><span class="p">].</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">).</span><span class="nx">magenta</span><span class="p">);</span>
+    <span class="k">return</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nx">usage</span> <span class="o">=</span> <span class="nx">action</span> <span class="o">?</span> <span class="nx">resource</span><span class="p">[</span><span class="nx">action</span><span class="p">].</span><span class="nx">usage</span> <span class="o">:</span> <span class="nx">resource</span><span class="p">.</span><span class="nx">usage</span><span class="p">;</span>
+  
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">usage</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">winston</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;No help for command &#39;</span> <span class="o">+</span> <span class="p">[</span><span class="nx">name</span><span class="p">,</span> <span class="nx">action</span><span class="p">].</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">).</span><span class="nx">magenta</span><span class="p">);</span>
+    <span class="k">return</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+  <span class="nx">winston</span><span class="p">.</span><span class="nx">help</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+  <span class="nx">winston</span><span class="p">.</span><span class="nx">help</span><span class="p">(</span><span class="s1">&#39;Usage:&#39;</span><span class="p">.</span><span class="nx">bold</span><span class="p">);</span>
+  <span class="nx">usage</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">line</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">winston</span><span class="p">.</span><span class="nx">help</span><span class="p">(</span><span class="nx">line</span><span class="p">);</span>
+  <span class="p">});</span>
+  <span class="nx">winston</span><span class="p">.</span><span class="nx">help</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="p">[</span><span class="s1">&#39;apps&#39;</span><span class="p">,</span> <span class="s1">&#39;snapshots&#39;</span><span class="p">,</span> <span class="s1">&#39;config&#39;</span><span class="p">].</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">resource</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">help</span><span class="p">[</span><span class="nx">resource</span><span class="p">]</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">action</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">callback</span> <span class="o">=</span> <span class="nx">action</span><span class="p">;</span>
+      <span class="nx">action</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nx">help</span><span class="p">.</span><span class="nx">show</span><span class="p">(</span><span class="nx">resource</span><span class="p">,</span> <span class="nx">action</span><span class="p">);</span>
+    <span class="nx">callback</span><span class="p">();</span>
+  <span class="p">};</span>
+<span class="p">});</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
