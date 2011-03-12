@@ -5,12 +5,38 @@
 <span class="cm"> *</span>
 <span class="cm"> */</span>
  
-<span class="kd">var</span> <span class="nx">winston</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;winston&#39;</span><span class="p">),</span>
+<span class="kd">var</span> <span class="nx">colors</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;colors&#39;</span><span class="p">),</span>
+    <span class="nx">winston</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;winston&#39;</span><span class="p">),</span>
     <span class="nx">jitsu</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;jitsu&#39;</span><span class="p">);</span>
  
 <span class="kd">var</span> <span class="nx">help</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">;</span>
 
-<span class="nx">help</span><span class="p">.</span><span class="nx">show</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">action</span><span class="p">)</span> <span class="p">{</span>
+<span class="nx">help</span><span class="p">.</span><span class="nx">usage</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="s1">&#39;jitsu is the command-line interface (CLI) for interacting&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;with the Nodejitsu platform. Commands are structured:&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;jitsu &lt;resource&gt; &lt;action&gt; &lt;param1&gt; &lt;param2&gt; ...&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;Resources:&#39;</span><span class="p">.</span><span class="nx">bold</span><span class="p">,</span>
+  <span class="s1">&#39;Valid resources for `jitsu` are:&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;  1. &#39;</span> <span class="o">+</span> <span class="s1">&#39;apps&#39;</span><span class="p">.</span><span class="nx">underline</span>      <span class="o">+</span> <span class="s1">&#39;: Applications hosted on Nodejitsu&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;  2. &#39;</span> <span class="o">+</span> <span class="s1">&#39;snapshots&#39;</span><span class="p">.</span><span class="nx">underline</span> <span class="o">+</span> <span class="s1">&#39;: Images of your applications on Nodejitsu&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;  3. &#39;</span> <span class="o">+</span> <span class="s1">&#39;config&#39;</span><span class="p">.</span><span class="nx">underline</span>    <span class="o">+</span> <span class="s1">&#39;: Configuration for the jitsu CLI&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;For help about a particular resource use:    jitsu help &lt;resource&gt;&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;and for help about a particular action use:  jitsu help &lt;resource&gt; &lt;action&gt;&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;  e.g.&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;    jitsu help apps&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;    jitsu help snapshots list&#39;</span>
+<span class="p">];</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h3>function show (name, action)</h3>
+
+<h4>@name {string} Name of the resource to show help for</h4>
+
+<h4>@action {string} Name of the action on the resource</h4>
+
+<p>Shows the help for the resource with the specified <code>name</code>.
+If <code>action</code> is supplied, help for <code>jitsu &lt;name&gt; &lt;action&gt;</code>
+is shown.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">help</span><span class="p">.</span><span class="nx">show</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">action</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">usage</span><span class="p">,</span> <span class="nx">resource</span> <span class="o">=</span> <span class="nx">jitsu</span><span class="p">.</span><span class="nx">commands</span><span class="p">.</span><span class="nx">commands</span><span class="p">[</span><span class="nx">name</span><span class="p">];</span>
 
   <span class="k">if</span> <span class="p">(</span><span class="nx">action</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">resource</span><span class="p">[</span><span class="nx">action</span><span class="p">])</span> <span class="p">{</span>
@@ -31,9 +57,8 @@
     <span class="nx">winston</span><span class="p">.</span><span class="nx">help</span><span class="p">(</span><span class="nx">line</span><span class="p">);</span>
   <span class="p">});</span>
   <span class="nx">winston</span><span class="p">.</span><span class="nx">help</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
-<span class="p">};</span>
-
-<span class="p">[</span><span class="s1">&#39;apps&#39;</span><span class="p">,</span> <span class="s1">&#39;snapshots&#39;</span><span class="p">,</span> <span class="s1">&#39;config&#39;</span><span class="p">].</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">resource</span><span class="p">)</span> <span class="p">{</span>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>Setup exports for all relevant resources: 
+<code>apps</code>, <code>snapshots</code>, <code>config</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="p">[</span><span class="s1">&#39;apps&#39;</span><span class="p">,</span> <span class="s1">&#39;snapshots&#39;</span><span class="p">,</span> <span class="s1">&#39;config&#39;</span><span class="p">].</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">resource</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">help</span><span class="p">[</span><span class="nx">resource</span><span class="p">]</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">action</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
       <span class="nx">callback</span> <span class="o">=</span> <span class="nx">action</span><span class="p">;</span>

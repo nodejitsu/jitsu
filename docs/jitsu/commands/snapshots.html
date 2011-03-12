@@ -23,7 +23,7 @@
   <span class="s1">&#39;For commands that take a &lt;name&gt; parameter, if no parameter&#39;</span><span class="p">,</span>
   <span class="s1">&#39;is supplied, jitsu will attempt to read the package.json&#39;</span><span class="p">,</span>
   <span class="s1">&#39;from the current directory.&#39;</span>
-<span class="p">]</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h3>function list (name, callback)</h3>
+<span class="p">];</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h3>function list (name, callback)</h3>
 
 <h4>@name {string} <strong>optional</strong> Name of the application to create</h4>
 
@@ -31,20 +31,12 @@
 
 <p>Lists the snapshots for the application belonging for the authenticated user.
 If <code>name</code> is not supplied the value for name in <code>package.name</code> will be used.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">snapshots</span><span class="p">.</span><span class="nx">list</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">callback</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
-    <span class="k">return</span> <span class="nx">jitsu</span><span class="p">.</span><span class="nx">utils</span><span class="p">.</span><span class="nx">readPackage</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">cwd</span><span class="p">(),</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="kr">package</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">name</span> <span class="o">=</span> <span class="kr">package</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
-      <span class="nx">executeList</span><span class="p">();</span>
-    <span class="p">});</span>
-  <span class="p">}</span>
-  
-  <span class="kd">function</span> <span class="nx">executeList</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="kd">function</span> <span class="nx">executeList</span><span class="p">()</span> <span class="p">{</span>
     <span class="nx">jitsu</span><span class="p">.</span><span class="nx">snapshots</span><span class="p">.</span><span class="nx">list</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">snapshots</span><span class="p">)</span> <span class="p">{</span>
       <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
       <span class="p">}</span>
-      
+    
       <span class="k">if</span> <span class="p">(</span><span class="nx">snapshots</span> <span class="o">&amp;&amp;</span> <span class="nx">snapshots</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">rows</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="s1">&#39;created&#39;</span><span class="p">,</span> <span class="s1">&#39;md5&#39;</span><span class="p">]],</span>
             <span class="nx">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;underline&#39;</span><span class="p">,</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;grey&#39;</span><span class="p">];</span>
@@ -62,8 +54,16 @@ If <code>name</code> is not supplied the value for name in <code>package.name</c
       <span class="k">else</span> <span class="p">{</span>
         <span class="nx">winston</span><span class="p">.</span><span class="nx">warn</span><span class="p">(</span><span class="s1">&#39;No snapshots for application &#39;</span> <span class="o">+</span> <span class="nx">name</span><span class="p">.</span><span class="nx">magenta</span><span class="p">);</span>
       <span class="p">}</span>
-      
+    
       <span class="nx">callback</span><span class="p">();</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+  
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">callback</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nx">jitsu</span><span class="p">.</span><span class="nx">utils</span><span class="p">.</span><span class="nx">readPackage</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">cwd</span><span class="p">(),</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">pkg</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">name</span> <span class="o">=</span> <span class="nx">pkg</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+      <span class="nx">executeList</span><span class="p">();</span>
     <span class="p">});</span>
   <span class="p">}</span>
   
@@ -96,7 +96,13 @@ value for name in <code>package.name</code> will be used.</p>             </td> 
       <span class="k">return</span> <span class="nx">err</span> <span class="o">?</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="o">:</span> <span class="nx">callback</span><span class="p">();</span>
     <span class="p">});</span>
   <span class="p">});</span>
-<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <h3>function destroy (count, callback)</h3>
+<span class="p">};</span>
+
+<span class="nx">snapshots</span><span class="p">.</span><span class="nx">create</span><span class="p">.</span><span class="nx">usage</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="s1">&#39;Creates a snapshot for the application in the current directory&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;jitsu snapshots create&#39;</span>
+<span class="p">];</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <h3>function destroy (count, callback)</h3>
 
 <h4>@count {string} <strong>optional</strong> Number of snapshots to destroy</h4>
 
@@ -104,7 +110,18 @@ value for name in <code>package.name</code> will be used.</p>             </td> 
 
 <p>Destroys the specified number of snapshots for the application in the current
 directory. If <code>count</code> is not supplied one snapshot will be destroyed. </p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">snapshots</span><span class="p">.</span><span class="nx">destroy</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">count</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">callback</span> <span class="o">=</span> <span class="nx">count</span><span class="p">;</span> 
+  <span class="p">}</span>
   
+  <span class="nx">callback</span><span class="p">(</span><span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;Sorry: Not implemented yet.&#39;</span><span class="p">),</span> <span class="kc">true</span><span class="p">);</span>
 <span class="p">};</span>
+
+<span class="nx">snapshots</span><span class="p">.</span><span class="nx">destroy</span><span class="p">.</span><span class="nx">usage</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="s1">&#39;Destroys the latest snapshot for the application in the current directory&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;jitsu snapshots destroy&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;jitsu snapshots destroy &lt;count&gt;&#39;</span>
+<span class="p">];</span>
 
 </pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

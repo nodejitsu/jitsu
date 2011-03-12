@@ -26,7 +26,7 @@ into column major form (i.e. an array of columns).</p>             </td>        
   <span class="kd">var</span> <span class="nx">columns</span> <span class="o">=</span> <span class="p">[];</span>
   
   <span class="nx">rows</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">row</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">row</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">row</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
       <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">columns</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="p">{</span>
         <span class="nx">columns</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">[];</span>
       <span class="p">}</span>
@@ -42,8 +42,8 @@ into column major form (i.e. an array of columns).</p>             </td>        
 
 <p>Creates an array with values each representing the length
 of an array in the set provided.   </p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">log</span><span class="p">.</span><span class="nx">arrayLengths</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">arrs</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">lengths</span> <span class="o">=</span> <span class="p">[];</span>
-  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">arrs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">lengths</span> <span class="o">=</span> <span class="p">[];</span>
+  <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">arrs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">lengths</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">winston</span><span class="p">.</span><span class="nx">longestElement</span><span class="p">(</span><span class="nx">arrs</span><span class="p">[</span><span class="nx">i</span><span class="p">]));</span>
   <span class="p">}</span>
   
@@ -61,9 +61,9 @@ colorized headers if <code>colors</code> are supplied.</p>             </td>    
   <span class="nx">columns</span> <span class="o">=</span> <span class="nx">log</span><span class="p">.</span><span class="nx">columnMajor</span><span class="p">(</span><span class="nx">rows</span><span class="p">);</span>
   <span class="nx">lengths</span> <span class="o">=</span> <span class="nx">log</span><span class="p">.</span><span class="nx">arrayLengths</span><span class="p">(</span><span class="nx">columns</span><span class="p">);</span>
   
-  <span class="kd">function</span> <span class="nx">stringifyRow</span> <span class="p">(</span><span class="nx">row</span><span class="p">,</span> <span class="nx">colorize</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">rowtext</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nx">padding</span><span class="p">,</span> <span class="nx">item</span><span class="p">;</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">row</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">function</span> <span class="nx">stringifyRow</span><span class="p">(</span><span class="nx">row</span><span class="p">,</span> <span class="nx">colorize</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">rowtext</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nx">padding</span><span class="p">,</span> <span class="nx">item</span><span class="p">,</span> <span class="nx">i</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">row</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
       <span class="nx">item</span> <span class="o">=</span> <span class="nx">colorize</span> <span class="o">?</span> <span class="nx">row</span><span class="p">[</span><span class="nx">i</span><span class="p">][</span><span class="nx">colors</span><span class="p">[</span><span class="nx">i</span><span class="p">]]</span> <span class="o">:</span> <span class="nx">row</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
       <span class="nx">padding</span> <span class="o">=</span> <span class="nx">row</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">length</span> <span class="o">&lt;</span> <span class="nx">lengths</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">?</span> <span class="nx">lengths</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">-</span> <span class="nx">row</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">length</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">:</span> <span class="mi">2</span><span class="p">;</span>
       <span class="nx">rowtext</span> <span class="o">+=</span> <span class="nx">item</span> <span class="o">+</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">(</span><span class="nx">padding</span><span class="p">).</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">);</span>
@@ -82,13 +82,20 @@ is the headers for the rows</p>             </td>             <td class="code"> 
   <span class="p">});</span>
   
   <span class="k">return</span> <span class="nx">output</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;\n&#39;</span><span class="p">);</span>
-<span class="p">};</span>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <h3>function logRows (level, rows, colors)</h3>
 
-<span class="nx">log</span><span class="p">.</span><span class="nx">logRows</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">level</span><span class="p">,</span> <span class="nx">rows</span><span class="p">,</span> <span class="nx">colors</span><span class="p">)</span> <span class="p">{</span>
+<h4>@level {String} Log-level to use for winston</h4>
+
+<h4>@rows {Array} Array of rows to log at the specified level</h4>
+
+<h4>@colors {Array} Set of colors to use for the specified row(s) headers.</h4>
+
+<p>Logs the stringified table result from <code>rows</code> at the appropriate <code>level</code> using
+winston. If <code>colors</code> are supplied then use those when stringifying <code>rows</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">log</span><span class="p">.</span><span class="nx">logRows</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">level</span><span class="p">,</span> <span class="nx">rows</span><span class="p">,</span> <span class="nx">colors</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">log</span><span class="p">.</span><span class="nx">stringifyRows</span><span class="p">(</span><span class="nx">rows</span><span class="p">,</span> <span class="nx">colors</span><span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;\n&#39;</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">str</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">winston</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">level</span><span class="p">,</span> <span class="nx">str</span><span class="p">);</span>
   <span class="p">});</span>
-<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <h3>function putObjects (objs, properties, colors)</h3>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <h3>function putObjects (objs, properties, colors)</h3>
 
 <h4>@objs {Array} List of objects to create output for</h4>
 
