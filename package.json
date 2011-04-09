@@ -1,7 +1,7 @@
 {
   "name": "jitsu",
   "description": "CLI tool for working with the Nodejitsu Cloud Platform-as-a-Service",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "Charlie Robbins <charlie.robbins@gmail.com>",
   "repository": {
     "type": "git",
