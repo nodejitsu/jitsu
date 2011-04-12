@@ -10,7 +10,7 @@ Jitsu requires the npm, the node package manager.
 
 ## Installation
 
-   [sudo] npm install jitsu
+    [sudo] npm install jitsu
 
 ## Features
 
@@ -49,13 +49,15 @@ After you've logged in, you can start deploying apps immediately!
 
 
 ## Libraries
+<a name="Libraries"></a>
+The Nodejitsu team and friends have been building and using these tools actively for the past two years. They are the most used Node libraries (see: [http://search.npmjs.org/](http://search.npmjs.org/)) and are actively maintained. Each tool serves a specific function, which we highly suggest you check each one out individually. 
 
-    "async": ">= 0.1.8",
-    "colors": ">= 0.5.0",
-    "optimist": ">= 0.1.7",
-    "request": ">= 1.9.0",
-    "vows": ">= 0.5.8",
-    "winston": ">= 0.2.6"
+[colors](http://github.com/marak/colors) - Terminal Colors module
+[optimist](http://github.com/substack/optimist) - CLI Options Parsing
+[request](http://github.com/mikeal/request) - http request module
+[async](https://github.com/caolan/async) - Asynchronous Iteration
+[vows](http://vowsjs.org) - Asynchronous BDD testing library
+[winston](http://github.com/indexzero/winston/) - Multi-transport logging library
 
 ### Need more?
 The documentation for `jitsu` and the Nodejitsu APIs is open-source and a work in-progress. For more information checkout the [Nodejitsu Handbook](http://github.com/nodejitsu/handbook)
