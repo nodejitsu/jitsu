@@ -1,6 +1,7 @@
 {
   "name": "jitsu",
-  "description": "CLI tool for working with the Nodejitsu Cloud Platform-as-a-Service",
+  "description": "Flawless command line deployment of your Node.js apps to the cloud",
+  "keywords": ["deployment", "nodejitsu", "CLI", "platform"],
   "version": "0.1.3",
   "author": "Charlie Robbins <charlie.robbins@gmail.com>",
   "repository": {
