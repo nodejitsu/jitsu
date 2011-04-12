@@ -57,14 +57,14 @@ All configuration data for your local `jitsu` install is located in the *.jitsuc
 <a name="Libraries"></a>
 The Nodejitsu team and friends have been building and using these tools actively for the past two years. They are the most used Node libraries (see: [http://search.npmjs.org/](http://search.npmjs.org/)) and are actively maintained. Each tool serves a specific function, which we highly suggest you check each one out individually. 
 
-[colors](http://github.com/marak/colors) - Terminal Colors module
-[optimist](http://github.com/substack/optimist) - CLI Options Parsing
-[request](http://github.com/mikeal/request) - http request module
-[async](https://github.com/caolan/async) - Asynchronous Iteration
-[vows](http://vowsjs.org) - Asynchronous BDD testing library
-[winston](http://github.com/indexzero/winston/) - Multi-transport logging library
+- [colors](http://github.com/marak/colors) - Terminal Colors module
+- [optimist](http://github.com/substack/optimist) - CLI Options Parsing
+- [request](http://github.com/mikeal/request) - http request module
+- [async](https://github.com/caolan/async) - Asynchronous Iteration
+- [vows](http://vowsjs.org) - Asynchronous BDD testing library
+- [winston](http://github.com/indexzero/winston/) - Multi-transport logging library
 
-### Need more?
+### Additional Resources
 The documentation for `jitsu` and the Nodejitsu APIs is open-source and a work in-progress. For more information checkout the [Nodejitsu Handbook](http://github.com/nodejitsu/handbook)
 
 #### (C) Copyright 2010, Nodejitsu Inc.
