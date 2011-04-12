@@ -30,6 +30,10 @@ If it's your first time using `jitsu`, you will be prompted to login with an exi
 
 <img src="https://github.com/nodejitsu/jitsu/raw/master/test/screenshot.png"/>
 
+After you've logged in, you can start deploying apps immediately!
+
+<img src="https://github.com/nodejitsu/jitsu/raw/master/test/screenshot.png"/>
+
 
 ## Command Line Options
 
@@ -40,6 +44,16 @@ If it's your first time using `jitsu`, you will be prompted to login with an exi
      jitsu help snapshots
      jitsu help users
      jitsu help config
+
+
+## Libraries
+
+    "async": ">= 0.1.8",
+    "colors": ">= 0.5.0",
+    "optimist": ">= 0.1.7",
+    "request": ">= 1.9.0",
+    "vows": ">= 0.5.8",
+    "winston": ">= 0.2.6"
 
 ### Need more?
 The documentation for `jitsu` and the Nodejitsu APIs is open-source and a work in-progress. For more information checkout the [Nodejitsu Handbook](http://github.com/nodejitsu/handbook)
