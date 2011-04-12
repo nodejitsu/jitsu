@@ -1,21 +1,28 @@
 # jitsu
 CLI tool for easily deploying node.js applications on the Nodejitsu platform 
 
-## INSTALLATION
+## Installation
 
-   sudo npm install jitsu
+   [sudo] npm install jitsu
       
-## OVERVIEW
+## Overview
 
  1. Get an account [at Nodejitsu](http://nodejitsu.com).
  2. Prepare your application for deployment.
  3. Boom! Deploy.
 
-## USAGE
+## Features
+
+ - Allows for seamless deployment of your Node.js applications to the cloud
+ - Command Line Interface (CLI) maps directly to Nodejitu's public API
+ - Fully supports NPM dependency resolution on deployment to Nodejitsu
+ - We built this CLI using some amazing technologies, this allows jitsu to be fully extendable and extremely modular ( see Libaries section)
+
+## Usage
 
 After installation, simply run the `jitsu` command from your command line. If it's your first time using `jitsu`, you will be prompted to login with an existing account or create a new account.
 
-## COMMAND LINE OPTIONS
+## Command Line Options
 
 ### Help
 
