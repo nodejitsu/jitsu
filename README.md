@@ -37,6 +37,8 @@ After you've logged in, you can start deploying apps immediately!
 
 ## Command Line Options
 
+`jitsu` is mostly self-documenting. Try any of these commands to get started.
+
 ### Help
 
      jitsu help
