@@ -47,6 +47,11 @@ After you've logged in, you can start deploying apps immediately!
      jitsu help users
      jitsu help config
 
+## .jitsuconf file
+
+All configuration data for your local `jitsu` install is located in the *.jitsuconf* file located in your home directory. Directly modifying this file is not really advised. You should be able to make all configuration changes via:
+
+    jitsu config
 
 ## Libraries
 <a name="Libraries"></a>
