@@ -47,6 +47,28 @@ After you've logged in, you can start deploying apps immediately!
      jitsu help users
      jitsu help config
 
+
+### Aliases
+
+Jitsu has a built in alias system for creating shortcuts / custom command line commands. Adding new aliases is simple, we've created the following to get you started:
+
+**Quickly see current configuration:**
+
+    jitsu conf
+
+**Create a new application on Nodejitsu**
+
+    jitsu create <app-name>
+
+**Deploy application in current path to Nodejitsu**
+
+    jitsu deploy
+
+**List all applications for current user**
+
+    jitsu list
+
+
 ## .jitsuconf file
 
 All configuration data for your local `jitsu` install is located in the *.jitsuconf* file located in your home directory. Directly modifying this file is not really advised. You should be able to make all configuration changes via:
@@ -55,7 +77,7 @@ All configuration data for your local `jitsu` install is located in the *.jitsuc
 
 ## Libraries
 <a name="Libraries"></a>
-The Nodejitsu team and friends have been building and using these tools actively for the past two years. They are the most used Node libraries (see: [http://search.npmjs.org/](http://search.npmjs.org/)) and are actively maintained. Each tool serves a specific function, which we highly suggest you check each one out individually. 
+The Nodejitsu team and friends have been building and using these tools actively for the past two years. They are the most used Node libraries (see: [http://search.npmjs.org/](http://search.npmjs.org/)) and are actively maintained. Each tool serves a specific function and we highly suggest you check each one out individually if you wish to increase your knowledge of Node.js
 
 - [colors](http://github.com/marak/colors) - Terminal Colors module
 - [optimist](http://github.com/substack/optimist) - CLI Options Parsing
@@ -64,7 +86,7 @@ The Nodejitsu team and friends have been building and using these tools actively
 - [vows](http://vowsjs.org) - Asynchronous BDD testing library
 - [winston](http://github.com/indexzero/winston/) - Multi-transport logging library
 
-### Additional Resources
+### Need more?
 The documentation for `jitsu` and the Nodejitsu APIs is open-source and a work in-progress. For more information checkout the [Nodejitsu Handbook](http://github.com/nodejitsu/handbook)
 
 #### (C) Copyright 2010, Nodejitsu Inc.
