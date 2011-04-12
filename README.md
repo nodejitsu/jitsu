@@ -28,7 +28,7 @@ Jistsu is mostly self documenting. After installation, run the `jitsu` command f
 
 If it's your first time using `jitsu`, you will be prompted to login with an existing account or create a new account.
 
-<img src="https://github.com/nodejitsu/jitsu/raw/master/test/screenshot.png"/>
+<img src="https://github.com/nodejitsu/jitsu/raw/master/test/promptscreenshot.png"/>
 
 After you've logged in, you can start deploying apps immediately!
 
