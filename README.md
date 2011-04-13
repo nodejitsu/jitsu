@@ -97,6 +97,7 @@ All configuration data for your local `jitsu` install is located in the *.jitsuc
 <a name="Libraries"></a>
 The [Nodejitsu](http://nodejitsu.com) team and friends have been building and using these tools actively for the past two years. They are the most used Node libraries (see: [http://search.npmjs.org/](http://search.npmjs.org/)) and are actively maintained. Each tool serves a specific function and we highly suggest you check each one out individually if you wish to increase your knowledge of Node.js
 
+- [npm](http://npmjs.org) - Node Package Manager
 - [colors](http://github.com/marak/colors) - Terminal Colors module
 - [optimist](http://github.com/substack/optimist) - CLI Options Parsing
 - [request](http://github.com/mikeal/request) - http request module
