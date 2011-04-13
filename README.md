@@ -16,7 +16,7 @@ Jitsu requires `npm`, the [node package manager](http://npmjs.org).
 
 ## Features
 
-Jitsu is built on some amazing technologies which we've been actively building with the community since 2009. jitsu is fully extend-able and extremely modular ( see [Libaries](#Libraries) section ).
+`jitsu` is built on some amazing technologies which we've been actively building with the community since 2009. `jitsu` is fully extend-able and extremely modular ( see [Libaries](#Libraries) section ).
 
  - Allows for seamless deployment of your Node.js applications to the cloud
  - Fully supports NPM dependency resolution on deployment to [Nodejitsu](http://nodejitsu.com)
@@ -35,15 +35,14 @@ If you have any issues deploying your node.js application please feel free to op
 
 ## Usage
 
-Jistsu is mostly self documenting. After installation, run the `jitsu` command from your command line. 
+`jitsu` is mostly self documenting. After installation, run the `jitsu` command from your command line.
 
 If it's your first time using `jitsu`, you will be prompted to login with an existing account or create a new account.
 
 <img src="https://github.com/nodejitsu/jitsu/raw/master/test/promptscreenshot.png"/>
 
-After you've logged in, you can start deploying apps immediately!
+## After you've logged in, you can start deploying apps immediately!
 
-<img src="https://github.com/nodejitsu/jitsu/raw/master/test/screenshot.png"/>
 
 
 ## Command Line Usage
