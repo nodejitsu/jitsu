@@ -10,7 +10,7 @@
 Jitsu requires `npm`, the [node package manager](http://npmjs.org).
 
 
-## Installation
+## One-Line Installation
 
     [sudo] npm install jitsu
 
@@ -19,8 +19,8 @@ Jitsu requires `npm`, the [node package manager](http://npmjs.org).
 `jitsu` is built on some amazing technologies which we've been actively building with the community since 2009. `jitsu` is fully extend-able and extremely modular ( see [Libaries](#Libraries) section ).
 
  - Allows for seamless deployment of your Node.js applications to the cloud
- - Fully supports NPM dependency resolution on deployment to [Nodejitsu](http://nodejitsu.com)
- - Full support of Nodejitu's API ( a plethora node.js goodies )
+ - Fully supports `npm` dependency resolution on deployment to [Nodejitsu](http://nodejitsu.com)
+ - Full support of Nodejitu's API ( a plethora of node.js goodies )
  - Integrated multi-level multi-transport logging support via [Winston](http://github.com/indexzero/winston/)
  - Too many to list... seek [further knowledge ](http://github.com/nodejitsu/handbook) or just try it out!
 
@@ -31,7 +31,7 @@ Jitsu requires `npm`, the [node package manager](http://npmjs.org).
 
 This will create a new application, package.json, and deploy your path to [Nodejitsu](http://nodejitsu.com). If it's your first deployment, you'll be prompted for some information such as *subdomain* and *start script* but it's really easy and we promise it will only take a few seconds.
 
-If you have any issues deploying your node.js application please feel free to open up a Github support issues. We'll have someone get back to you in a flash!
+If you have any issues deploying your node.js application please feel free to open up an issue on the [Github Issues](https://github.com/nodejitsu/jitsu/issues) section of this page. We'll have someone get back to you in a flash!
 
 ## Usage
 
