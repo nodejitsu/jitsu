@@ -9,5 +9,5 @@ var eyes = require('eyes'),
     jitsu = require('jitsu');
 
 jitsu.start(argv._, function () {
-  winston.info('Nodejitsu'.grey + ' ok'.yellow.bold);
+  winston.info('Nodejitsu'.grey + ' ok'.green.bold);
 });
