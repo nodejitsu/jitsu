@@ -2,7 +2,7 @@
   "name": "jitsu",
   "description": "Flawless command line deployment of your Node.js apps to the cloud",
   "keywords": ["deployment", "nodejitsu", "CLI", "platform"],
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": "Charlie Robbins <charlie.robbins@gmail.com>",
   "repository": {
     "type": "git",
