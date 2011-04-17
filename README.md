@@ -24,7 +24,7 @@ Jitsu requires `npm`, the [node package manager](http://npmjs.org).
  - Integrated multi-level multi-transport logging support via [Winston](http://github.com/indexzero/winston/)
  - Too many to list... seek [further knowledge ](http://github.com/nodejitsu/handbook) or just try it out!
 
-# One line deployment!!!
+# One line deployment
 
      cd /path/to/myapp
      jitsu deploy
