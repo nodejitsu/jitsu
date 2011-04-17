@@ -1,7 +1,7 @@
 # jitsu
 *Flawless command line deployment of Node.js apps to the cloud*
 
-<img src="https://github.com/nodejitsu/jitsu/raw/master/test/jitsuscreenshot.png"/>
+<img src="https://github.com/nodejitsu/jitsu/raw/master/assets/jitsu.png"/>
 
 ## Overview
 
@@ -24,7 +24,7 @@ Jitsu requires `npm`, the [node package manager](http://npmjs.org).
  - Integrated multi-level multi-transport logging support via [Winston](http://github.com/indexzero/winston/)
  - Too many to list... seek [further knowledge ](http://github.com/nodejitsu/handbook) or just try it out!
 
-# Deploying a path to the cloud
+# One line deployment!!!
 
      cd /path/to/myapp
      jitsu deploy
@@ -39,7 +39,7 @@ If you have any issues deploying your node.js application please feel free to op
 
 If it's your first time using `jitsu`, you will be prompted to login with an existing account or create a new account.
 
-<img src="https://github.com/nodejitsu/jitsu/raw/master/test/promptscreenshot.png"/>
+<img src="https://github.com/nodejitsu/jitsu/raw/master/assets/login.png"/>
 
 ## After you've logged in, you can start deploying apps immediately!
 
