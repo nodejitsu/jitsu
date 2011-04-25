@@ -10,4 +10,8 @@ var eyes = require('eyes'),
 
 jitsu.start(argv._, function () {
   winston.info('Nodejitsu'.grey + ' ok'.green.bold);
+  
+  process.stdout.on('drain', function () {
+    process.exit(0);
+  })
 });
