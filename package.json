@@ -8,8 +8,8 @@
     "platform-as-a-service",
     "deployment"
   ],
-  "version": "0.2.1",
-  "author": "Charlie Robbins <charlie.robbins@gmail.com>",
+  "version": "0.3.0",
+  "author": "Nodejitsu Inc. <support@nodejitsu.com>",
   "repository": {
     "type": "git",
     "url": "http://github.com/nodejitsu/jitsu.git"
