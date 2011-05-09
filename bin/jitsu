@@ -8,7 +8,8 @@ var eyes = require('eyes'),
     argv = require('optimist').argv,
     jitsu = require('jitsu');
 
-jitsu.start(argv._, function () {
+
+jitsu.start(argv, function () {
   winston.info('Nodejitsu'.grey + ' ok'.green.bold);
   
   process.stdout.on('drain', function () {
