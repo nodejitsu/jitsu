@@ -12,7 +12,7 @@ Jitsu requires `npm`, the [node package manager](http://npmjs.org).
 
 ## One-Line Installation
 
-    [sudo] npm install jitsu
+    [sudo] npm install jitsu -g
 
 ## Features
 
