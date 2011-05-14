@@ -8,23 +8,25 @@
     "platform-as-a-service",
     "deployment"
   ],
-  "version": "0.3.3",
+  "version": "0.3.4",
   "author": "Nodejitsu Inc. <support@nodejitsu.com>",
   "repository": {
     "type": "git",
     "url": "http://github.com/nodejitsu/jitsu.git"
   },
   "dependencies": {
-    "async": ">= 0.1.8",
-    "colors": ">= 0.5.0",
-    "eyes": ">= 0.1.6",
-    "optimist": ">= 0.1.7",
-    "progress": ">= 0.0.3", 
-    "request": ">= 1.9.0",
-    "require-analyzer": ">= 0.1.0",
-    "vows": ">= 0.5.8",
-    "winston": ">= 0.2.6",
-    "semver": ">= 1.0.4"
+    "async": "0.1.x",
+    "colors": "0.x.x",
+    "eyes": "0.1.x",
+    "optimist": "0.1.x",
+    "progress": "0.0.x", 
+    "request": "1.9.x",
+    "require-analyzer": "0.1.x",
+    "winston": "0.2.x",
+    "semver": "1.0.x"
+  },
+  "devDependencies": {
+    "vows": "0.5.x"
   },
   "bin": {
     "jitsu": "./bin/jitsu"
@@ -34,6 +36,6 @@
     "test": "vows test/*-test.js --spec"
   },
   "engines": {
-    "node": ">= 0.4.0"
+    "node": "0.4.x"
   }
 }
