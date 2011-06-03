@@ -94,7 +94,17 @@ If it's your first time using `jitsu`, you will be prompted to login with an exi
 
 All configuration data for your local `jitsu` install is located in the *.jitsuconf* file in your home directory. Directly modifying this file is not really advised. You should be able to make all configuration changes via:
 
-    jitsu config
+   jitsu config
+
+If you need to have multiple configuration files, use --localconf or --jitsuconf options.
+
+##jitsu options
+
+   jitsu [commands] [options]
+
+   --version             print jitsu version and exit
+   --localconf           search for .jitsuconf file in ./ and then parent directories
+   --jitsuconf [file]    specify file to load configuration from
 
 
 <a name="Libraries"></a>
