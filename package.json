@@ -8,7 +8,7 @@
     "platform-as-a-service",
     "deployment"
   ],
-  "version": "0.3.4",
+  "version": "0.3.5-3",
   "author": "Nodejitsu Inc. <support@nodejitsu.com>",
   "repository": {
     "type": "git",
@@ -16,13 +16,16 @@
   },
   "dependencies": {
     "async": "0.1.x",
+    "cliff": "0.1.x",
     "colors": "0.x.x",
     "eyes": "0.1.x",
     "nconf": "0.1.9",
+    "npm": "1.0.x & > 1.0.6",
     "optimist": "0.2.x",
-    "progress": "0.0.x", 
+    "progress": "0.0.x",
+    "prompt": "0.1.x",
     "request": "1.9.x",
-    "require-analyzer": "0.1.x",
+    "require-analyzer": "0.2.x",
     "winston": "0.2.x",
     "semver": "1.0.x"
   },
@@ -37,6 +40,6 @@
     "test": "vows test/*-test.js --spec"
   },
   "engines": {
-    "node": "0.4.x"
+    "node": ">= 0.4.0"
   }
 }
