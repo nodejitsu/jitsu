@@ -5,74 +5,108 @@
 <span class="cm"> *</span>
 <span class="cm"> */</span>
 
-<span class="kd">var</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">),</span>
+<span class="kd">var</span> <span class="nx">nconf</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;nconf&#39;</span><span class="p">),</span>
+    <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">),</span>
     <span class="nx">winston</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;winston&#39;</span><span class="p">),</span>
-    <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">),</span>
-    <span class="nx">jitsu</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;jitsu&#39;</span><span class="p">);</span>
+    <span class="nx">optimist</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;optimist&#39;</span><span class="p">),</span>
+    <span class="nx">argv</span> <span class="o">=</span> <span class="nx">optimist</span><span class="p">.</span><span class="nx">argv</span><span class="p">,</span>
+    <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">);</span>
 
-<span class="kd">var</span> <span class="nx">config</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">,</span> <span class="nx">settings</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">settings</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="nx">root</span><span class="o">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">HOME</span><span class="p">,</span>
-  <span class="nx">protocol</span><span class="o">:</span> <span class="s1">&#39;http&#39;</span><span class="p">,</span>
-  <span class="nx">remoteHost</span><span class="o">:</span> <span class="s1">&#39;api.nodejitsu.com&#39;</span><span class="p">,</span>
-  <span class="nx">userconfig</span><span class="o">:</span> <span class="s1">&#39;.jitsuconf&#39;</span><span class="p">,</span>
-  <span class="nx">loglevel</span><span class="o">:</span> <span class="s1">&#39;info&#39;</span><span class="p">,</span>
-  <span class="nx">tmproot</span><span class="o">:</span> <span class="s1">&#39;/tmp&#39;</span><span class="p">,</span>
-  <span class="nx">tar</span><span class="o">:</span> <span class="s1">&#39;tar&#39;</span><span class="p">,</span>
-  <span class="nx">gzipbin</span><span class="o">:</span> <span class="s1">&#39;gzip&#39;</span>
-<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>Define the <code>remoteUri</code> property for the settings object</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">settings</span><span class="p">,</span> <span class="s1">&#39;remoteUri&#39;</span><span class="p">,</span> <span class="p">{</span>
-  <span class="nx">get</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">port</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">port</span> <span class="o">?</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">port</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-    <span class="k">return</span> <span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">protocol</span><span class="p">,</span> <span class="s1">&#39;://&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">remoteHost</span><span class="p">,</span> <span class="nx">port</span><span class="p">].</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>Configure the default winston logger for CLI output 
-and the set the default console log level to <code>info</code>. </p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">winston</span><span class="p">.</span><span class="nx">cli</span><span class="p">();</span>
-<span class="nx">winston</span><span class="p">.</span><span class="nx">defaultTransports</span><span class="p">().</span><span class="nx">console</span><span class="p">.</span><span class="nx">level</span> <span class="o">=</span> <span class="s1">&#39;info&#39;</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <h3>function load (callback)</h3>
-
-<h4>@callback {function} Continuation to pass control to when complete.</h4>
-
-<p>Loads the settings for this process.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">config</span><span class="p">.</span><span class="nx">load</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">filepath</span><span class="p">(),</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span> <span class="o">&amp;&amp;</span> <span class="sr">/ENOENT, No such file/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">message</span><span class="p">))</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>If there is no configuration file, save the default configuration
-then reload the configuration.</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="k">return</span> <span class="nx">config</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">err</span> <span class="o">?</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="o">:</span> <span class="nx">config</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="nx">callback</span><span class="p">);</span>
-      <span class="p">});</span>
+<span class="kd">var</span> <span class="nx">config</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">nconf</span><span class="p">.</span><span class="nx">Provider</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>Set up our default config</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kd">var</span> <span class="nx">dir</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">cwd</span><span class="p">(),</span>
+    <span class="nx">configPath</span> <span class="o">=</span> <span class="nx">argv</span><span class="p">.</span><span class="nx">jitsuconf</span> <span class="o">||</span> <span class="nx">argv</span><span class="p">.</span><span class="nx">j</span><span class="p">,</span>
+    <span class="nx">looking</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>Make sure the file exists if it was set explicitly</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">config</span><span class="p">.</span><span class="nx">findJitsuconf</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">configPath</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">try</span> <span class="p">{</span>
+      <span class="nx">fs</span><span class="p">.</span><span class="nx">statSync</span><span class="p">(</span><span class="nx">configPath</span><span class="p">);</span>
     <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">catch</span> <span class="p">(</span><span class="nx">ex</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">else</span> <span class="p">{</span>
+    <span class="k">while</span> <span class="p">(</span><span class="nx">looking</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">try</span> <span class="p">{</span>
+        <span class="nx">fs</span><span class="p">.</span><span class="nx">statSync</span><span class="p">(</span><span class="nx">configPath</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">dir</span><span class="p">,</span> <span class="s1">&#39;.jitsuconf&#39;</span><span class="p">));</span>
+        <span class="nx">looking</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">olddir</span> <span class="o">=</span> <span class="nx">dir</span><span class="p">;</span>
+        <span class="nx">dir</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">dirname</span><span class="p">(</span><span class="nx">dir</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">olddir</span> <span class="o">===</span> <span class="nx">dir</span><span class="p">)</span> <span class="p">{</span>
+          <span class="k">try</span> <span class="p">{</span>
+            <span class="nx">fs</span><span class="p">.</span><span class="nx">statSync</span><span class="p">(</span><span class="nx">configPath</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">HOME</span><span class="p">,</span> <span class="s1">&#39;.jitsuconf&#39;</span><span class="p">));</span>
+            <span class="nx">looking</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+          <span class="p">}</span>
+          <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>Ignore errors</p>             </td>             <td class="code">               <div class="highlight"><pre>          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">configPath</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nx">winston</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s1">&#39;Using config file &#39;</span> <span class="o">+</span> <span class="nx">configPath</span><span class="p">.</span><span class="nx">magenta</span><span class="p">);</span>
+  <span class="nx">config</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s1">&#39;file&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">file</span><span class="o">:</span> <span class="nx">configPath</span> <span class="p">});</span>
+  <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">_get</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">get</span><span class="p">,</span>
+    <span class="nx">_load</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">load</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">defaults</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s1">&#39;root&#39;</span><span class="o">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">HOME</span><span class="p">,</span>
+  <span class="s1">&#39;protocol&#39;</span><span class="o">:</span> <span class="s1">&#39;http&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;remoteHost&#39;</span><span class="o">:</span> <span class="s1">&#39;api.nodejitsu.com&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;userconfig&#39;</span><span class="o">:</span> <span class="s1">&#39;.jitsuconf&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;loglevel&#39;</span><span class="o">:</span> <span class="s1">&#39;info&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;tmproot&#39;</span><span class="o">:</span> <span class="s1">&#39;/tmp&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;tar&#39;</span><span class="o">:</span> <span class="s1">&#39;tar&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;gzipbin&#39;</span><span class="o">:</span> <span class="s1">&#39;gzip&#39;</span>
+<span class="p">};</span>
+
+<span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nx">defaults</span><span class="p">,</span> <span class="s1">&#39;remoteUri&#39;</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">get</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">port</span> <span class="o">=</span> <span class="nx">optimist</span><span class="p">.</span><span class="nx">argv</span><span class="p">.</span><span class="nx">port</span> <span class="o">||</span> <span class="nx">config</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;port&#39;</span><span class="p">)</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">port</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">port</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">port</span> <span class="o">=</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="nx">port</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">protocol</span><span class="p">,</span> <span class="s1">&#39;://&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">optimist</span><span class="p">.</span><span class="nx">argv</span><span class="p">.</span><span class="nx">remoteHost</span> <span class="o">||</span> <span class="nx">config</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;remoteHost&#39;</span><span class="p">)</span> <span class="o">||</span> <span class="nx">defaults</span><span class="p">.</span><span class="nx">remoteHost</span><span class="p">),</span> <span class="nx">port</span><span class="p">].</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">config</span><span class="p">.</span><span class="nx">load</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>Find the <code>.jitsuconf</code> file to be used for this
+jitsu session.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">config</span><span class="p">.</span><span class="nx">findJitsuconf</span><span class="p">())</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="nx">configPath</span><span class="p">.</span><span class="nx">magenta</span> <span class="o">+</span> <span class="s1">&#39; does not exist&#39;</span><span class="p">),</span> <span class="kc">true</span><span class="p">);</span>
+  <span class="p">}</span>
+  
+  <span class="nx">_load</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">config</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">store</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
       <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
     <span class="p">}</span>
-    </pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>Load all config data into <code>jitsu.config.settings</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">try</span> <span class="p">{</span>
-      <span class="nx">data</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="nx">store</span><span class="p">.</span><span class="nx">auth</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">auth</span> <span class="o">=</span> <span class="nx">store</span><span class="p">.</span><span class="nx">auth</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">);</span>
+      <span class="nx">config</span><span class="p">.</span><span class="nx">clear</span><span class="p">(</span><span class="s1">&#39;auth&#39;</span><span class="p">);</span>
+      <span class="nx">config</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="nx">auth</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+      <span class="nx">config</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;password&#39;</span><span class="p">,</span> <span class="nx">auth</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+      <span class="k">return</span> <span class="nx">config</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="nx">callback</span><span class="p">);</span>
     <span class="p">}</span>
-    <span class="k">catch</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">winston</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">filepath</span><span class="p">().</span><span class="nx">grey</span> <span class="o">+</span> <span class="s1">&#39; contains invalid JSON&#39;</span><span class="p">);</span>
-      <span class="nx">winston</span><span class="p">.</span><span class="nx">warn</span><span class="p">(</span><span class="s1">&#39;Regenerating &#39;</span> <span class="o">+</span> <span class="s1">&#39;.jitsuconf&#39;</span><span class="p">.</span><span class="nx">grey</span> <span class="o">+</span> <span class="s1">&#39; file&#39;</span><span class="p">);</span>
-      <span class="k">return</span> <span class="nx">jitsu</span><span class="p">.</span><span class="nx">setupUser</span><span class="p">(</span><span class="nx">callback</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">data</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">config</span><span class="p">.</span><span class="nx">settings</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">data</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
-    <span class="p">});</span>
-    </pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>Set the default console log level to <code>info</code>. </p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">winston</span><span class="p">.</span><span class="nx">defaultTransports</span><span class="p">().</span><span class="nx">console</span><span class="p">.</span><span class="nx">level</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">settings</span><span class="p">.</span><span class="nx">loglevel</span> <span class="o">||</span> <span class="s1">&#39;info&#39;</span><span class="p">;</span>
     
     <span class="nx">callback</span><span class="p">();</span>
   <span class="p">});</span>
-<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <h3>function save (callback)</h3>
+<span class="p">};</span>
 
-<h4>@callback {function} Continuation to pass control to when complete.</h4>
-
-<p>Saves the settings to the specified location for <code>.jitsuconf</code></p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">config</span><span class="p">.</span><span class="nx">save</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">fs</span><span class="p">.</span><span class="nx">writeFile</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">filepath</span><span class="p">(),</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">settings</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">err</span> <span class="o">?</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="o">:</span> <span class="nx">callback</span><span class="p">();</span>
-  <span class="p">});</span>
-<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <h3>function filepath ()</h3>
-
-<p>Gets the full path for the user config file. </p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">config</span><span class="p">.</span><span class="nx">filepath</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">settings</span><span class="p">.</span><span class="nx">root</span><span class="p">,</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">userconfig</span><span class="p">);</span>
-<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <h3>@username {string}</h3>
-
-<p>Username for the user authenticated in this process. </p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nx">config</span><span class="p">,</span> <span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="p">{</span>
-  <span class="nx">get</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">auth</span> <span class="o">?</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">auth</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+<span class="nx">config</span><span class="p">.</span><span class="nx">get</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">optimist</span><span class="p">.</span><span class="nx">argv</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">key</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">optimist</span><span class="p">.</span><span class="nx">argv</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
   <span class="p">}</span>
-<span class="p">});</span>
+  
+  <span class="kd">var</span> <span class="nx">value</span> <span class="o">=</span> <span class="nx">_get</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">config</span><span class="p">,</span> <span class="nx">key</span><span class="p">);</span>
+  <span class="k">return</span> <span class="k">typeof</span> <span class="nx">value</span> <span class="o">!==</span> <span class="s1">&#39;undefined&#39;</span> <span class="o">?</span> <span class="nx">value</span> <span class="o">:</span>  <span class="nx">defaults</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
+<span class="p">};</span>
 
 </pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

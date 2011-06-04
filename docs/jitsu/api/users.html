@@ -53,6 +53,16 @@ with Nodejitsu's Users API</p>             </td>             <td class="code">  
   <span class="k">this</span><span class="p">.</span><span class="nx">_request</span><span class="p">(</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;users&#39;</span><span class="p">,</span> <span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="p">,</span> <span class="s1">&#39;confirm&#39;</span><span class="p">],</span> <span class="nx">user</span><span class="p">,</span> <span class="nx">callback</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">res</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">callback</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">result</span><span class="p">);</span>
   <span class="p">});</span>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <h3>function forgot (username, callback)</h3>
+
+<h4>@user {Object} username requesting password reset.</h4>
+
+<h4>@callback {function} Continuation to pass control to when complete</h4>
+
+<p>request an password reset email.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">Users</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">forgot</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">username</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">_request</span><span class="p">(</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;users&#39;</span><span class="p">,</span> <span class="nx">username</span><span class="p">,</span> <span class="s1">&#39;forgot&#39;</span><span class="p">],</span> <span class="p">{},</span> <span class="nx">callback</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">res</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">callback</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">result</span><span class="p">);</span>
+  <span class="p">});</span>
 <span class="p">};</span>
 
 </pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

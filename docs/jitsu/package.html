@@ -36,13 +36,18 @@
 <h4>@callback {function} Continuation to respond to when complete</h4>
 
 <p>Attempts to read the package.json from the specified <code>dir</code>. If it is
-unable to do, walks the user through creating a new one from scratch.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kr">package</span><span class="p">.</span><span class="nx">get</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">dir</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+unable to do, walks the user through creating a new one from scratch.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kr">package</span><span class="p">.</span><span class="nx">get</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">dir</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">callback</span> <span class="o">=</span> <span class="nx">options</span><span class="p">;</span>
+    <span class="nx">options</span> <span class="o">=</span> <span class="p">{};</span>
+  <span class="p">}</span>
+  
   <span class="kr">package</span><span class="p">.</span><span class="nx">read</span><span class="p">(</span><span class="nx">dir</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">pkg</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
       <span class="k">return</span> <span class="kr">package</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">dir</span><span class="p">,</span> <span class="nx">callback</span><span class="p">);</span>
     <span class="p">}</span>
     
-    <span class="kr">package</span><span class="p">.</span><span class="nx">validate</span><span class="p">(</span><span class="nx">pkg</span><span class="p">,</span> <span class="nx">dir</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">updated</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kr">package</span><span class="p">.</span><span class="nx">validate</span><span class="p">(</span><span class="nx">pkg</span><span class="p">,</span> <span class="nx">dir</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">updated</span><span class="p">)</span> <span class="p">{</span>
       <span class="k">return</span> <span class="nx">err</span> <span class="o">?</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="o">:</span> <span class="nx">callback</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">updated</span><span class="p">);</span>
     <span class="p">});</span>
   <span class="p">});</span>
@@ -139,7 +144,12 @@ to <code>callback</code> on error and <code>success</code> if the read operation
 <h4>@callback {function} Continuation to respond to when complete</h4>
 
 <p>Validates the specified <code>pkg</code> against the properties list 
-returned from <code>package.properties(dir)</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kr">package</span><span class="p">.</span><span class="nx">validate</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">pkg</span><span class="p">,</span> <span class="nx">dir</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+returned from <code>package.properties(dir)</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kr">package</span><span class="p">.</span><span class="nx">validate</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">pkg</span><span class="p">,</span> <span class="nx">dir</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">callback</span> <span class="o">=</span> <span class="nx">options</span><span class="p">;</span>
+    <span class="nx">options</span> <span class="o">=</span> <span class="p">{};</span>
+  <span class="p">}</span>
+  
   <span class="kd">var</span> <span class="nx">properties</span> <span class="o">=</span> <span class="kr">package</span><span class="p">.</span><span class="nx">properties</span><span class="p">(</span><span class="nx">dir</span><span class="p">),</span>
       <span class="nx">missing</span> <span class="o">=</span> <span class="p">[];</span>
   
@@ -194,7 +204,11 @@ returned from <code>package.properties(dir)</code>.</p>             </td>       
       <span class="p">});</span>
     <span class="p">}</span>
     
-    <span class="nx">tryAnalyze</span><span class="p">(</span><span class="nx">pkg</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">analyze</span> <span class="o">=</span> <span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;resolveDependencies&#39;</span><span class="p">);</span>
+    
+    <span class="k">return</span> <span class="nx">analyze</span> <span class="o">!==</span> <span class="kc">undefined</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">analyze</span> 
+      <span class="o">?</span> <span class="nx">callback</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="p">[])</span>
+      <span class="o">:</span> <span class="nx">tryAnalyze</span><span class="p">(</span><span class="nx">pkg</span><span class="p">);</span>
   <span class="p">});</span>
 <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <h3>function writePackage (pkg, dir, callback)</h3>
 
@@ -268,8 +282,8 @@ create operation in the specified <code>dir</code>.</p>             </td>       
       <span class="nx">dir</span> <span class="o">=</span> <span class="nx">dir</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
     <span class="p">}</span>
     
-    <span class="kd">var</span> <span class="nx">name</span> <span class="o">=</span> <span class="p">[</span><span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">username</span><span class="p">,</span> <span class="nx">pkg</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span> <span class="nx">version</span> <span class="o">||</span> <span class="nx">pkg</span><span class="p">.</span><span class="nx">version</span><span class="p">].</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.tgz&#39;</span><span class="p">,</span>
-        <span class="nx">tarball</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">settings</span><span class="p">.</span><span class="nx">tmproot</span><span class="p">,</span> <span class="nx">name</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">name</span> <span class="o">=</span> <span class="p">[</span><span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">),</span> <span class="nx">pkg</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span> <span class="nx">version</span> <span class="o">||</span> <span class="nx">pkg</span><span class="p">.</span><span class="nx">version</span><span class="p">].</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.tgz&#39;</span><span class="p">,</span>
+        <span class="nx">tarball</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;tmproot&#39;</span><span class="p">),</span> <span class="nx">name</span><span class="p">);</span>
     
     <span class="nx">npm</span><span class="p">.</span><span class="nx">load</span><span class="p">({</span> <span class="nx">exit</span><span class="o">:</span> <span class="kc">false</span> <span class="p">},</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
       <span class="nx">npmtar</span><span class="p">.</span><span class="nx">pack</span><span class="p">(</span><span class="nx">tarball</span><span class="p">,</span> <span class="nx">dir</span><span class="p">,</span> <span class="nx">pkg</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
@@ -380,7 +394,7 @@ through creating a new <code>package.json</code> file.</p>             </td>    
     <span class="p">{</span>
       <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;version&#39;</span><span class="p">,</span>
       <span class="nx">validator</span><span class="o">:</span> <span class="sr">/[\w|\-|\.]+/</span><span class="p">,</span>
-      <span class="k">default</span><span class="o">:</span> <span class="s2">&quot;0.0.0&quot;</span>
+      <span class="k">default</span><span class="o">:</span> <span class="s1">&#39;0.0.0&#39;</span>
     <span class="p">}</span>
   <span class="p">];</span>
 <span class="p">};</span>

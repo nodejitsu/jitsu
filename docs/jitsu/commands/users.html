@@ -17,6 +17,7 @@
   <span class="s1">&#39;jitsu users create &lt;username&gt;&#39;</span><span class="p">,</span>
   <span class="s1">&#39;jitsu users available &lt;username&gt;&#39;</span><span class="p">,</span>
   <span class="s1">&#39;jitsu users confirm &lt;username&gt;&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;jitsu users forgot &lt;username&gt;&#39;</span><span class="p">,</span>
   <span class="s1">&#39;jitsu users logout&#39;</span><span class="p">,</span>
   <span class="s1">&#39;&#39;</span><span class="p">,</span>
   <span class="s1">&#39;You will be prompted for additional user information&#39;</span><span class="p">,</span>
@@ -62,7 +63,7 @@ Prompts the user for additional <code>email</code> and <code>password</code> inf
 <p>Checks the availability of the specified <code>username</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">users</span><span class="p">.</span><span class="nx">available</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">username</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">callback</span> <span class="o">=</span> <span class="nx">username</span><span class="p">;</span>
-    <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;username is required&#39;</span><span class="p">),</span> <span class="kc">true</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;Username is required&#39;</span><span class="p">),</span> <span class="kc">true</span><span class="p">);</span>
   <span class="p">}</span>
   
   <span class="nx">winston</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s1">&#39;Checking availability for &#39;</span> <span class="o">+</span> <span class="nx">username</span><span class="p">.</span><span class="nx">magenta</span><span class="p">);</span>
@@ -129,15 +130,51 @@ Prompts the user for additional <code>inviteCode</code> information.</p>        
 <h4>@callback {function} Continuation to pass control to when complete.</h4>
 
 <p>Attempts to logout current user by removing the name from .jitsuconf</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">users</span><span class="p">.</span><span class="nx">logout</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">delete</span> <span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">settings</span><span class="p">.</span><span class="nx">auth</span><span class="p">;</span> 
+  <span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">clear</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">);</span>
+  <span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">clear</span><span class="p">(</span><span class="s1">&#39;password&#39;</span><span class="p">);</span>
+
   <span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">winston</span><span class="p">.</span><span class="nx">warn</span><span class="p">(</span><span class="s1">&#39;User has been logged out&#39;</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="nx">winston</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s1">&#39;User has been logged out&#39;</span><span class="p">);</span>
     <span class="nx">callback</span><span class="p">();</span>
   <span class="p">});</span>
 <span class="p">};</span>
 
 <span class="nx">users</span><span class="p">.</span><span class="nx">logout</span><span class="p">.</span><span class="nx">usage</span> <span class="o">=</span> <span class="p">[</span>
   <span class="s1">&#39;Logs out the current user&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;jitsu logout&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;jitsu users logout&#39;</span>
+<span class="p">];</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <h3>function forgot (username, callback)</h3>
+
+<h4>@username {string} Desired username request password reset.</h4>
+
+<h4>@callback {function} Continuation to pass control to when complete.</h4>
+
+<p>Sends the password reset email to the user with the specified <code>username</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">users</span><span class="p">.</span><span class="nx">forgot</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">username</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">callback</span> <span class="o">=</span> <span class="nx">username</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;Username is required&#39;</span><span class="p">),</span> <span class="kc">true</span><span class="p">);</span>
+  <span class="p">}</span>
+  
+  <span class="nx">winston</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s1">&#39;Request password reset for :&#39;</span> <span class="o">+</span> <span class="nx">username</span><span class="p">.</span><span class="nx">magenta</span><span class="p">);</span>
+  <span class="nx">jitsu</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">forgot</span><span class="p">(</span><span class="nx">username</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="nx">winston</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s1">&#39;Check your email for password reset link&#39;</span><span class="p">);</span>
+    <span class="nx">callback</span><span class="p">();</span>
+  <span class="p">});</span>
+<span class="p">};</span>
+
+<span class="nx">users</span><span class="p">.</span><span class="nx">forgot</span><span class="p">.</span><span class="nx">usage</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="s1">&#39;Sends the password reset email to the user with the specified `username`.&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;jitsu users forgot &lt;username&gt;&#39;</span>
 <span class="p">];</span>
 
 </pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

@@ -36,7 +36,7 @@
     <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
   <span class="p">}</span>
   
-  <span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">settings</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+  <span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
   <span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="nx">callback</span><span class="p">);</span>
 <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>Usage for <code>jitsu config set &lt;key&gt; &lt;value&gt;</code></p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">config</span><span class="p">.</span><span class="nx">set</span><span class="p">.</span><span class="nx">usage</span> <span class="o">=</span> <span class="p">[</span>
   <span class="s1">&#39;Sets the specified &lt;key&gt; &lt;value&gt; pair in the jitsu configuration&#39;</span><span class="p">,</span>
@@ -52,14 +52,16 @@
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">callback</span> <span class="o">=</span> <span class="nx">key</span><span class="p">;</span>
     <span class="nx">winston</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;No configuration for &#39;</span> <span class="o">+</span> <span class="s1">&#39;undefined&#39;</span><span class="p">.</span><span class="nx">magenta</span><span class="p">);</span>
-    <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="k">new</span> <span class="nb">Error</span><span class="p">(),</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
   <span class="p">}</span>
   
-  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">settings</span><span class="p">[</span><span class="nx">key</span><span class="p">])</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">winston</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;No configuration value for &#39;</span> <span class="o">+</span> <span class="nx">key</span><span class="p">.</span><span class="nx">yellow</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">value</span> <span class="o">=</span> <span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">winston</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;No configuration value for &#39;</span> <span class="o">+</span> <span class="nx">key</span><span class="p">.</span><span class="nx">yellow</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="k">new</span> <span class="nb">Error</span><span class="p">(),</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
   <span class="p">}</span>
-  
-  <span class="nx">winston</span><span class="p">.</span><span class="nx">data</span><span class="p">([</span><span class="nx">key</span><span class="p">.</span><span class="nx">yellow</span><span class="p">,</span> <span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">settings</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">magenta</span><span class="p">].</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">));</span>
+    
+  <span class="nx">winston</span><span class="p">.</span><span class="nx">data</span><span class="p">([</span><span class="nx">key</span><span class="p">.</span><span class="nx">yellow</span><span class="p">,</span> <span class="nx">value</span><span class="p">.</span><span class="nx">magenta</span><span class="p">].</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">));</span>
   <span class="nx">callback</span><span class="p">();</span>
 <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>Usage for <code>jitsu config get &lt;key&gt;</code></p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">config</span><span class="p">.</span><span class="nx">get</span><span class="p">.</span><span class="nx">usage</span> <span class="o">=</span> <span class="p">[</span>
   <span class="s1">&#39;Gets the value for the specified &lt;key&gt;&#39;</span><span class="p">,</span>
@@ -78,7 +80,9 @@
     <span class="nx">winston</span><span class="p">.</span><span class="nx">warn</span><span class="p">(</span><span class="s1">&#39;No configuration for &#39;</span> <span class="o">+</span> <span class="s1">&#39;undefined&#39;</span><span class="p">.</span><span class="nx">magenta</span><span class="p">);</span>
     <span class="k">return</span> <span class="nx">callback</span><span class="p">();</span>
   <span class="p">}</span>
-  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">settings</span><span class="p">[</span><span class="nx">key</span><span class="p">])</span> <span class="p">{</span>
+
+  <span class="kd">var</span> <span class="nx">value</span> <span class="o">=</span> <span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">winston</span><span class="p">.</span><span class="nx">warn</span><span class="p">(</span><span class="s1">&#39;No configuration value for &#39;</span> <span class="o">+</span> <span class="nx">key</span><span class="p">.</span><span class="nx">yellow</span><span class="p">);</span>
     <span class="k">return</span> <span class="nx">callback</span><span class="p">();</span>
   <span class="p">}</span>
@@ -88,7 +92,7 @@
     <span class="k">return</span> <span class="nx">callback</span><span class="p">();</span>
   <span class="p">}</span>
   
-  <span class="k">delete</span> <span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">settings</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
+  <span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">clear</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>
   <span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="nx">callback</span><span class="p">);</span>
 <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>Usage for <code>jitsu config delete &lt;key&gt;</code></p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">config</span><span class="p">.</span><span class="k">delete</span><span class="p">.</span><span class="nx">usage</span> <span class="o">=</span> <span class="p">[</span>
   <span class="s1">&#39;Deletes the specified &lt;key&gt; in the jitsu configuration&#39;</span><span class="p">,</span>
@@ -99,29 +103,34 @@
 <h4>@callback {function} Continuation to pass control to when complete</h4>
 
 <p>Lists all the key-value pairs in jitsu config.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">config</span><span class="p">.</span><span class="nx">list</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">username</span> <span class="o">=</span> <span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">),</span>
+      <span class="nx">configFile</span> <span class="o">=</span> <span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">file</span><span class="p">;</span>
+  
   <span class="kd">var</span> <span class="nx">display</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;Hello &#39;</span> <span class="o">+</span> <span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">username</span><span class="p">.</span><span class="nx">green</span> <span class="o">+</span> <span class="s1">&#39; here is your &#39;</span> <span class="o">+</span> <span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">filepath</span><span class="p">().</span><span class="nx">grey</span> <span class="o">+</span> <span class="s1">&#39; file:&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;&#39;</span><span class="p">,</span>
+    <span class="s1">&#39; here is your &#39;</span> <span class="o">+</span> <span class="nx">configFile</span><span class="p">.</span><span class="nx">grey</span> <span class="o">+</span> <span class="s1">&#39; file:&#39;</span><span class="p">,</span>
     <span class="s1">&#39;If you\&#39;d like to change a property try:&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;  jitsu config set &lt;key&gt; &lt;value&gt;&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;or...&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;  jitsu config help&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;jitsu config set &lt;key&gt; &lt;value&gt;&#39;</span><span class="p">,</span>
   <span class="p">];</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">username</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">winston</span><span class="p">.</span><span class="nx">warn</span><span class="p">(</span><span class="s1">&#39;No user has been setup on this machine&#39;</span><span class="p">);</span>
+    <span class="nx">display</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Hello&#39;</span> <span class="o">+</span> <span class="nx">display</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+  <span class="p">}</span>
+  <span class="k">else</span> <span class="p">{</span>
+    <span class="nx">display</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Hello &#39;</span> <span class="o">+</span> <span class="nx">username</span><span class="p">.</span><span class="nx">green</span> <span class="o">+</span> <span class="nx">display</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+  <span class="p">}</span>
   
   <span class="nx">display</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">line</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">winston</span><span class="p">.</span><span class="nx">help</span><span class="p">(</span><span class="nx">line</span><span class="p">);</span>
   <span class="p">});</span>
   
-  <span class="nx">jitsu</span><span class="p">.</span><span class="nx">log</span><span class="p">.</span><span class="nx">putObject</span><span class="p">(</span><span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">settings</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">jitsu</span><span class="p">.</span><span class="nx">log</span><span class="p">.</span><span class="nx">putObject</span><span class="p">(</span><span class="nx">jitsu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">store</span><span class="p">,</span> <span class="p">{</span>
     <span class="nx">auth</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">line</span><span class="p">)</span> <span class="p">{</span>
       <span class="kd">var</span> <span class="nx">auth</span> <span class="o">=</span> <span class="nx">line</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/auth.*\:.*\&#39;.*\:([^\&#39;]+).*$/</span><span class="p">)[</span><span class="mi">1</span><span class="p">];</span>
       <span class="k">return</span> <span class="nx">line</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">auth</span><span class="p">,</span> <span class="s1">&#39;********&#39;</span><span class="p">);</span>
     <span class="p">}</span>
   <span class="p">},</span> <span class="mi">2</span><span class="p">);</span>
-
+  
   <span class="nx">callback</span><span class="p">();</span>
 <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>Usage for <code>jitsu config list</code></p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">config</span><span class="p">.</span><span class="nx">list</span><span class="p">.</span><span class="nx">usage</span> <span class="o">=</span> <span class="p">[</span>
   <span class="s1">&#39;Lists all configuration values currently&#39;</span><span class="p">,</span>
