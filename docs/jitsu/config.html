@@ -14,7 +14,9 @@
 
 <span class="kd">var</span> <span class="nx">config</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">nconf</span><span class="p">.</span><span class="nx">Provider</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>Set up our default config</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kd">var</span> <span class="nx">dir</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">cwd</span><span class="p">(),</span>
     <span class="nx">configPath</span> <span class="o">=</span> <span class="nx">argv</span><span class="p">.</span><span class="nx">jitsuconf</span> <span class="o">||</span> <span class="nx">argv</span><span class="p">.</span><span class="nx">j</span><span class="p">,</span>
-    <span class="nx">looking</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>Make sure the file exists if it was set explicitly</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">config</span><span class="p">.</span><span class="nx">findJitsuconf</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">looking</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>Make sure the file exists if it was set explicitly</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">config</span><span class="p">.</span><span class="nx">findJitsuconf</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">filename</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">filename</span> <span class="o">=</span> <span class="nx">filename</span> <span class="o">||</span> <span class="s1">&#39;.jitsuconf&#39;</span><span class="p">;</span>
+  
   <span class="k">if</span> <span class="p">(</span><span class="nx">configPath</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">try</span> <span class="p">{</span>
       <span class="nx">fs</span><span class="p">.</span><span class="nx">statSync</span><span class="p">(</span><span class="nx">configPath</span><span class="p">);</span>
@@ -26,7 +28,7 @@
   <span class="k">else</span> <span class="p">{</span>
     <span class="k">while</span> <span class="p">(</span><span class="nx">looking</span><span class="p">)</span> <span class="p">{</span>
       <span class="k">try</span> <span class="p">{</span>
-        <span class="nx">fs</span><span class="p">.</span><span class="nx">statSync</span><span class="p">(</span><span class="nx">configPath</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">dir</span><span class="p">,</span> <span class="s1">&#39;.jitsuconf&#39;</span><span class="p">));</span>
+        <span class="nx">fs</span><span class="p">.</span><span class="nx">statSync</span><span class="p">(</span><span class="nx">configPath</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">dir</span><span class="p">,</span> <span class="nx">filename</span><span class="p">));</span>
         <span class="nx">looking</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
       <span class="p">}</span>
       <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
@@ -35,7 +37,7 @@
 
         <span class="k">if</span> <span class="p">(</span><span class="nx">olddir</span> <span class="o">===</span> <span class="nx">dir</span><span class="p">)</span> <span class="p">{</span>
           <span class="k">try</span> <span class="p">{</span>
-            <span class="nx">fs</span><span class="p">.</span><span class="nx">statSync</span><span class="p">(</span><span class="nx">configPath</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">HOME</span><span class="p">,</span> <span class="s1">&#39;.jitsuconf&#39;</span><span class="p">));</span>
+            <span class="nx">fs</span><span class="p">.</span><span class="nx">statSync</span><span class="p">(</span><span class="nx">configPath</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">HOME</span><span class="p">,</span> <span class="nx">filename</span><span class="p">));</span>
             <span class="nx">looking</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
           <span class="p">}</span>
           <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>Ignore errors</p>             </td>             <td class="code">               <div class="highlight"><pre>          <span class="p">}</span>
@@ -48,7 +50,7 @@
     <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
   <span class="p">}</span>
 
-  <span class="nx">winston</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s1">&#39;Using config file &#39;</span> <span class="o">+</span> <span class="nx">configPath</span><span class="p">.</span><span class="nx">magenta</span><span class="p">);</span>
+  <span class="nx">winston</span><span class="p">.</span><span class="nx">silly</span><span class="p">(</span><span class="s1">&#39;Using config file &#39;</span> <span class="o">+</span> <span class="nx">configPath</span><span class="p">.</span><span class="nx">magenta</span><span class="p">);</span>
   <span class="nx">config</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s1">&#39;file&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">file</span><span class="o">:</span> <span class="nx">configPath</span> <span class="p">});</span>
   <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
 <span class="p">};</span>
@@ -78,14 +80,23 @@
   <span class="p">}</span>
 <span class="p">});</span>
 
-<span class="nx">config</span><span class="p">.</span><span class="nx">load</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>Find the <code>.jitsuconf</code> file to be used for this
-jitsu session.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">config</span><span class="p">.</span><span class="nx">findJitsuconf</span><span class="p">())</span> <span class="p">{</span>
+<span class="nx">config</span><span class="p">.</span><span class="nx">load</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">filename</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">callback</span> <span class="o">=</span> <span class="nx">filename</span><span class="p">;</span>
+    <span class="nx">filename</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+  <span class="p">}</span>
+  </pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>Find the <code>.jitsuconf</code> file to be used for this
+jitsu session.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">config</span><span class="p">.</span><span class="nx">findJitsuconf</span><span class="p">(</span><span class="nx">filename</span><span class="p">))</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="nx">configPath</span><span class="p">.</span><span class="nx">magenta</span> <span class="o">+</span> <span class="s1">&#39; does not exist&#39;</span><span class="p">),</span> <span class="kc">true</span><span class="p">);</span>
   <span class="p">}</span>
   
   <span class="nx">_load</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">config</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">store</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
       <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="nx">filename</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">config</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;userconfig&#39;</span><span class="p">,</span> <span class="nx">filename</span><span class="p">);</span>
     <span class="p">}</span>
     
     <span class="k">if</span> <span class="p">(</span><span class="nx">store</span><span class="p">.</span><span class="nx">auth</span><span class="p">)</span> <span class="p">{</span>
@@ -96,7 +107,7 @@ jitsu session.</p>             </td>             <td class="code">              
       <span class="k">return</span> <span class="nx">config</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="nx">callback</span><span class="p">);</span>
     <span class="p">}</span>
     
-    <span class="nx">callback</span><span class="p">();</span>
+    <span class="nx">callback</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">store</span><span class="p">);</span>
   <span class="p">});</span>
 <span class="p">};</span>
 

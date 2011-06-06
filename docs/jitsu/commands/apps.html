@@ -19,12 +19,12 @@
   <span class="s1">&#39;jitsu apps create&#39;</span><span class="p">,</span>
   <span class="s1">&#39;jitsu apps list&#39;</span><span class="p">,</span>
   <span class="s1">&#39;jitsu apps deploy&#39;</span><span class="p">,</span>
-  <span class="s1">&#39;jitsu apps view    &lt;name&gt;&#39;</span><span class="p">,</span>
-  <span class="s1">&#39;jitsu apps update  &lt;name&gt;&#39;</span><span class="p">,</span>
-  <span class="s1">&#39;jitsu apps destroy &lt;name&gt;&#39;</span><span class="p">,</span>
-  <span class="s1">&#39;jitsu apps start   &lt;name&gt;&#39;</span><span class="p">,</span>
-  <span class="s1">&#39;jitsu apps restart &lt;name&gt;&#39;</span><span class="p">,</span>
-  <span class="s1">&#39;jitsu apps stop    &lt;name&gt;&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;jitsu apps view    [&lt;name&gt;]&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;jitsu apps update  [&lt;name&gt;]&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;jitsu apps destroy [&lt;name&gt;]&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;jitsu apps start   [&lt;name&gt;]&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;jitsu apps restart [&lt;name&gt;]&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;jitsu apps stop    [&lt;name&gt;]&#39;</span><span class="p">,</span>
   <span class="s1">&#39;&#39;</span><span class="p">,</span>
   <span class="s1">&#39;For commands that take a &lt;name&gt; parameter, if no parameter&#39;</span><span class="p">,</span>
   <span class="s1">&#39;is supplied, jitsu will attempt to read the package.json&#39;</span><span class="p">,</span>
@@ -341,12 +341,17 @@ this will start the application in the current directory.</p>             </td> 
   <span class="kd">function</span> <span class="nx">executeStart</span><span class="p">()</span> <span class="p">{</span>
     <span class="nx">winston</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s1">&#39;Starting app &#39;</span> <span class="o">+</span> <span class="nx">name</span><span class="p">.</span><span class="nx">magenta</span><span class="p">);</span>
     <span class="nx">jitsu</span><span class="p">.</span><span class="nx">apps</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+      <span class="p">}</span>
+      
       <span class="nx">jitsu</span><span class="p">.</span><span class="nx">apps</span><span class="p">.</span><span class="nx">view</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">app</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
           <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
         <span class="p">}</span>
         
-        <span class="nx">winston</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s1">&#39;App &#39;</span> <span class="o">+</span> <span class="nx">name</span><span class="p">.</span><span class="nx">magenta</span> <span class="o">+</span> <span class="s1">&#39; is now started at: &#39;</span> <span class="o">+</span> <span class="p">(</span><span class="s1">&#39;http://&#39;</span> <span class="o">+</span> <span class="nx">app</span><span class="p">.</span><span class="nx">subdomain</span> <span class="o">+</span> <span class="s1">&#39;.nodejitsu.com&#39;</span><span class="p">).</span><span class="nx">magenta</span> <span class="o">+</span> <span class="s1">&#39; on &#39;</span> <span class="o">+</span> <span class="s1">&#39;Port 80&#39;</span><span class="p">.</span><span class="nx">magenta</span><span class="p">);</span>
+        <span class="nx">winston</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s1">&#39;App &#39;</span> <span class="o">+</span> <span class="nx">name</span><span class="p">.</span><span class="nx">magenta</span> <span class="o">+</span> <span class="s1">&#39; is now started&#39;</span><span class="p">)</span>
+        <span class="nx">winston</span><span class="p">.</span><span class="nx">info</span><span class="p">((</span><span class="s1">&#39;http://&#39;</span> <span class="o">+</span> <span class="nx">app</span><span class="p">.</span><span class="nx">subdomain</span> <span class="o">+</span> <span class="s1">&#39;.nodejitsu.com&#39;</span><span class="p">).</span><span class="nx">magenta</span> <span class="o">+</span> <span class="s1">&#39; on Port &#39;</span> <span class="o">+</span> <span class="s1">&#39;80&#39;</span><span class="p">.</span><span class="nx">magenta</span><span class="p">);</span>
         <span class="nx">callback</span><span class="p">();</span>
       <span class="p">});</span>
     <span class="p">});</span>
@@ -367,7 +372,42 @@ this will start the application in the current directory.</p>             </td> 
   <span class="s1">&#39;&#39;</span><span class="p">,</span>
   <span class="s1">&#39;jitsu apps start&#39;</span><span class="p">,</span>
   <span class="s1">&#39;jitsu apps start &lt;name&gt;&#39;</span>
-<span class="p">];</span></pre></div>             </td>           </tr>                               <tr id="section-17">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-17">&#182;</a>               </div>               <h3>function stop (callback)</h3>
+<span class="p">];</span></pre></div>             </td>           </tr>                               <tr id="section-17">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-17">&#182;</a>               </div>               <h3>function restart (name, callback)</h3>
+
+<h4>@name {string} <strong>optional</strong> Name of the application to restart.</h4>
+
+<h4>@callback {function} Continuation to pass control to when complete.</h4>
+
+<p>Restarts the application specified by <code>name</code>. If no name is supplied
+this will restart the application in the current directory.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">apps</span><span class="p">.</span><span class="nx">restart</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">function</span> <span class="nx">executeRestart</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">winston</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s1">&#39;Restarting app &#39;</span> <span class="o">+</span> <span class="nx">name</span><span class="p">.</span><span class="nx">magenta</span><span class="p">);</span>
+    <span class="nx">jitsu</span><span class="p">.</span><span class="nx">apps</span><span class="p">.</span><span class="nx">restart</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+      <span class="p">}</span>
+      
+      <span class="nx">winston</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s1">&#39;App &#39;</span> <span class="o">+</span> <span class="nx">name</span><span class="p">.</span><span class="nx">magenta</span> <span class="o">+</span> <span class="s1">&#39; has been restarted&#39;</span><span class="p">);</span>
+      <span class="nx">callback</span><span class="p">();</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">callback</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nx">jitsu</span><span class="p">.</span><span class="kr">package</span><span class="p">.</span><span class="nx">tryRead</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">cwd</span><span class="p">(),</span> <span class="nx">callback</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">pkg</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">name</span> <span class="o">=</span> <span class="nx">pkg</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+      <span class="nx">executeRestart</span><span class="p">();</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+  
+  <span class="nx">executeRestart</span><span class="p">();</span>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-18">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-18">&#182;</a>               </div>               <p>Usage for <code>jitsu apps restart [&lt;name&gt;]</code></p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">apps</span><span class="p">.</span><span class="nx">restart</span><span class="p">.</span><span class="nx">usage</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="s1">&#39;Restarts the application in the current directory. If &lt;name&gt;&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;is supplied then that application is restarted instead.&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;jitsu apps restart&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;jitsu apps restart &lt;name&gt;&#39;</span>
+<span class="p">];</span></pre></div>             </td>           </tr>                               <tr id="section-19">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-19">&#182;</a>               </div>               <h3>function stop (callback)</h3>
 
 <h4>@name {string} <strong>optional</strong> Name of the application to stop.</h4>
 
@@ -396,7 +436,7 @@ this will stop the application in the current directory.</p>             </td>  
   <span class="p">}</span>
   
   <span class="nx">executeStop</span><span class="p">();</span>
-<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-18">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-18">&#182;</a>               </div>               <p>Usage for <code>jitsu apps stop [&lt;name&gt;]</code></p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">apps</span><span class="p">.</span><span class="nx">stop</span><span class="p">.</span><span class="nx">usage</span> <span class="o">=</span> <span class="p">[</span>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-20">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-20">&#182;</a>               </div>               <p>Usage for <code>jitsu apps stop [&lt;name&gt;]</code></p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">apps</span><span class="p">.</span><span class="nx">stop</span><span class="p">.</span><span class="nx">usage</span> <span class="o">=</span> <span class="p">[</span>
   <span class="s1">&#39;Stops the application in the current directory. If &lt;name&gt;&#39;</span><span class="p">,</span>
   <span class="s1">&#39;is supplied then that application is stopped instead.&#39;</span><span class="p">,</span>
   <span class="s1">&#39;&#39;</span><span class="p">,</span>

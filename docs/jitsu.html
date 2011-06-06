@@ -159,9 +159,17 @@ and saves the resulting configuration to disk.</p>             </td>            
       <span class="p">});</span>
     <span class="p">});</span>
   <span class="p">});</span>
-<span class="p">};</span>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-14">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-14">&#182;</a>               </div>               <h3>function showError (command, err, shallow, skip)</h3>
 
-<span class="nx">jitsu</span><span class="p">.</span><span class="nx">showError</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">command</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">shallow</span><span class="p">,</span> <span class="nx">skip</span><span class="p">)</span> <span class="p">{</span>
+<h4>@command {string} Command which has errored.</h4>
+
+<h4>@err {Error} Error received for the command.</h4>
+
+<h4>@shallow {boolean} Value indicating if a deep stack should be displayed</h4>
+
+<h4>@skip {boolean} Value indicating if this error should be forcibly suppressed.</h4>
+
+<p>Displays the <code>err</code> to the user for the <code>command</code> supplied. </p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">jitsu</span><span class="p">.</span><span class="nx">showError</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">command</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">shallow</span><span class="p">,</span> <span class="nx">skip</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">!==</span> <span class="s1">&#39;403&#39;</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">skip</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">winston</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;Error running command &#39;</span> <span class="o">+</span> <span class="nx">command</span><span class="p">.</span><span class="nx">magenta</span><span class="p">);</span>
     
@@ -169,8 +177,17 @@ and saves the resulting configuration to disk.</p>             </td>            
       <span class="nx">winston</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
     <span class="p">}</span>
     
-    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">result</span> <span class="o">&amp;&amp;</span> <span class="nx">err</span><span class="p">.</span><span class="nx">result</span><span class="p">.</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">winston</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">result</span><span class="p">.</span><span class="nx">error</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">result</span><span class="p">.</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">winston</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">result</span><span class="p">.</span><span class="nx">error</span><span class="p">);</span>
+      <span class="p">}</span>
+      
+      <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">result</span><span class="p">.</span><span class="nx">stack</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">winston</span><span class="p">.</span><span class="nx">warn</span><span class="p">(</span><span class="s1">&#39;Error returned from Nodejitsu&#39;</span><span class="p">);</span>
+        <span class="nx">err</span><span class="p">.</span><span class="nx">result</span><span class="p">.</span><span class="nx">stack</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;\n&#39;</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">line</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">winston</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">line</span><span class="p">);</span>
+        <span class="p">})</span>
+      <span class="p">}</span>
     <span class="p">}</span>
     <span class="k">else</span> <span class="p">{</span>
       <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">stack</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">shallow</span><span class="p">)</span> <span class="p">{</span>
