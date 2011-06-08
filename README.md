@@ -105,6 +105,7 @@ If you need to have multiple configuration files, use --localconf or --jitsuconf
    --version             print jitsu version and exit
    --localconf           search for .jitsuconf file in ./ and then parent directories
    --jitsuconf [file]    specify file to load configuration from
+   --noanalyze           skip require-analyzer: do not attempt to dynamicially detect dependencies
 
 
 <a name="Libraries"></a>
