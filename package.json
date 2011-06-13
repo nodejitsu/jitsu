@@ -31,7 +31,7 @@
     "semver": "1.0.x"
   },
   "devDependencies": {
-    "nodeunit": "~0.2.9",
+    "nodeunit": ">=0.2.9beta",
     "vows": "0.5.x"
   },
   "bin": {
