@@ -19,7 +19,9 @@
     "cliff": "0.1.x",
     "colors": "0.x.x",
     "eyes": "0.1.x",
+    "findit": "0.0.x",
     "nconf": "0.1.x",
+    "loggly": "0.3.x",
     "npm": "1.0.x & > 1.0.6",
     "optimist": "0.2.x",
     "pkginfo": "0.2.x",
@@ -28,7 +30,8 @@
     "request": "1.9.x",
     "require-analyzer": "0.2.x",
     "winston": "0.3.x",
-    "semver": "1.0.x"
+    "semver": "1.0.x",
+    "wordwrap": "0.0.x"
   },
   "devDependencies": {
     "vows": "0.5.x"
