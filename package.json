@@ -19,7 +19,7 @@
     "cliff": "0.1.x",
     "colors": "0.x.x",
     "eyes": "0.1.x",
-    "nconf": "0.1.x",
+    "nconf": "https://github.com/dominictarr/nconf/tarball/master",
     "npm": "1.0.x & > 1.0.6",
     "optimist": "0.2.x",
     "pkginfo": "0.2.x",
@@ -31,6 +31,7 @@
     "semver": "1.0.x"
   },
   "devDependencies": {
+    "nodeunit": "~0.2.9",
     "vows": "0.5.x"
   },
   "bin": {
@@ -38,7 +39,7 @@
   },
   "main": "./lib/jitsu",
   "scripts": {
-    "test": "vows test/*-test.js --spec"
+    "test": "meta-test test/*-test.js"
   },
   "engines": {
     "node": ">= 0.4.0"
