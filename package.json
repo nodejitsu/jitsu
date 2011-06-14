@@ -8,7 +8,7 @@
     "platform-as-a-service",
     "deployment"
   ],
-  "version": "0.3.7",
+  "version": "0.3.8",
   "author": "Nodejitsu Inc. <support@nodejitsu.com>",
   "repository": {
     "type": "git",
@@ -20,7 +20,7 @@
     "colors": "0.x.x",
     "eyes": "0.1.x",
     "nconf": "0.1.x",
-    "npm": "1.0.x & > 1.0.6",
+    "npm": "1.0.x & > 1.0.10",
     "optimist": "0.2.x",
     "pkginfo": "0.2.x",
     "progress": "0.0.x",
