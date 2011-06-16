@@ -19,7 +19,7 @@
     "cliff": "0.1.x",
     "colors": "0.x.x",
     "eyes": "0.1.x",
-    "nconf": "https://github.com/dominictarr/nconf/tarball/master",
+    "nconf": "0.1.x",
     "npm": "1.0.x & > 1.0.6",
     "optimist": "0.2.x",
     "pkginfo": "0.2.x",
