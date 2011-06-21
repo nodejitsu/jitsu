@@ -31,6 +31,7 @@
     "semver": "1.0.x"
   },
   "devDependencies": {
+    "nodemock": "0.2.9beta",
     "vows": "0.5.x"
   },
   "bin": {
@@ -38,7 +39,7 @@
   },
   "main": "./lib/jitsu",
   "scripts": {
-    "test": "vows test/*-test.js --spec"
+    "test": "meta-test test/*-test.js"
   },
   "engines": {
     "node": ">= 0.4.0"
