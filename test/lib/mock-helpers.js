@@ -2,7 +2,6 @@
 require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
 
 var assert = require('assert'),
-//    vows = require('vows'),
     eyes = require('eyes'),
     jitsu = require('jitsu'),
     http = require('http'),
@@ -12,12 +11,12 @@ var assert = require('assert'),
     inspect = require('eyes').inspector({ stream: null })
     base64 = require('jitsu/utils/base64');
 
-  var port = 90210,
-      remoteHost = 'api.mockjitsu.com';
+var port = 90210,
+    remoteHost = 'api.mockjitsu.com';
 
-function mockPrompt(expected,answer){
+function mockPrompt (expected, answer) {
 
-  if(!answer) {
+  if (!answer) {
     answer = expected;
     expected  = Object.keys(expected);
   }
@@ -43,7 +42,7 @@ exports.mockPrompt = mockPrompt;
 function makeProperties (answer) {
   var expected = [];
   
-  for(var name in answer){
+  for (var name in answer) {
     expected.push({name: name, default: answer[name]});
   }
 
@@ -85,35 +84,40 @@ var username = optimist.argv.username = 'mickey',
 
 //TODO: i've since realised that nodemock actually supports this stuff.
 
-function stubStream (){
+function stubStream () {
   return {
-    on: function (){console.log('*on')}, 
-    emit: function (){console.log('*emit')}, 
-    removeListener: function (){console.log('*emit')}, 
-    end: function (){console.log('*end')} 
+    on: function () { console.log('*on') }, 
+    emit: function () { console.log('*emit') }, 
+    removeListener: function (){ console.log('*emit') }, 
+    end: function () { console.log('*end') } 
   };
 }
 
-function mockRequest(requests){
-  function mockOneRequest(expected,result,status){
-    expected.headers.Authorization = auth //authorization is always set.
+function mockRequest (requests) {
+  function mockOneRequest (expected, result, status) {
+    //
+    // Authorization is always set.
+    //
+    expected.headers.Authorization = auth;
     var mocked = nodemock.mock('request')
-      .takes(expected,function (){})
-      .returns(stubStream())//will be called if it uploads
-      .calls(1,[null, {statusCode: status}, JSON.stringify(result)]);
+      .takes(expected, function () {})
+      .returns(stubStream())
+      .calls(1, [null, { statusCode: status }, JSON.stringify(result)]);
+      
     return mocked.request;
   }
 
-  var mocked = requests.map(function (e){return mockOneRequest.apply(null,e)}), 
+  var mocked = requests.map(function (e) { return mockOneRequest.apply(null, e) }), 
       calls = mocked.length, 
       count = 0;
 
-  return function (expected,callback){
+  return function (expected, callback) {
     var next = mocked.shift();
     if (next) {
       count ++;
       return next.call(null,expected,callback);
-    } else {
+    } 
+    else {
       throw new Error('expected ' + calls + ' but got ' + (++count) + ' calls to request\n called with:' + inspect(expected) );
     }
   }  
@@ -121,24 +125,25 @@ function mockRequest(requests){
 
 exports.mockRequest = mockRequest;
 
-function makeReq (method, path, json){
-  var req = { method:method, //request
-      uri:'http://api.mockjitsu.com:90210' + path,
-      headers:{ } //'Content-Type':"application/json" },
-    };
-  if(json)
-    req.body = JSON.stringify(json);
-//      body: (json ? JSON.stringify(json) : null) //'{"email":"e@mailinator.com","password":"12345","username":"elvis"}'
+function makeReq (method, path, json) {
+  var req = { 
+    method: method, //request
+    uri: 'http://api.mockjitsu.com:90210' + path,
+    headers: {} 
+  };
+  
+  if (json) { req.body = JSON.stringify(json) }
+  
   return req;
 }
 
-exports.makeReq = makeReq
+exports.makeReq = makeReq;
 
-function res(req,res,status, headers){
+function res (req, res, status, headers) {
   var list = [];
-  list.push([req,res || {}, status || 200]);
-  list.res = function (req,res,status){
-    list.push([req,res || {}, status || 200]);
+  list.push([req, res || {}, status || 200]);
+  list.res = function (req,res,status) {
+    list.push([req, res || {}, status || 200]);
     return list;
   };
   return list;
@@ -146,28 +151,34 @@ function res(req,res,status, headers){
 
 exports.res = res;
 
-function makeCommandTest(command, userPrompt, checkRequest ,done){
-    
-  optimist.argv.remoteHost = remoteHost;//currently undocumented
-  optimist.argv.port = port; //currently undocumented 
-
-  return function (test){
-    console.log(("TESTING COMMAND> jitsu " + command.join (' ')).bold.underline);
-      console.log("MOCK COMMAND:",command);
-
-    //mock server is ready, connect to it.
-
+exports.startThenTestCommand = function (checkRequest, userPrompt) {
+  return {
+    topic: function () {
+      //
+      // Remark: These are not documented.
+      //
+      optimist.argv.remoteHost = remoteHost;
+      optimist.argv.port = port;
+      
+      var argv = {
+        '_': this.context.name.split(' ')
+      };  
+      
+      //
+      // Mock the Client request and prompt
+      //
       jitsu.prompt = userPrompt || mockPrompt([]);
+      jitsu.api.Client._request = mockRequest(checkRequest);
 
-      jitsu.api.Client.__requestHook = mockRequest(checkRequest);
-
-      var argv = {'_': command };//setup command optimist style.
-
-      jitsu.start(argv,function (err,data){
-        done(err,data);
-        test.done();
-      });
-  }
-}
-
-exports.makeCommandTest = makeCommandTest
+      //
+      // Execute the target command and assert that no error
+      // was returned.
+      //
+      jitsu.start(argv, this.callback);
+      
+    },
+    "should respond with no error": function (err) {
+      assert.isTrue(!err);
+    }
+  };
+};

@@ -8,11 +8,12 @@
 require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
 
 var assert = require('assert'),
+    vows = require('vows'),
     jitsu = require('jitsu'),
     it = require('it-is'),
     inspect = require('eyes').inspector({ stream: null }),
     helper = require('./lib/mock-helpers'),
-    join = require('path').join
+    join = require('path').join,
     fs = require('fs');
 
 /*
@@ -29,8 +30,25 @@ var mockRequest = helper.mockRequest
   , mockPrompt2 = helper.mockPrompt2
   , makeReq = helper.makeReq
   , res = helper.res
-  , makeCommandTest = helper.makeCommandTest
+  , makeCommandTest = helper.makeCommandTest;
+  
+vows.describe('jitsu/api/apps').addBatch({
+  "When using the jitsu CLI": {
+    'apps list': helper.startThenTestCommand(
+      res(makeReq(GET,'/auth'))
+      .res(makeReq(GET,'/apps/mickey'),
+        { apps:
+          [ { name: 'application', 
+              state: 'stopped', 
+              subdomain:'application', 
+              scripts: {start: './server.js'}, 
+              snapshots: [{filename: 'FILENAME'}] } 
+              ] }, // one snapshot
+        200))
+  }
+}).export(module);
 
+/*
 exports ['jitsu apps list'] = makeCommandTest(
     ['apps','list'],//command
     null,//no prompt //an auth is requested only once.
@@ -93,9 +111,6 @@ exports ['jitsu apps deploy'] = function (test){
 
   process.chdir(__dirname + '/fixtures/example-app')
   console.log(process.cwd())
-  /*
-    TODO: assert that upload content type is application/octet-stream !
-  */
 
   makeCommandTest(
     ['apps','deploy'],//command
@@ -126,7 +141,7 @@ exports ['jitsu apps deploy'] = function (test){
       ,
       assert.ifError )(test)
 
-}
+}*/
 /*exports ['jitsu apps create'] = makeCommandTest(
     ['apps','create', 'application3'],//command
     mockPrompt(jitsu.package.properties(__dirname), {}),//no prompt //an auth is requested only once.
