@@ -9,10 +9,24 @@ var assert = require('assert'),
     it = require('it-is'),
     nodemock = require('nodemock'),
     inspect = require('eyes').inspector({ stream: null })
-    base64 = require('jitsu/utils/base64');
+    base64 = require('jitsu/utils/base64'),
+    MockRequest = require('./mock-request').MockRequest;
 
 var port = 90210,
     remoteHost = 'api.mockjitsu.com';
+    
+var username = optimist.argv.username = 'mickey',
+    password = optimist.argv.password = 'poiuytrewq',
+    auth = 'Basic ' + base64.encode(username + ':' + password);
+    
+exports.requestOptions = {
+  host: remoteHost,
+  port: port,
+  headers: {
+    'Authorization': auth,
+    'Content-Type': 'application/json'
+  }
+}
 
 function mockPrompt (expected, answer) {
 
@@ -78,10 +92,6 @@ function mockPrompt2 (/*variable arguments*/) {
 
 exports.mockPrompt2 = mockPrompt2;
 
-var username = optimist.argv.username = 'mickey',
-    password = optimist.argv.password = 'poiuytrewq',
-    auth = 'Basic ' + base64.encode(username + ':' + password);
-
 //TODO: i've since realised that nodemock actually supports this stuff.
 
 function stubStream () {
@@ -95,6 +105,7 @@ function stubStream () {
 
 function mockRequest (requests) {
   function mockOneRequest (expected, result, status) {
+    console.dir(arguments);
     //
     // Authorization is always set.
     //
@@ -151,7 +162,29 @@ function res (req, res, status, headers) {
 
 exports.res = res;
 
-exports.startThenTestCommand = function (checkRequest, userPrompt) {
+exports.runJitsuCommand = function () {
+  var args = Array.prototype.slice.call(arguments),
+      setupFn,
+      mockRequest,
+      userPrompt;
+  
+  args.forEach(function (a) {
+    if (typeof a === 'function') {
+      setupFn = a;
+    }
+    else if (a instanceof MockRequest) {
+      mockRequest = a;
+    }
+    else {
+      userPrompt = a;
+    }
+  });
+  
+  if (!mockRequest) {
+    console.log('Mock request is required for `runJitsuCommand`');
+    process.exit(-1);
+  }
+  
   return {
     topic: function () {
       //
@@ -160,21 +193,61 @@ exports.startThenTestCommand = function (checkRequest, userPrompt) {
       optimist.argv.remoteHost = remoteHost;
       optimist.argv.port = port;
       
-      var argv = {
+      var that = this,
+          _setup = jitsu.setup, 
+          _request = mockRequest.run(),
+          argv;
+          
+      argv = {
         '_': this.context.name.split(' ')
       };  
       
       //
-      // Mock the Client request and prompt
+      // Mock the command-line prompt
       //
       jitsu.prompt = userPrompt || mockPrompt([]);
-      jitsu.api.Client._request = mockRequest(checkRequest);
 
+      function mockClients () {
+        ['users', 'apps', 'snapshots'].forEach(function (client) {
+          jitsu[client]._request = _request;
+        });
+      }
+
+      if (!jitsu.started) {
+        //
+        // Mock the `_request` member in the API clients.
+        //
+        jitsu.setup = function (callback) {
+          _setup(function () {
+            mockClients();
+            callback();
+          });
+        }
+      }
+      else {
+        mockClients();
+      }
+       
+      // Pad the output slightly
+      console.log('');
+      
+      //
+      // If there is a setup function then call it
+      //
+      if (setupFn) {
+        setupFn();
+      }
+      
       //
       // Execute the target command and assert that no error
       // was returned.
       //
-      jitsu.start(argv, this.callback);
+      jitsu.start(argv, function () {
+        // Pad the output slightly
+        console.log('');
+
+        that.callback.apply(that, arguments);
+      });
       
     },
     "should respond with no error": function (err) {
