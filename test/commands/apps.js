@@ -5,33 +5,17 @@
  *
  */
  
-require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
+require.paths.unshift(require('path').join(__dirname, '..', '..', 'lib'));
 
-var assert = require('assert'),
+var fs = require('fs'),
+    path = require('path'),
+    assert = require('assert'),
     vows = require('vows'),
     jitsu = require('jitsu'),
-    it = require('it-is'),
-    inspect = require('eyes').inspector({ stream: null }),
-    helper = require('./lib/mock-helpers'),
-    join = require('path').join,
-    fs = require('fs');
+    helper = require('../helpers/mock-helpers'),
+    mockRequest = require('../helpers/mock-request');
 
-/*
-  calling:
-  jitsu users create elvis
-  should:
-    prompt the user for email and password
-    make POST request to server.
-*/
-
-var POST = 'POST', GET = 'GET'
-
-var mockPrompt2 = helper.mockPrompt2
-  , makeReq = helper.makeReq
-  , res = helper.res
-  , makeCommandTest = helper.makeCommandTest;
-  
-var mockRequest = require('./lib/mock-request'),
+var mockPrompt2 = helper.mockPrompt2,
     runJitsuCommand = helper.runJitsuCommand;
 
 vows.describe('jitsu/api/apps').addBatch({
@@ -89,17 +73,16 @@ vows.describe('jitsu/api/apps').addBatch({
 }).addBatch({
   'apps deploy': runJitsuCommand(
     function () {
+      var packageFile = path.join(__dirname, '..', 'fixtures', 'example-app', 'package.json');
       var pkg = {
         name: 'example-app',
         subdomain: 'example-app',
         scripts: { start: 'server.js' },
         version: '0.0.0'
-      }
+      };
 
-      fs.writeFileSync(join(__dirname,'fixtures/example-app/package.json'), JSON.stringify(pkg))
-
-      process.chdir(__dirname + '/fixtures/example-app')
-      console.log(process.cwd())
+      fs.writeFileSync(packageFile, JSON.stringify(pkg))
+      process.chdir(path.join(__dirname, '..', 'fixtures', 'example-app'));
     },
     mockPrompt2({answer: 'yes'}),
     mockRequest.mock(helper.requestOptions)
