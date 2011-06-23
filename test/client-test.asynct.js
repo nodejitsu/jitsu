@@ -1,15 +1,3 @@
-
-/*
-adds auth performs request to options.remoteUri + uri.
-
-calls back error if it was a fail code.
-
-body of error may be a json object
-
-calls success with response if it worked.
-
-*/
-
 /*
  * users-test.js: Tests for the jitsu users API.
  *
@@ -36,6 +24,13 @@ optimist.argv.port = port; //currently undocumented
 exports.__setup = function (test){
   jitsu.config.load(__dirname + '/fixtures/dot-jitsuconf', test.done)
 }
+
+//
+// adds auth performs request to options.remoteUri + uri.
+// calls back error if it was a fail code.
+// body of error may be a json object
+// calls success with response if it worked.
+//
 
 //
 // ###Request to Mock Server.

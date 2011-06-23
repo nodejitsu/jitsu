@@ -1,5 +1,5 @@
 /*
- * users-test.js: Tests for the jitsu users API.
+ * apps.js: Tests for `jitsu apps *` command(s).
  *
  * (C) 2010, Nodejitsu Inc.
  *
@@ -18,7 +18,7 @@ var fs = require('fs'),
 var mockPrompt2 = helper.mockPrompt2,
     runJitsuCommand = helper.runJitsuCommand;
 
-vows.describe('jitsu/api/apps').addBatch({
+vows.describe('jitsu/commands/apps').addBatch({
   'apps list': runJitsuCommand(
     mockRequest.mock(helper.requestOptions)
       .get('/auth')
@@ -72,7 +72,7 @@ vows.describe('jitsu/api/apps').addBatch({
     )
 }).addBatch({
   'apps deploy': runJitsuCommand(
-    function () {
+    function setup () {
       var packageFile = path.join(__dirname, '..', 'fixtures', 'example-app', 'package.json');
       var pkg = {
         name: 'example-app',

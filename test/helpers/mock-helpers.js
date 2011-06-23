@@ -5,6 +5,7 @@ var assert = require('assert'),
     eyes = require('eyes'),
     jitsu = require('jitsu'),
     http = require('http'),
+    util = require('util'),
     optimist = require('optimist'),
     it = require('it-is'),
     nodemock = require('nodemock'),
@@ -164,13 +165,21 @@ exports.res = res;
 
 exports.runJitsuCommand = function () {
   var args = Array.prototype.slice.call(arguments),
+      assertion = "should respond with no error",
+      assertFn,
       setupFn,
       mockRequest,
       userPrompt;
-  
+      
   args.forEach(function (a) {
-    if (typeof a === 'function') {
+    if (typeof a === 'function' && a.name === 'setup') {
       setupFn = a;
+    }
+    else if (typeof a === 'function') {
+      assertFn = a;
+    }
+    else if (typeof a === 'string') {
+      assertion = a;
     }
     else if (a instanceof MockRequest) {
       mockRequest = a;
@@ -185,7 +194,7 @@ exports.runJitsuCommand = function () {
     process.exit(-1);
   }
   
-  return {
+  var context = {
     topic: function () {
       //
       // Remark: These are not documented.
@@ -249,9 +258,12 @@ exports.runJitsuCommand = function () {
         that.callback.apply(that, arguments);
       });
       
-    },
-    "should respond with no error": function (err) {
-      assert.isTrue(!err);
     }
   };
+
+  context[assertion] = assertFn 
+    ? assertFn 
+    : function (err) { assert.isTrue(!err) };
+  
+  return context;
 };

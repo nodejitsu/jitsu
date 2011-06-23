@@ -111,6 +111,10 @@ MockRequest.prototype.run = function () {
       length = this.mocks.length,
       count = 0;
   
+  if (this.current && !this.current.response) {
+    this.respond();
+  }
+
   return function (expected, callback) {    
     //
     // Grab the next mock request / response object.
