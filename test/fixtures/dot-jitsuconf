@@ -1,0 +1,12 @@
+{
+  "protocol": "http",
+  "remoteHost": "localhost",
+  "port": "7000",
+  "userconfig": ".jitsuconf",
+  "loglevel": "silly",
+  "tmproot": "/tmp",
+  "tar": "tar",
+  "gzipbin": "gzip",
+  "username": "EXAMPLE-USER",
+  "password": "EXAMPLE-PASSWORD"
+}
