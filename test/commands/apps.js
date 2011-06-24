@@ -98,7 +98,7 @@ vows.describe('jitsu/commands/apps').addBatch({
           }
         }
       })
-      .post('/apps/mickey/example-app/snapshots/0.0.0-1')
+      .post('/apps/mickey/example-app/snapshots/0.0.0-1',null,{'Content-Type' : 'application/octet-stream'})
       .put('/apps/mickey/example-app')
       .respond({
         body: {
