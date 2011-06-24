@@ -1,5 +1,5 @@
-var assert = require('assert');
-
+var assert = require('assert')
+  , subtree = require('./assert-subtree').subtree;
 var MockRequest = exports.MockRequest = function (options) {
   options = options || {};
   
@@ -115,7 +115,7 @@ MockRequest.prototype.run = function () {
     this.respond();
   }
 
-  return function (expected, callback) {    
+  return function (actual, callback) {
     //
     // Grab the next mock request / response object.
     //
@@ -131,11 +131,17 @@ MockRequest.prototype.run = function () {
     count += 1;
 
     try {
-      assert.equal(expected.uri, next.request.uri);
+      assert.equal(actual.uri, next.request.uri);
+      //
+      // Check that request was made with at least the required headers.
+      // extra headers do not cause the test to fail.
+      //
+      subtree(actual.headers, next.request.headers);
+
     }
     catch (ex) {
-      console.log('\nRemote uri mismatch in remote request :\n')
-      console.dir(expected);
+      console.log('\nmismatch in remote request :\n')
+      console.dir(actual);
       console.dir(next.request);
       throw ex;
     }
