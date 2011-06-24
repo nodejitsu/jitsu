@@ -79,6 +79,7 @@ function mockPrompt2 (/*variable arguments*/) {
   prompt.addProperties = function (obj, properties, callback) {
     prompt.get(properties, function (err, answer) {
       for(var key in answer) {
+        //split key by . and then set key to that path.
         obj[key] = answer[key];
       }
       callback(null,obj);
@@ -92,76 +93,6 @@ function mockPrompt2 (/*variable arguments*/) {
 }
 
 exports.mockPrompt2 = mockPrompt2;
-
-//TODO: i've since realised that nodemock actually supports this stuff.
-
-function stubStream () {
-  return {
-    on: function () { console.log('*on') }, 
-    emit: function () { console.log('*emit') }, 
-    removeListener: function (){ console.log('*emit') }, 
-    end: function () { console.log('*end') } 
-  };
-}
-
-function mockRequest (requests) {
-  function mockOneRequest (expected, result, status) {
-    console.dir(arguments);
-    //
-    // Authorization is always set.
-    //
-    expected.headers.Authorization = auth;
-    var mocked = nodemock.mock('request')
-      .takes(expected, function () {})
-      .returns(stubStream())
-      .calls(1, [null, { statusCode: status }, JSON.stringify(result)]);
-      
-    return mocked.request;
-  }
-
-  var mocked = requests.map(function (e) { return mockOneRequest.apply(null, e) }), 
-      calls = mocked.length, 
-      count = 0;
-
-  return function (expected, callback) {
-    var next = mocked.shift();
-    if (next) {
-      count ++;
-      return next.call(null,expected,callback);
-    } 
-    else {
-      throw new Error('expected ' + calls + ' but got ' + (++count) + ' calls to request\n called with:' + inspect(expected) );
-    }
-  }  
-}
-
-exports.mockRequest = mockRequest;
-
-function makeReq (method, path, json) {
-  var req = { 
-    method: method, //request
-    uri: 'http://api.mockjitsu.com:90210' + path,
-    headers: {} 
-  };
-  
-  if (json) { req.body = JSON.stringify(json) }
-  
-  return req;
-}
-
-exports.makeReq = makeReq;
-
-function res (req, res, status, headers) {
-  var list = [];
-  list.push([req, res || {}, status || 200]);
-  list.res = function (req,res,status) {
-    list.push([req, res || {}, status || 200]);
-    return list;
-  };
-  return list;
-}
-
-exports.res = res;
 
 exports.runJitsuCommand = function () {
   var args = Array.prototype.slice.call(arguments),
