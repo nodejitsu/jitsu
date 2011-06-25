@@ -32,6 +32,7 @@
   "devDependencies": {
     "it-is": "0.x.x",
     "nodemock": "0.2.9beta",
+    "mock-request": "0.1.x",
     "vows": "0.5.x"
   },
   "bin": {

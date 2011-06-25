@@ -13,7 +13,7 @@ var fs = require('fs'),
     vows = require('vows'),
     jitsu = require('jitsu'),
     helper = require('../helpers/mock-helpers'),
-    mockRequest = require('../helpers/mock-request');
+    mockRequest = require('mock-request');
 
 var mockPrompt2 = helper.mockPrompt2,
     runJitsuCommand = helper.runJitsuCommand;

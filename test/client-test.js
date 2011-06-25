@@ -11,7 +11,7 @@ var assert = require('assert'),
     vows = require('vows'),
     jitsu = require('jitsu'),
     optimist = require('optimist'),
-    mockRequest = require('./helpers/mock-request'),
+    mockRequest = require('mock-request'),
     helper = require('./helpers/mock-helpers');
 
 var port = 90210, 

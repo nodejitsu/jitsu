@@ -11,7 +11,7 @@ var assert = require('assert'),
     jitsu = require('jitsu'),
     vows = require('vows'),
     helper = require('../helpers/mock-helpers'),
-    mockRequest = require('../helpers/mock-request');
+    mockRequest = require('mock-request');
 
 var mockPrompt = helper.mockPrompt,
     runJitsuCommand = helper.runJitsuCommand;

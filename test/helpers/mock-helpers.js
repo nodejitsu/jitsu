@@ -11,7 +11,7 @@ var assert = require('assert'),
     nodemock = require('nodemock'),
     inspect = require('eyes').inspector({ stream: null })
     base64 = require('jitsu/utils/base64'),
-    MockRequest = require('./mock-request').MockRequest;
+    MockRequest = require('mock-request').MockRequest;
 
 var port = 90210,
     remoteHost = 'api.mockjitsu.com';
