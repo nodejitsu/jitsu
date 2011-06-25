@@ -39,7 +39,7 @@
   },
   "main": "./lib/jitsu",
   "scripts": {
-    "test": "meta-test test/*-test.js"
+    "test": "vows test/commands/*-test.js test/*-test.js --spec"
   },
   "engines": {
     "node": ">= 0.4.0"
