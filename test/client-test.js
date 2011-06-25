@@ -9,69 +9,72 @@ require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
 
 var assert = require('assert'),
     vows = require('vows'),
-    eyes = require('eyes'),
     jitsu = require('jitsu'),
-    http = require('http'),
     optimist = require('optimist'),
-    it = require('it-is'),
     mockRequest = require('./helpers/mock-request'),
     helper = require('./helpers/mock-helpers');
 
-var port = 90210, remoteHost = 'api.mockjitsu.com', config, server;
+var port = 90210, 
+    remoteHost = 'api.mockjitsu.com', 
+    config, 
+    server;
 
-optimist.argv.remoteHost = remoteHost;//currently undocumented
-optimist.argv.port = port; //currently undocumented 
+//
+// TODO: This usage is currently undocumented
+//
+optimist.argv.remoteHost = remoteHost;
+optimist.argv.port = port;  
 
 vows.describe('jitsu/lib/client').addBatch({
-  'jitsu': {
-    topic: function (){
+  'When using jitsu.config.load': {
+    topic: function () {
       jitsu.config.load(__dirname + '/fixtures/dot-jitsuconf', this.callback);
     },
-    'does not error': function (err,store){
+    'it should not respond with an error': function (err,store) {
       assert.isTrue(!err);
     }
   }
 }).addBatch({
-  'client calls request - success': {
-    'topic' : function (){
-      var requestMock = mockRequest.mock(helper.requestOptions).get('/auth')
-        , that = this
+  'When using an instance of jitsu.api.Client': {
+    'the request() method': {
+      'when successful': {
+        topic : function () {
+          var that = this,
+              requestMock = mockRequest
+                .mock(helper.requestOptions)
+                .get('/auth');
 
-      client = new jitsu.api.Client(jitsu.config)
-      client._request = requestMock.run()
-      client.request('GET', 
-        ['auth'],
-        { payload: "JSON" }, 
-        this.callback,
-        function (response){
-          that.callback(null,response)
-        })
-    },
-    'does not error': function (err,reponse){
-      if(err) throw err
-    },
-    'status is 200': function (err,response){
-      assert.equal(response.statusCode,200)
-    }
-  },
-  'client calls request - 400 error': {
-    'topic' : function (){
-      var requestMock = mockRequest.mock(helper.requestOptions)
-          .get('/whatever').respond({statusCode:400})
-        , that = this
+          var client = new jitsu.api.Client(jitsu.config);
+          client._request = requestMock.run();
+          client.request('GET', ['auth'], { payload: "JSON" }, this.callback, function (response) {
+            that.callback(null, response);
+          });
+        },
+        'should not respond with an error': function (err, reponse) {
+          assert.isTrue(!err);
+        },
+        'should respond with 200': function (err, response) {
+          assert.equal(response.statusCode, 200);
+        }
+      },
+      'when unsuccessful (400)': {
+        topic : function () {
+          var that = this,
+              requestMock = mockRequest
+                .mock(helper.requestOptions)
+                .get('/whatever')
+                .respond({statusCode:400});
 
-      client = new jitsu.api.Client(jitsu.config)
-      client._request = requestMock.run()
-      client.request('GET', 
-        ['whatever'],
-        { payload: "JSON" }, 
-        this.callback,
-        function (response){
-          that.callback(null,response)
-        })
-    },
-    'calls back with error': function (err,reponse){
-      assert.ok(err instanceof Error)
+          var client = new jitsu.api.Client(jitsu.config);
+          client._request = requestMock.run();
+          client.request('GET', ['whatever'], { payload: "JSON" }, this.callback, function (response) {
+            that.callback(null, response);
+          });
+        },
+        'should respond with an error': function (err, reponse) {
+          assert.ok(err instanceof Error);
+        }
+      }
     }
   }
-}).export(module)
+}).export(module);
