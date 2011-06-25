@@ -18,7 +18,7 @@ vows.describe('jitsu/lib/jitsu/config').addBatch({
       topic: function (){
         jitsu.config.load(__dirname + '/fixtures/dot-jitsuconf', this.callback);
       },
-      "should return store object" : function (err,store){
+      "should return store object": function (err, store) {
         it(store).has({
           "protocol": "http",
           "remoteHost": "api.mockjitsu.com",
