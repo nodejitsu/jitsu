@@ -23,7 +23,6 @@
     "npm": "1.0.x & > 1.0.10",
     "optimist": "0.2.x",
     "pkginfo": "0.2.x",
-    "progress": "0.0.x",
     "prompt": "0.1.x",
     "request": "1.9.x",
     "require-analyzer": "0.2.x",
@@ -31,6 +30,7 @@
     "semver": "1.0.x"
   },
   "devDependencies": {
+    "it-is": "0.x.x",
     "nodemock": "0.2.9beta",
     "vows": "0.5.x"
   },
