@@ -1,7 +1,7 @@
 {
   "protocol": "http",
-  "remoteHost": "localhost",
-  "port": "7000",
+  "remoteHost": "api.mockjitsu.com",
+  "port": "90210",
   "userconfig": ".jitsuconf",
   "loglevel": "silly",
   "tmproot": "/tmp",

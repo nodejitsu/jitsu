@@ -29,31 +29,24 @@ var assert = require('assert'),
 //
 //  package.write prompts the user for 'ok' and then writes the new file.
 //
+var mockPrompt2 = helper.mockPrompt2;
 
 function makeProperties (answer) {
   var expected = [];
-  
-  for(var name in answer){
-    expected.push({name: name, default: answer[name]});
+  for (var name in answer) {
+    expected.push({ name: name, default: answer[name] });
   }
 
   return expected;
 }
-var mockPrompt2 = helper.mockPrompt2;
 
 function mockAnalyzer (useAnalyzer, start) {
-  if(useAnalyzer) {
-    analyzerMock = nodemock.mock('analyze')
-      .takes({target: start}, function () {})
-      .calls(1,[null, {}]);
-  }
-  else {
-    analyzerMock = nodemock.fail('analyze');
-  }
-  return analyzerMock
+  return !useAnalyzer ? nodemock.fail('analyze') : nodemock.mock('analyze')
+    .takes({ target: start }, function () {})
+    .calls(1, [null, {}]);
 }
 
-function runCreatePackage(useAnalyzer) {
+function assertCreatePackage (useAnalyzer) {
   var dir = join(__dirname,'fixtures','example-app'),
       start = join(__dirname,'fixtures','example-app','server.js'),
       pkg = {
@@ -62,29 +55,30 @@ function runCreatePackage(useAnalyzer) {
         'scripts': {'start': 'server.js'}, 
         version: '0.0.0'
       }, 
-      analyzerMock = mockAnalyzer(useAnalyzer,start);
+      analyzerMock = mockAnalyzer(useAnalyzer, start);
 
-    //
-    // user is prompted for features of thier app.
-    //
-
-    var promptMock = mockPrompt2({
-        name: 'example-app', 
-        subdomain: 'example-app', 
-        'scripts.start': 'server.js', 
-        version: '0.0.0'
-      },
-      { answer: 'yes' });
+  //
+  // user is prompted for features of thier app.
+  //
+  var promptMock = mockPrompt2({
+      name: 'example-app', 
+      subdomain: 'example-app', 
+      'scripts.start': 'server.js', 
+      version: '0.0.0'
+    },
+    { answer: 'yes' });
 
   return {
-    topic: function (){
+    topic: function () {
       var packageFile = join(__dirname, 'fixtures', 'example-app', 'package.json'),
-          pkg = {
-            name: 'example-app',
-            subdomain: 'example-app',
-            scripts: { start: 'server.js' },
-            version: '0.0.0'
-          };
+          pkg;
+          
+      pkg = {
+        name: 'example-app',
+        subdomain: 'example-app',
+        scripts: { start: 'server.js' },
+        version: '0.0.0'
+      };
 
       fs.writeFileSync(packageFile, JSON.stringify(pkg));
       process.chdir(join(__dirname, 'fixtures', 'example-app'));
@@ -93,18 +87,18 @@ function runCreatePackage(useAnalyzer) {
       analyzer.analyze = analyzerMock.analyze;
       
       jitsu.prompt = promptMock;
-      assert.equal(typeof this.callback , 'function');
-      jitsu.package.create(dir, this.callback );
+      assert.equal(typeof this.callback, 'function');
+      jitsu.package.create(dir, this.callback);
     },
-    'does not callback an error': function (err, pkg) {
-        assert.isTrue(!err);
+    'should not respond with an error': function (err, pkg) {
+      assert.isTrue(!err);
     },
-    'user was prompted' : promptMock.assert,
-    'require-analyzer was correctly invoked': analyzerMock.assert,
+    'should prompt the user' : promptMock.assert,
+    'should invoke the require-analyzer correctly': analyzerMock.assert
   }
 }
 
-function runPackageValidate (useAnalyzer) {
+function assertValidatePackage (useAnalyzer) {
   var dir = join(__dirname, 'fixtures', 'example-app'),
       start = join(__dirname, 'fixtures', 'example-app', 'server.js'),
       pkgMissing = {
@@ -119,21 +113,22 @@ function runPackageValidate (useAnalyzer) {
         version: '0.0.0'
       },
       analyzerMock = mockAnalyzer(useAnalyzer,start);
+      
     //
-    //completely mock this out, because to get around scripts.start
-    //really, a mock for prompt should be part of the prompt library.
+    // completely mock this out, because to get around scripts.start
+    // really, a mock for prompt should be part of the prompt library.
     //
     var promptMock = nm.mock('addProperties')
-      .takes(pkgMissing,[{name: 'scripts.start', default: 'server.js'}], function (){})
-      .calls(2,[null,{
+      .takes(pkgMissing,[{ name: 'scripts.start', default: 'server.js' }], function () {})
+      .calls(2, [null, {
           name: 'example-app', 
           subdomain: 'example-app', 
-          'scripts': {'start': 'server.js'}, 
+          'scripts': { 'start': 'server.js' }, 
           version: '0.0.0'
-        } ]);
+        }]);
       
   return {
-    topic: function (){
+    topic: function () {
       var packageFile = join(__dirname, 'fixtures', 'example-app', 'package.json');
 
       jitsu.prompt = promptMock;
@@ -143,36 +138,30 @@ function runPackageValidate (useAnalyzer) {
       optimist.argv.noanalyze = !useAnalyzer;
       analyzer.analyze = analyzerMock.analyze;
  
-      jitsu.package.validate(pkgMissing, dir, this.callback );
+      jitsu.package.validate(pkgMissing, dir, this.callback);
     },
-  'does not callback an error':function (err, pkg){
-    assert.isTrue(!err);
-  },
-  'user was prompted' : promptMock.assert,
-  'require-analyzer was correctly invoked': analyzerMock.assert,
+    'should not respond with an error': function (err, pkg) {
+      assert.isTrue(!err);
+    },
+    'should prompt the user' : promptMock.assert,
+    'should invoke the require-analyzer correctly': analyzerMock.assert,
   }
 }
 
 vows.describe('jitsu/lib/package').addBatch({
-  'jitsu': {
-    topic: function (){
+  'When using jitsu.config.load': {
+    topic: function () {
       jitsu.config.load(__dirname + '/fixtures/dot-jitsuconf', this.callback);
     },
-    'does not error': function (err,store){
+    'it should not respond with an error': function (err, store) {
       assert.isTrue(!err);
     }
   }
 }).addBatch({
-  'jitsu': {
-    'validate package' : runPackageValidate(true)
-  }
-}).addBatch({
-  'jitsu': {
-    'validate package --noanalyze' : runPackageValidate(false)
-  }
-}).addBatch({
-  'jitsu': {
-    'create package' : runCreatePackage(true)
+  'When using the jitsu package modules': {
+   'validating a package': assertValidatePackage(true),
+   'validate a package --noanalyze': assertValidatePackage(false),
+   'creating a package': assertCreatePackage(true),
   }
 }).addBatch({
   'jitsu': {

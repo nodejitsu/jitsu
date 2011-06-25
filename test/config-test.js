@@ -8,7 +8,7 @@
 var assert = require('assert'),
     vows = require('vows'),
     eyes = require('eyes'),
-    jitsu = require('jitsu'),
+    jitsu = require('../lib/jitsu'),
     optimist = require('optimist'),
     it = require('it-is');
 
@@ -16,13 +16,13 @@ vows.describe('jitsu/lib/jitsu/config').addBatch({
   "When using jitsu.config module": {
     "the load() method" : {
       topic: function (){
-        jitsu.config.load(__dirname + '/fixtures/dot-jitsuconf',this.callback);
+        jitsu.config.load(__dirname + '/fixtures/dot-jitsuconf', this.callback);
       },
       "should return store object" : function (err,store){
         it(store).has({
           "protocol": "http",
-          "remoteHost": "localhost",
-          "port": "7000",
+          "remoteHost": "api.mockjitsu.com",
+          "port": "90210",
           "userconfig": it.typeof('string'),
           "loglevel": "silly",
           "tmproot": "/tmp",
@@ -34,12 +34,12 @@ vows.describe('jitsu/lib/jitsu/config').addBatch({
       },
       "the get() method": {
         "should have remoteUri": function () {    
-          it(jitsu.config.get('remoteUri')).equal('http://localhost:7000');
+          it(jitsu.config.get('remoteUri')).equal('http://api.mockjitsu.com:90210');
         },
         "should default to optimist.argv": function () {
           optimist.argv.remoteHost = 'example.com';
           optimist.argv.port = 2369;
-          it(jitsu.config.get('remoteUri')).equal('http://example.com:2369')
+          it(jitsu.config.get('remoteUri')).equal('http://example.com:2369');
         }
       }
     }
