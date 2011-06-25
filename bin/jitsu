@@ -9,8 +9,10 @@ var eyes = require('eyes'),
     jitsu = require('jitsu');
 
 
-jitsu.start(argv, function () {
-  winston.info('Nodejitsu'.grey + ' ok'.green.bold);
+jitsu.start(argv, function (err) {
+  if (!err) {
+    winston.info('Nodejitsu'.grey + ' ok'.green.bold);
+  }
   
   process.stdout.on('drain', function () {
     process.exit(0);
