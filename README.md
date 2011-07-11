@@ -75,6 +75,8 @@ If it's your first time using `jitsu`, you will be prompted to login with an exi
      jitsu apps
      jitsu snapshots
      jitsu users
+     jitsu logs
+     jitsu databases
      jitsu conf
      jitsu logout
 
@@ -88,6 +90,8 @@ If it's your first time using `jitsu`, you will be prompted to login with an exi
      jitsu help apps
      jitsu help snapshots
      jitsu help users
+     jitsu help logs
+     jitsu help databases
      jitsu help config
 
 ## .jitsuconf file
