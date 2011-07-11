@@ -57,7 +57,15 @@ If it's your first time using `jitsu`, you will be prompted to login with an exi
      jitsu <resource> <action> <param1> <param2> ...
    
    **Common Commands:**
-   
+
+   *To sign up for [Nodejitsu](http://nodejitsu.com)*
+
+     jitsu signup
+
+   *To log into [Nodejitsu](http://nodejitsu.com)*
+
+     jitsu login
+
    *Deploys current path to [Nodejitsu](http://nodejitsu.com)*
    
      jitsu deploy
