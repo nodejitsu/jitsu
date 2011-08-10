@@ -23,7 +23,7 @@
     "npm": "1.0.x & > 1.0.10",
     "optimist": "0.2.x",
     "pkginfo": "0.2.x",
-    "prompt": "0.1.x",
+    "prompt": "0.1.x >=0.1.5",
     "request": "1.9.x",
     "require-analyzer": "0.2.x",
     "winston": "0.3.x",
