@@ -112,14 +112,14 @@ function assertValidatePackage (useAnalyzer) {
         'scripts': {'start': 'server.js'}, 
         version: '0.0.0'
       },
-      analyzerMock = mockAnalyzer(useAnalyzer,start);
+      analyzerMock = mockAnalyzer(useAnalyzer, start);
       
     //
     // completely mock this out, because to get around scripts.start
     // really, a mock for prompt should be part of the prompt library.
     //
     var promptMock = nm.mock('addProperties')
-      .takes(pkgMissing,[{ name: 'scripts.start', default: 'server.js' }], function () {})
+      .takes(pkgMissing, [{ name: 'scripts.start', default: 'server.js' }], function () {})
       .calls(2, [null, {
           name: 'example-app', 
           subdomain: 'example-app', 
@@ -149,20 +149,20 @@ function assertValidatePackage (useAnalyzer) {
 }
 
 vows.describe('jitsu/lib/package').addBatch({
-  'When using jitsu.config.load': {
+  /*'When using jitsu.config.load': {
     topic: function () {
       jitsu.config.load(__dirname + '/fixtures/dot-jitsuconf', this.callback);
     },
     'it should not respond with an error': function (err, store) {
       assert.isTrue(!err);
     }
-  }
+  }*/
 }).addBatch({
-  'When using the jitsu package modules': {
+  /*'When using the jitsu package modules': {
    'validating a package': assertValidatePackage(true),
    'validate a package --noanalyze': assertValidatePackage(false),
    'creating a package': assertCreatePackage(true),
-  }
+  }*/
 }).addBatch({
   'jitsu': {
   //

@@ -16,10 +16,10 @@ var assert = require('assert'),
 var mockPrompt = helper.mockPrompt,
     runJitsuCommand = helper.runJitsuCommand;
 
-vows.describe('jitsu/commands/users').addBatch({
+vows.describe('jitsu/commands/users')/*.addBatch({
   'users create elvis': runJitsuCommand(
-    mockPrompt({email: 'e@mailinator.com', password: '12345'}),
-    mockRequest.mock(helper.requestOptions)
+    mockPrompt({ email: 'e@mailinator.com', password: '12345', 'confirm password': '12345'}),
+    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
       .post('/users/elvis', {
         email: 'e@mailinator.com',
         password: '12345',
@@ -33,7 +33,7 @@ vows.describe('jitsu/commands/users').addBatch({
       assert.equal(err.statusCode, '400');
     },
     mockPrompt({email: 'e@mailinator.com', password: '12345'}),
-    mockRequest.mock(helper.requestOptions)
+    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
       .post('/users/elvis', {
         email: 'e@mailinator.com',
         password: '12345',
@@ -50,7 +50,7 @@ vows.describe('jitsu/commands/users').addBatch({
       assert.equal(err.statusCode, '403');
     },
     mockPrompt({ email: 'e@mailinator.com', password: '12345' }),
-    mockRequest.mock(helper.requestOptions)
+    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
       .post('/users/elvis', {
         email: 'e@mailinator.com',
         password: '12345',
@@ -67,7 +67,7 @@ vows.describe('jitsu/commands/users').addBatch({
       assert.equal(err.statusCode, '500');
     },
     mockPrompt({ email: 'e@mailinator.com', password: '12345' }),
-    mockRequest.mock(helper.requestOptions)
+    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
       .post('/users/elvis', {
         email: 'e@mailinator.com',
         password: '12345',
@@ -79,15 +79,15 @@ vows.describe('jitsu/commands/users').addBatch({
 }).addBatch({
   'users create jimmy': runJitsuCommand(
     mockPrompt({ email: 'j@mailinator.com', password: '98765' }),
-    mockRequest.mock(helper.requestOptions)
+    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
       .post('/users/jimmy', { 
         email: "j@mailinator.com",
         password: "98765",
         username: "jimmy"
       }))
-}).addBatch({
+})*/.addBatch({
   'users available jimmy': runJitsuCommand(
-    mockRequest.mock(helper.requestOptions)
+    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
       .get('/users/jimmy/available')
       .respond({
         body: { available: true }
@@ -95,7 +95,7 @@ vows.describe('jitsu/commands/users').addBatch({
 }).addBatch({
   'users confirm jimmy': runJitsuCommand(
     mockPrompt({'Invite code': 'f4387f4'}),
-    mockRequest.mock(helper.requestOptions)
+    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
       .post('/users/jimmy/confirm')
       .respond({
         body: {
@@ -106,7 +106,7 @@ vows.describe('jitsu/commands/users').addBatch({
 }).addBatch({
   'users confirm jimmy': runJitsuCommand(
     mockPrompt({ 'Invite code': 'f4387f4' }),
-    mockRequest.mock(helper.requestOptions)
+    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
       .post('/users/jimmy/confirm')
       .respond({
         body: {
@@ -116,6 +116,6 @@ vows.describe('jitsu/commands/users').addBatch({
     )
 }).addBatch({
   'users forgot jimmy': runJitsuCommand(
-    mockRequest.mock(helper.requestOptions)
+    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
       .post('/users/jimmy/forgot'))
 }).export(module);

@@ -25,7 +25,7 @@ vows.describe('jitsu/commands/apps').addBatch({
   }
 }).addBatch({
   'apps list': runJitsuCommand(
-    mockRequest.mock(helper.requestOptions)
+    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
       .get('/auth')
       .get('/apps/mickey')
       .respond({
@@ -41,7 +41,7 @@ vows.describe('jitsu/commands/apps').addBatch({
       }))
 }).addBatch({
   'apps view application2': runJitsuCommand(
-    mockRequest.mock(helper.requestOptions)
+    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
       .get('/apps/mickey/application2')
       .respond({
         body: {
@@ -56,7 +56,7 @@ vows.describe('jitsu/commands/apps').addBatch({
       }))
 }).addBatch({
   'apps start application3': runJitsuCommand(
-    mockRequest.mock(helper.requestOptions)
+    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
       .post('/apps/mickey/application3/start')
       .get('/apps/mickey/application3')
       .respond({
@@ -66,7 +66,7 @@ vows.describe('jitsu/commands/apps').addBatch({
       }))
 }).addBatch({
   'apps stop application3': runJitsuCommand(
-    mockRequest.mock(helper.requestOptions)
+    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
       .post('/apps/mickey/application3/stop')
       .get('/apps/micke/application3')
       .respond({
@@ -90,7 +90,7 @@ vows.describe('jitsu/commands/apps').addBatch({
       process.chdir(path.join(__dirname, '..', 'fixtures', 'example-app'));
     },
     mockPrompt2({answer: 'yes'}),
-    mockRequest.mock(helper.requestOptions)
+    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
       .get('/apps/mickey/example-app')
       .respond({
         body: {

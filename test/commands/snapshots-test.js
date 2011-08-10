@@ -23,7 +23,7 @@ vows.describe('jitsu/commans/snapshots').addBatch({
   }
 }).addBatch({
   'snapshots list application': runJitsuCommand(
-    mockRequest.mock(helper.requestOptions)
+    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
       .get('/auth')
       .get('/apps/mickey/application/snapshots')
       .respond({
@@ -38,7 +38,7 @@ vows.describe('jitsu/commans/snapshots').addBatch({
     )
 }).addBatch({
   'snapshots list application2': runJitsuCommand(
-    mockRequest.mock(helper.requestOptions)
+    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
       .get('/apps/mickey/application2/snapshots')
       .respond({
         body: {
@@ -53,7 +53,7 @@ vows.describe('jitsu/commans/snapshots').addBatch({
 }).addBatch({
   'snapshots activate application2': runJitsuCommand(
     mockPrompt({'snapshot': '0.0.0-1'}),
-    mockRequest.mock(helper.requestOptions)
+    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
       .get('/apps/mickey/application2/snapshots')
       .respond({
         body: {
@@ -69,7 +69,7 @@ vows.describe('jitsu/commans/snapshots').addBatch({
 }).addBatch({
   'snapshots destroy application3': runJitsuCommand(
     mockPrompt({'snapshot': '0.0.0-1'}),
-    mockRequest.mock(helper.requestOptions)
+    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
       .get('/apps/mickey/application3/snapshots')
       .respond({
         body: {

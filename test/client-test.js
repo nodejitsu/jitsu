@@ -41,7 +41,7 @@ vows.describe('jitsu/lib/client').addBatch({
         topic : function () {
           var that = this,
               requestMock = mockRequest
-                .mock(helper.requestOptions)
+                .mock(helper.mockOptions, helper.mockDefaults)
                 .get('/auth');
 
           var client = new jitsu.api.Client(jitsu.config);
@@ -61,7 +61,7 @@ vows.describe('jitsu/lib/client').addBatch({
         topic : function () {
           var that = this,
               requestMock = mockRequest
-                .mock(helper.requestOptions)
+                .mock(helper.mockOptions, helper.mockDefaults)
                 .get('/whatever')
                 .respond({statusCode:400});
 

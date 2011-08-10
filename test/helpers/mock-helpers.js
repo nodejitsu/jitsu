@@ -20,14 +20,24 @@ var username = optimist.argv.username = 'mickey',
     password = optimist.argv.password = 'poiuytrewq',
     auth = 'Basic ' + base64.encode(username + ':' + password);
     
-exports.requestOptions = {
+exports.mockOptions = {
   host: remoteHost,
-  port: port,
-  headers: {
-    'Authorization': auth,
-    'Content-Type': 'application/json'
+  port: port
+};
+
+exports.mockDefaults = {
+  request: {
+    headers: {
+      'Authorization': auth,
+      'Content-Type': 'application/json'
+    }
+  },
+  response: {
+    headers: {
+      'x-powered-by': 'Nodejitsu'
+    }
   }
-}
+};
 
 function mockPrompt (expected, answer) {
 
