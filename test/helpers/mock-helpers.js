@@ -198,7 +198,6 @@ exports.runJitsuCommand = function () {
 
         that.callback.apply(that, arguments);
       });
-      
     }
   };
 
