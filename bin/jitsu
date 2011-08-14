@@ -1,12 +1,10 @@
 #!/usr/bin/env node
 
-require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
-
 var eyes = require('eyes'),
     colors = require('colors'),
     winston = require('winston'),
     argv = require('optimist').argv,
-    jitsu = require('jitsu');
+    jitsu = require('../lib/jitsu');
 
 
 jitsu.start(argv, function (err) {

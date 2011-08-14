@@ -5,13 +5,11 @@
  *
  */
  
-require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
-
 var assert = require('assert'),
-    vows = require('vows'),
-    jitsu = require('jitsu'),
     optimist = require('optimist'),
     mockRequest = require('mock-request'),
+    vows = require('vows'),
+    jitsu = require('../lib/jitsu'),
     helper = require('./helpers/mock-helpers');
 
 var port = 90210, 

@@ -1,17 +1,15 @@
 
-require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
-
 var assert = require('assert'),
-    eyes = require('eyes'),
-    jitsu = require('jitsu'),
     http = require('http'),
     util = require('util'),
-    optimist = require('optimist'),
+    eyes = require('eyes'),
     it = require('it-is'),
+    inspect = eyes.inspector({ stream: null })
     nodemock = require('nodemock'),
-    inspect = require('eyes').inspector({ stream: null })
-    base64 = require('jitsu/utils/base64'),
-    MockRequest = require('mock-request').MockRequest;
+    MockRequest = require('mock-request').MockRequest,
+    optimist = require('optimist'),
+    jitsu = require('../../lib/jitsu'),
+    base64 = require('../../lib/jitsu/utils/base64');
 
 var port = 90210,
     remoteHost = 'api.mockjitsu.com';

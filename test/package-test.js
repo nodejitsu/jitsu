@@ -1,23 +1,21 @@
 /*
- * log-test.js: Tests for the jitsu log module.
+ * package-test.js: Tests for the jitsu package module.
  *
  * (C) 2010, Nodejitsu Inc.
  *
  */
  
-require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
-
 var assert = require('assert'),
-    vows = require('vows'),
-    eyes = require('eyes'),
-    jitsu = require('jitsu'),
-    join = require('path').join,
-    nodemock = require('nodemock'),
-    helper = require('./helpers/mock-helpers'),
-    analyzer = require('require-analyzer'),
     fs = require('fs'),
+    join = require('path').join,
+    vows = require('vows'),
+    analyzer = require('require-analyzer'),
+    eyes = require('eyes'),
+    optimist = require('optimist'),
+    nodemock = require('nodemock'),
     nm = require('nodemock'),
-    optimist = require('optimist');
+    jitsu = require('../lib/jitsu'),
+    helper = require('./helpers/mock-helpers');
 
 //
 //  package.create prompts user to create package.json

@@ -5,13 +5,11 @@
  *
  */
  
-require.paths.unshift(require('path').join(__dirname, '..', '..', 'lib'));
-
 var assert = require('assert'),
-    jitsu = require('jitsu'),
     vows = require('vows'),
-    helper = require('../helpers/mock-helpers'),
-    mockRequest = require('mock-request');
+    mockRequest = require('mock-request'),
+    jitsu = require('../../lib/jitsu'),
+    helper = require('../helpers/mock-helpers');
 
 var mockPrompt = helper.mockPrompt,
     runJitsuCommand = helper.runJitsuCommand;
