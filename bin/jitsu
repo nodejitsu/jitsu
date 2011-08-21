@@ -6,13 +6,18 @@ var eyes = require('eyes'),
     argv = require('optimist').argv,
     jitsu = require('../lib/jitsu');
 
-
 jitsu.start(argv, function (err) {
   if (!err) {
     winston.info('Nodejitsu'.grey + ' ok'.green.bold);
   }
-  
   process.stdout.on('drain', function () {
-    process.exit(0);
+    process.exit(err ? 1 : 0);
   })
+  function onexit (code,status) {
+    if(err) {
+      process.removeListener('exit',onexit)
+      process.exit(1)
+    }  
+  }
+  process.on('exit', onexit )
 });
