@@ -23,7 +23,7 @@
     "npm": "1.0.x & > 1.0.10",
     "optimist": "0.2.x",
     "pkginfo": "0.2.x",
-    "prompt": "https://github.com/dominictarr/node-prompt/tarball/v0.1.7",
+    "prompt": "0.1.x >=0.1.7",
     "request": "1.9.x",
     "require-analyzer": "0.2.x",
     "winston": "0.3.x",
@@ -40,7 +40,7 @@
   },
   "main": "./lib/jitsu",
   "scripts": {
-    "test": "vows test/commands/*-test.js test/*-test.js --spec"
+    "test": "vows test/commands/*-test.js test/*-test.js --isolate --spec"
   },
   "engines": {
     "node": ">= 0.4.0"
