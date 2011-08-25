@@ -1,7 +1,7 @@
 
 var http = require('http');
 
-require('nko')(knockoutcode, function(err, res) {
+require('./vendor/nko')({{knockoutcode}}, function(err, res) {
   if (err) {
     console.error('Error contacting Node Knockout servers:');
     console.error(err.stack);
