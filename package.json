@@ -8,7 +8,7 @@
     "platform-as-a-service",
     "deployment"
   ],
-  "version": "0.4.91",
+  "version": "0.4.92",
   "author": "Nodejitsu Inc. <support@nodejitsu.com>",
   "repository": {
     "type": "git",
