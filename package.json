@@ -8,7 +8,7 @@
     "platform-as-a-service",
     "deployment"
   ],
-  "version": "0.4.10",
+  "version": "0.4.11",
   "author": "Nodejitsu Inc. <support@nodejitsu.com>",
   "repository": {
     "type": "git",
@@ -27,7 +27,7 @@
     "prompt": "0.1.x >=0.1.7",
     "request": "1.9.x",
     "require-analyzer": "0.2.x",
-    "winston": "0.4.x",
+    "winston": "0.5.x",
     "semver": "1.0.x"
   },
   "devDependencies": {
