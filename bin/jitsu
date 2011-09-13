@@ -2,7 +2,7 @@
 
 var eyes = require('eyes'),
     colors = require('colors'),
-    winston = require('winston'),
+    winston = require('winston').cli(),
     argv = require('optimist').argv,
     jitsu = require('../lib/jitsu');
 
