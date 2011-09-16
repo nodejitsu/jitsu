@@ -8,6 +8,7 @@
 var assert = require('assert'),
     fs = require('fs'),
     path = require('path'),
+    winston = require('winston').cli(),
     mockRequest = require('mock-request'),
     vows = require('vows'),
     jitsu = require('../../lib/jitsu'),

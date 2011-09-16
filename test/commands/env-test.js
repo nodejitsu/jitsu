@@ -8,6 +8,7 @@
 var assert = require('assert'),
     fs = require('fs'),
     path = require('path'),
+    winston = require('winston').cli(),
     mockRequest = require('mock-request'),
     vows = require('vows'),
     jitsu = require('../../lib/jitsu'),
@@ -16,7 +17,7 @@ var assert = require('assert'),
 var mockPrompt2 = helper.mockPrompt2,
     runJitsuCommand = helper.runJitsuCommand;
 
-vows.describe('jitsu/commands/apps').addBatch({
+vows.describe('jitsu/commands/env').addBatch({
   'This test requires jitsu be unauthorized': function () {
     jitsu.skipAuth = false;
     assert.isFalse(jitsu.skipAuth);
