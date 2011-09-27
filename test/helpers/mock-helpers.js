@@ -156,7 +156,7 @@ exports.runJitsuCommand = function () {
       jitsu.prompt = userPrompt || mockPrompt([]);
 
       function mockClients () {
-        ['users', 'apps', 'snapshots'].forEach(function (client) {
+        ['users', 'apps', 'snapshots', 'databases'].forEach(function (client) {
           jitsu[client]._request = _request;
         });
       }
