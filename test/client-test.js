@@ -17,6 +17,7 @@ var port = 90210,
     config, 
     server;
 
+
 //
 // TODO: This usage is currently undocumented
 //
@@ -41,8 +42,17 @@ vows.describe('jitsu/lib/client').addBatch({
               requestMock = mockRequest
                 .mock(helper.mockOptions, helper.mockDefaults)
                 .get('/auth');
+          var client = new jitsu.api.Client({
+            username: jitsu.config.get('username'),
+            password: jitsu.config.get('password'),
+            remoteUri: [
+              jitsu.config.get('protocol'), 
+              '://', 
+              jitsu.config.get('remoteHost'), 
+              ':' + jitsu.config.get('port')
+            ].join('')
+          });
 
-          var client = new jitsu.api.Client(jitsu.config);
           client._request = requestMock.run();
           client.request('GET', ['auth'], { payload: "JSON" }, this.callback, function (response) {
             that.callback(null, response);
@@ -63,7 +73,16 @@ vows.describe('jitsu/lib/client').addBatch({
                 .get('/whatever')
                 .respond({statusCode:400});
 
-          var client = new jitsu.api.Client(jitsu.config);
+          var client = new jitsu.api.Client({
+            username: jitsu.config.get('username'),
+            password: jitsu.config.get('password'),
+            remoteUri: [
+              jitsu.config.get('protocol'), 
+              '://', 
+              jitsu.config.get('remoteHost'), 
+              ':' + jitsu.config.get('port')
+            ].join('')
+          });
           client._request = requestMock.run();
           client.request('GET', ['whatever'], { payload: "JSON" }, this.callback, function (response) {
             that.callback(null, response);
