@@ -20,7 +20,7 @@
     "colors": "0.x.x",
     "eyes": "0.1.x",
     "nconf": "0.2.x",
-    "npm": "1.0.x & > 1.0.10",
+    "npm": ">= 1.0.100 < 1.1.0",
     "ncp": "0.1.x",
     "optimist": "0.2.x",
     "nodejitsu-api": "0.1.x",
