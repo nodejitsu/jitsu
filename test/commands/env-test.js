@@ -26,7 +26,7 @@ vows.describe('jitsu/commands/env').addBatch({
   'env list': runJitsuCommand(
     mockRequest.mock(helper.mockOptions, helper.mockDefaults)
       .get('/auth')
-      .get('/apps/mickey/example-app')
+      .get('/apps/mickey/jitsu')
       .respond({
         body: {
           app: { 
@@ -42,7 +42,7 @@ vows.describe('jitsu/commands/env').addBatch({
 }).addBatch({
   'env get foo': runJitsuCommand(
     mockRequest.mock(helper.mockOptions, helper.mockDefaults)
-      .get('/apps/mickey/example-app')
+      .get('/apps/mickey/jitsu')
       .respond({
         body: {
           app: { 
@@ -58,7 +58,7 @@ vows.describe('jitsu/commands/env').addBatch({
 }).addBatch({
   'env set test truthy': runJitsuCommand(
     mockRequest.mock(helper.mockOptions, helper.mockDefaults)
-      .get('/apps/mickey/example-app')
+      .get('/apps/mickey/jitsu')
       .respond({
         body: {
           app: { 
@@ -75,7 +75,7 @@ vows.describe('jitsu/commands/env').addBatch({
 }).addBatch({
   'env set delete test': runJitsuCommand(
     mockRequest.mock(helper.mockOptions, helper.mockDefaults)
-      .get('/apps/mickey/example-app')
+      .get('/apps/mickey/jitsu')
       .respond({
         body: {
           app: { 
