@@ -58,6 +58,10 @@ If it's your first time using `jitsu`, you will be prompted to login with an exi
    
    **Common Commands:**
 
+   *To install a pre-built application*
+
+     jitsu install
+
    *To sign up for [Nodejitsu](http://nodejitsu.com)*
 
      jitsu signup
