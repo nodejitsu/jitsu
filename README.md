@@ -5,26 +5,39 @@
 
 ## Overview
 
-[Jitsu](http://github.com/nodejitsu/jitsu) is a [Command Line Tool (CLI)](http://en.wikipedia.org/wiki/Command-line_interface) for deploying Node.js applications to the cloud. It's open-source and easy to use. We've designed Jitsu to be suitable for command line beginners, but still be powerful and extensible enough for production usage. If you aren't a fan of the command line or don't have terminal access you can still do everything Jitsu can do through our web admin, [Samurai](http://develop.nodejitsu.com/). 
+[Jitsu](http://github.com/nodejitsu/jitsu) is a [Command Line Tool (CLI)](http://en.wikipedia.org/wiki/Command-line_interface) for managing and deploying Node.js applications. It's open-source and easy to use. [We've](http://github.com/nodejitsu) designed `jitsu` to be suitable for command line beginners, but still be powerful and extensible enough for production usage.
 
-Jitsu requires `npm`, the [node package manager](http://npmjs.org).
+`jitsu` requires `npm`, the [node package manager](http://npmjs.org).
+
+## One-line npm install
+
+    [sudo] curl http://npmjs.org/install.sh | sh
 
 
-## One-Line Installation
+## One-line jitsu install
 
     [sudo] npm install jitsu -g
 
 ## Features
 
-`jitsu` is built on some amazing technologies which we've been actively building with the community since 2009. `jitsu` is fully extend-able and extremely modular ( see [Libaries](#Libraries) section ).
+`jitsu` is built on some amazing technologies which we've been actively building with the community since 2009. `jitsu` is fully extendable and extremely modular ( see [Libaries](#Libraries) section ).
 
  - Allows for seamless deployment of your Node.js applications to the cloud
+ - Ships with use-full boilerplates and sample applications through [Node Apps](http://github.com/nodeapps/) project integration
  - Fully supports `npm` dependency resolution on deployment to [Nodejitsu](http://nodejitsu.com)
- - Full support of Nodejitu's API ( a plethora of node.js goodies )
+ - Full support of [Nodejitu's API](http://github.com/nodejitsu/nodejitsu-api) ( a plethora of node.js goodies )
  - Integrated multi-level multi-transport logging support via [Winston](http://github.com/indexzero/winston/)
  - Too many to list... seek [further knowledge ](http://github.com/nodejitsu/handbook) or just try it out!
 
-# One-Line Deployment
+
+# One-Line Node App Installation
+
+*( inside an empty directory )*
+
+     jitsu install
+
+
+# One-Line Node App Deployment
 
 *( inside the path of your Node.js application )*
 
