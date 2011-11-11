@@ -8,12 +8,13 @@
     "platform-as-a-service",
     "deployment"
   ],
-  "version": "0.6.2",
+  "version": "0.6.3",
   "author": "Nodejitsu Inc. <support@nodejitsu.com>",
   "repository": {
     "type": "git",
     "url": "http://github.com/nodejitsu/jitsu.git"
   },
+  "preferGlobal": true,
   "dependencies": {
     "async": "0.1.x",
     "cliff": "0.1.x",
@@ -26,7 +27,7 @@
     "nodejitsu-api": "0.1.x",
     "pkginfo": "0.2.x",
     "prompt": "0.1.x >=0.1.7",
-    "request": "2.1.x",
+    "request": "2.2.x",
     "require-analyzer": "0.4.x",
     "rimraf": "1.0.x",
     "winston": "0.5.x",
