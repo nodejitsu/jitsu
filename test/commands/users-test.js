@@ -90,7 +90,7 @@ vows.describe('jitsu/commands/users')/*.addBatch({
       .respond({
         body: { available: true }
       }))
-}).addBatch({
+})/*.addBatch({
   'users confirm jimmy': runJitsuCommand(
     mockPrompt({'Invite code': 'f4387f4'}),
     mockRequest.mock(helper.mockOptions, helper.mockDefaults)
@@ -112,7 +112,7 @@ vows.describe('jitsu/commands/users')/*.addBatch({
         }
       })
     )
-}).addBatch({
+})*/.addBatch({
   'users forgot jimmy': runJitsuCommand(
     mockRequest.mock(helper.mockOptions, helper.mockDefaults)
       .post('/users/jimmy/forgot'))
