@@ -71,7 +71,7 @@ vows.describe('jitsu/commands/env').addBatch({
           }
         }
       })
-      .put('/apps/mickey/application'))
+      .put('/apps/mickey/mickey/application'))
 }).addBatch({
   'env set delete test': runJitsuCommand(
     mockRequest.mock(helper.mockOptions, helper.mockDefaults)
@@ -88,5 +88,5 @@ vows.describe('jitsu/commands/env').addBatch({
           }
         }
       })
-      .put('/apps/mickey/application'))
+      .put('/apps/mickey/mickey/application'))
 }).export(module);
