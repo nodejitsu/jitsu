@@ -136,6 +136,16 @@ If you need to have multiple configuration files, use --localconf or --jitsuconf
     --jitsuconf [file]    specify file to load configuration from
     --noanalyze           skip require-analyzer: do not attempt to dynamicially detect dependencies
 
+##jitsu behind proxy
+
+If you are behind a proxy and you haven't configured jitsu to use it, `jitsu` will throw an error, `Jitsu requires you to connect to Nodejitsu's stack (api.nodejitsu.com)`.
+In order to solve this issue, you can configure jitsu to use a proxy by executing the following command.
+
+    jitsu config set proxy http://proxy.domain.com:3128/
+
+If you need to authenticate yourselves to the proxy, you can try this command.
+
+    jitsu config set proxy http://user:pass@proxy.domain.com:3128/
 
 <a name="Libraries"></a>
 ## Libraries
