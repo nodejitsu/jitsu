@@ -16,7 +16,6 @@ var assert = require('assert'),
 
 var mockPrompt2 = helper.mockPrompt2,
     runJitsuCommand = helper.runJitsuCommand;
-
 vows.describe('jitsu/commands/env').addBatch({
   'This test requires jitsu be unauthorized': function () {
     jitsu.skipAuth = false;
@@ -27,6 +26,23 @@ vows.describe('jitsu/commands/env').addBatch({
     mockRequest.mock(helper.mockOptions, helper.mockDefaults)
       .get('/auth')
       .get('/apps/mickey/jitsu')
+      .respond({
+        body: {
+          app: { 
+            name: 'application', 
+            state: 'stopped', 
+            env: { foo: 'bar', baz: 'buzz' },
+            subdomain:'application', 
+            scripts: { start: './server.js' }, 
+            snapshots: [{ filename: 'FILENAME' }] 
+          }
+        }
+      }))
+})
+.addBatch({
+  'env list foobar': runJitsuCommand(
+    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
+      .get('/apps/mickey/foobar')
       .respond({
         body: {
           app: { 
