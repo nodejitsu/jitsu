@@ -12,6 +12,7 @@ var assert = require('assert'),
     helper = require('../helpers/mock-helpers');
 
 var mockPrompt = helper.mockPrompt,
+    mockPrompt2 = helper.mockPrompt2,
     runJitsuCommand = helper.runJitsuCommand;
 
 vows.describe('jitsu/commans/snapshots').addBatch({
@@ -65,9 +66,10 @@ vows.describe('jitsu/commans/snapshots').addBatch({
       .post('/apps/mickey/application2/snapshots/0.0.0-1/activate')
     )
 }).addBatch({
-  'snapshots destroy application3': runJitsuCommand(
-    mockPrompt({'snapshot': '0.0.0-1'}),
-    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
+  'snapshots destroy application3': runJitsuCommand([
+      mockPrompt2({answer: 'yes'}),
+      mockPrompt({'snapshot': '0.0.0-1'})
+    ], mockRequest.mock(helper.mockOptions, helper.mockDefaults)
       .get('/apps/mickey/application3/snapshots')
       .respond({
         body: {

@@ -108,7 +108,7 @@ exports.runJitsuCommand = function () {
       assertFn,
       setupFn,
       mockRequest,
-      userPrompt;
+      userPrompts;
       
   args.forEach(function (a) {
     if (typeof a === 'function' && a.name === 'setup') {
@@ -123,11 +123,16 @@ exports.runJitsuCommand = function () {
     else if (a instanceof MockRequest) {
       mockRequest = a;
     }
+    else if(a instanceof Array) {
+      userPrompts = a;
+    }
     else {
-      userPrompt = a;
+      userPrompts = [a];
     }
   });
-  
+  if(!userPrompts) {
+    userPrompts = [mockPrompt([])];
+  }
   if (!mockRequest) {
     console.log('Mock request is required for `runJitsuCommand`');
     process.exit(-1);
@@ -153,8 +158,28 @@ exports.runJitsuCommand = function () {
       //
       // Mock the command-line prompt
       //
-      jitsu.prompt = userPrompt || mockPrompt([]);
-
+      var currentPrompt = null;
+      function nextPrompt() {
+        currentPrompt = userPrompts.shift();
+        if(!currentPrompt) {
+          jitsu.prompt = null;
+        } else {
+          var promptGet = currentPrompt.get;
+          // Replace the prompt.get method with our own implementation
+          // this way we know when the prompt was used so we set jitsu.prompt with the next prompt.
+          currentPrompt.get = function(opts, cb) {
+            // Call the original prompt.get implementation with our callback.
+            promptGet.call(this, opts, function(err, result) {
+              // now that this prompt was invoked, move to the next one(if any).
+              nextPrompt();
+              // then we finally let the command/test continue with the original flow.
+              cb(err, result);
+            });
+          };
+          jitsu.prompt = currentPrompt;
+        }
+      }
+      nextPrompt(); // Initialize jitsu.prompt
       function mockClients () {
         ['users', 'apps', 'snapshots', 'databases'].forEach(function (client) {
           jitsu[client]._request = _request;
