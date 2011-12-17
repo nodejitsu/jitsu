@@ -80,6 +80,7 @@ vows.describe('jitsu/commands/databases').addBatch({
       }))
 }).addBatch({
   'databases destroy test3': runJitsuCommand(
+    mockPrompt2({answer: 'yes'}),
     mockRequest.mock(helper.mockOptions, helper.mockDefaults)
       .del('/databases/mickey/test3')
     )
