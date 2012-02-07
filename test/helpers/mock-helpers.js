@@ -2,14 +2,12 @@
 var assert = require('assert'),
     http = require('http'),
     util = require('util'),
-    eyes = require('eyes'),
     it = require('it-is'),
-    inspect = eyes.inspector({ stream: null })
     nodemock = require('nodemock'),
     MockRequest = require('mock-request').MockRequest,
     optimist = require('optimist'),
     jitsu = require('../../lib/jitsu'),
-    base64 = require('../../lib/jitsu/utils/base64');
+    base64 = require('flatiron').common.base64;
 
 var port = 90210,
     remoteHost = 'api.mockjitsu.com';
@@ -44,10 +42,10 @@ function mockPrompt (expected, answer) {
     expected  = Object.keys(expected);
   }
 
-  var prompt = nodemock.mock('get').takes(expected,function (){}).calls(1,[null, answer]);
+  var prompt = nodemock.mock('get').takes(expected,function () {}).calls(1,[null, answer]);
   
-  prompt.pause = function (){return this};
-  prompt.start = function (){return this};//TODO: check pause was called.
+  prompt.pause = function () {return this};
+  prompt.start = function () {return this};//TODO: check pause was called.
 
   prompt.addProperties = function (obj,properties,callback) {
     prompt.get(properties, function (err,answer) {
@@ -76,11 +74,11 @@ function mockPrompt2 (/*variable arguments*/) {
 
   var prompt;
 
-  [].slice.call(arguments).forEach(function (answer){
+  [].slice.call(arguments).forEach(function (answer) {
     var m;
     m = !prompt ? prompt = nodemock.mock('get') : prompt.mock('get');
 
-    m.takes(makeProperties(answer),function(){}).calls(1,[null,answer]);
+    m.takes(makeProperties(answer),function () {}).calls(1,[null,answer]);
   
   });
   
@@ -94,8 +92,8 @@ function mockPrompt2 (/*variable arguments*/) {
     })
   }
 
-  prompt.start = function (){return prompt};
-  prompt.pause = function (){return prompt};
+  prompt.start = function () {return prompt};
+  prompt.pause = function () {return prompt};
 
   return prompt;
 }
@@ -123,14 +121,14 @@ exports.runJitsuCommand = function () {
     else if (a instanceof MockRequest) {
       mockRequest = a;
     }
-    else if(a instanceof Array) {
+    else if (a instanceof Array) {
       userPrompts = a;
     }
     else {
       userPrompts = [a];
     }
   });
-  if(!userPrompts) {
+  if (!userPrompts) {
     userPrompts = [mockPrompt([])];
   }
   if (!mockRequest) {
@@ -161,15 +159,15 @@ exports.runJitsuCommand = function () {
       var currentPrompt = null;
       function nextPrompt() {
         currentPrompt = userPrompts.shift();
-        if(!currentPrompt) {
+        if (!currentPrompt) {
           jitsu.prompt = null;
         } else {
           var promptGet = currentPrompt.get;
           // Replace the prompt.get method with our own implementation
           // this way we know when the prompt was used so we set jitsu.prompt with the next prompt.
-          currentPrompt.get = function(opts, cb) {
+          currentPrompt.get = function (opts, cb) {
             // Call the original prompt.get implementation with our callback.
-            promptGet.call(this, opts, function(err, result) {
+            promptGet.call(this, opts, function (err, result) {
               // now that this prompt was invoked, move to the next one(if any).
               nextPrompt();
               // then we finally let the command/test continue with the original flow.

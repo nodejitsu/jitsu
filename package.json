@@ -16,21 +16,14 @@
   },
   "preferGlobal": true,
   "dependencies": {
-    "async": "0.1.x",
     "cliff": "0.1.x",
-    "colors": "0.x.x",
-    "eyes": "0.1.x",
-    "nconf": "0.2.x",
+    "colors": "0.6.x",
+    "flatiron": "~0.1.9",
     "npm": ">= 1.0.100 < 1.1.0",
-    "ncp": "0.2.x",
-    "optimist": "0.2.x",
     "nodejitsu-api": "0.2.x",
     "pkginfo": "0.2.x",
-    "prompt": "0.1.x >=0.1.7",
     "request": "2.9.x",
     "require-analyzer": "0.4.x",
-    "rimraf": "1.0.x",
-    "winston": "0.5.x",
     "semver": "1.0.x"
   },
   "devDependencies": {

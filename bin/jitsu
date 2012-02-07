@@ -1,14 +1,10 @@
 #!/usr/bin/env node
 
-var eyes = require('eyes'),
-    colors = require('colors'),
-    winston = require('winston').cli(),
-    argv = require('optimist').argv,
-    jitsu = require('../lib/jitsu');
+var jitsu = require('../lib/jitsu');
 
-jitsu.start(argv, function (err) {
+jitsu.start(function (err) {
   if (!err) {
-    winston.info('Nodejitsu'.grey + ' ok'.green.bold);
+    jitsu.log.info('Nodejitsu'.grey + ' ok'.green.bold);
   }
   
   process.stdout.on('drain', function () {

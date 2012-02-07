@@ -7,15 +7,14 @@
  
 var assert = require('assert'),
     vows = require('vows'),
-    eyes = require('eyes'),
     jitsu = require('../lib/jitsu'),
     optimist = require('optimist'),
     it = require('it-is');
 
 vows.describe('jitsu/lib/jitsu/config').addBatch({
   "When using jitsu.config module": {
-    "the load() method" : {
-      topic: function (){
+    "the load() method": {
+      topic: function () {
         jitsu.config.load(__dirname + '/fixtures/dot-jitsuconf', this.callback);
       },
       "should return store object": function (err, store) {
