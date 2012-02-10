@@ -16,21 +16,21 @@
   },
   "preferGlobal": true,
   "dependencies": {
-    "cliff": "0.1.x",
-    "colors": "0.6.x",
-    "flatiron": "~0.1.9",
-    "npm": ">= 1.0.100 < 1.1.0",
-    "nodejitsu-api": "0.2.x",
-    "pkginfo": "0.2.x",
-    "request": "2.9.x",
-    "require-analyzer": "0.4.x",
-    "semver": "1.0.x"
+    "cli-config": "0.1.0",
+    "colors": "0.6.0-1",
+    "flatiron": "0.1.11",
+    "npm": "1.0.106",
+    "nodejitsu-api": "0.2.4-1",
+    "pkginfo": "0.2.2",
+    "request": "2.9.100",
+    "require-analyzer": "0.4.0-1",
+    "semver": "1.0.13"
   },
   "devDependencies": {
     "it-is": "0.x.x",
     "nodemock": "0.2.9beta",
     "mock-request": "0.1.x >=0.1.2",
-    "vows": "0.5.x"
+    "vows": "0.6.x"
   },
   "bin": {
     "jitsu": "./bin/jitsu"
