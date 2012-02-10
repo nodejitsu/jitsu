@@ -1,5 +1,5 @@
 /*
- * apps.js: Tests for `jitsu apps *` command(s).
+ * env.js: Tests for `jitsu env *` command(s).
  *
  * (C) 2010, Nodejitsu Inc.
  *
@@ -8,25 +8,63 @@
 var assert = require('assert'),
     fs = require('fs'),
     path = require('path'),
-    mockRequest = require('mock-request'),
+    nock = require('nock'),
     vows = require('vows'),
     jitsu = require('../../lib/jitsu'),
-    helper = require('../helpers/mock-helpers');
+    macros = require('../helpers/macros');
 
-var mockPrompt2 = helper.mockPrompt2,
-    runJitsuCommand = helper.runJitsuCommand;
+var shouldNodejitsuOk = macros.shouldNodejitsuOk;
+
 vows.describe('jitsu/commands/env').addBatch({
-  'This test requires jitsu be unauthorized': function () {
-    jitsu.skipAuth = false;
-    assert.isFalse(jitsu.skipAuth);
-  }
+  'env list': shouldNodejitsuOk(function setup() {
+    nock('http://api.mockjitsu.com')
+      .get('/apps/tester/jitsu')
+      .reply(200, {
+        app: { 
+          name: 'application', 
+          state: 'stopped', 
+          env: { foo: 'bar', baz: 'buzz' },
+          subdomain:'application', 
+          scripts: { start: './server.js' }, 
+          snapshots: [{ filename: 'FILENAME' }] 
+        }
+      }, { 'x-powered-by': 'Nodejitsu' })
+  })
 }).addBatch({
-  'env list': runJitsuCommand(
-    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
-      .get('/auth')
-      .get('/apps/mickey/jitsu')
-      .respond({
-        body: {
+  'env list foobar': shouldNodejitsuOk(function setup() {
+    nock('http://api.mockjitsu.com')
+      .get('/apps/tester/foobar')
+      .reply(200, {
+        app: { 
+          name: 'application', 
+          state: 'stopped', 
+          env: { foo: 'bar', baz: 'buzz' },
+          subdomain:'application', 
+          scripts: { start: './server.js' }, 
+          snapshots: [{ filename: 'FILENAME' }] 
+        }
+      }, { 'x-powered-by': 'Nodejitsu' })
+  })
+}).addBatch({
+  'env get foo': shouldNodejitsuOk(function setup() {
+    nock('http://api.mockjitsu.com')
+      .get('/apps/tester/jitsu')
+      .reply(200, {
+        app: { 
+          name: 'application', 
+          state: 'stopped', 
+          env: { foo: 'bar', baz: 'buzz' },
+          subdomain:'application', 
+          scripts: { start: './server.js' }, 
+          snapshots: [{ filename: 'FILENAME' }] 
+        }
+      }, { 'x-powered-by': 'Nodejitsu' })
+  })
+}).addBatch({
+  'env set test truthy': shouldNodejitsuOk(function setup() {
+    nock('http://api.mockjitsu.com')
+      .get('/apps/tester/jitsu')
+        .reply(200, {
           app: { 
             name: 'application', 
             state: 'stopped', 
@@ -35,64 +73,15 @@ vows.describe('jitsu/commands/env').addBatch({
             scripts: { start: './server.js' }, 
             snapshots: [{ filename: 'FILENAME' }] 
           }
-        }
-      }))
-})
-.addBatch({
-  'env list foobar': runJitsuCommand(
-    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
-      .get('/apps/mickey/foobar')
-      .respond({
-        body: {
-          app: { 
-            name: 'application', 
-            state: 'stopped', 
-            env: { foo: 'bar', baz: 'buzz' },
-            subdomain:'application', 
-            scripts: { start: './server.js' }, 
-            snapshots: [{ filename: 'FILENAME' }] 
-          }
-        }
-      }))
+        }, { 'x-powered-by': 'Nodejitsu' })
+      .put('/apps/tester/application', { env: { foo: 'bar', baz: 'buzz', test: 'truthy' } })
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' });    
+  })
 }).addBatch({
-  'env get foo': runJitsuCommand(
-    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
-      .get('/apps/mickey/jitsu')
-      .respond({
-        body: {
-          app: { 
-            name: 'application', 
-            state: 'stopped', 
-            env: { foo: 'bar', baz: 'buzz' },
-            subdomain:'application', 
-            scripts: { start: './server.js' }, 
-            snapshots: [{ filename: 'FILENAME' }] 
-          }
-        }
-      }))
-}).addBatch({
-  'env set test truthy': runJitsuCommand(
-    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
-      .get('/apps/mickey/jitsu')
-      .respond({
-        body: {
-          app: { 
-            name: 'application', 
-            state: 'stopped', 
-            env: { foo: 'bar', baz: 'buzz' },
-            subdomain:'application', 
-            scripts: { start: './server.js' }, 
-            snapshots: [{ filename: 'FILENAME' }] 
-          }
-        }
-      })
-      .put('/apps/mickey/application'))
-}).addBatch({
-  'env set delete test': runJitsuCommand(
-    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
-      .get('/apps/mickey/jitsu')
-      .respond({
-        body: {
+  'env set delete test': shouldNodejitsuOk(function setup() {
+    nock('http://api.mockjitsu.com')
+      .get('/apps/tester/jitsu')
+        .reply(200, {
           app: { 
             name: 'application', 
             state: 'stopped', 
@@ -101,7 +90,8 @@ vows.describe('jitsu/commands/env').addBatch({
             scripts: { start: './server.js' }, 
             snapshots: [{ filename: 'FILENAME' }] 
           }
-        }
-      })
-      .put('/apps/mickey/application'))
+        }, { 'x-powered-by': 'Nodejitsu' })
+      .put('/apps/tester/application', { env: { foo: 'bar', baz: 'buzz', test: 'truthy', delete: 'test' } })
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' });
+  })
 }).export(module);

@@ -8,72 +8,62 @@
 var assert = require('assert'),
     fs = require('fs'),
     path = require('path'),
-    mockRequest = require('mock-request'),
+    nock = require('nock'),
     vows = require('vows'),
     jitsu = require('../../lib/jitsu'),
-    helper = require('../helpers/mock-helpers');
+    macros = require('../helpers/macros');
 
-var mockPrompt2 = helper.mockPrompt2,
-    runJitsuCommand = helper.runJitsuCommand;
+var shouldNodejitsuOk = macros.shouldNodejitsuOk;
 
 vows.describe('jitsu/commands/apps').addBatch({
-  'This test requires jitsu be unauthorized': function () {
-    jitsu.skipAuth = false;
-    assert.isFalse(jitsu.skipAuth);
-  }
+  'apps list': shouldNodejitsuOk(function setup() {
+    nock('http://api.mockjitsu.com')
+      .get('/apps/tester')
+      .reply(200, {
+        apps:[{ 
+          name: 'application', 
+          state: 'stopped', 
+          subdomain:'application', 
+          scripts: { start: './server.js' }, 
+          snapshots: [{ filename: 'FILENAME' }] 
+        }]
+      }, { 'x-powered-by': 'Nodejitsu' })
+  })
 }).addBatch({
-  'apps list': runJitsuCommand(
-    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
-      .get('/auth')
-      .get('/apps/mickey')
-      .respond({
-        body: {
-          apps:[{ 
-            name: 'application', 
-            state: 'stopped', 
-            subdomain:'application', 
-            scripts: { start: './server.js' }, 
-            snapshots: [{ filename: 'FILENAME' }] 
-          }]
+  'apps view application2': shouldNodejitsuOk(function setup() {
+    nock('http://api.mockjitsu.com')
+      .get('/apps/tester/application2')
+      .reply(200, {
+        app: { 
+          name: 'application', 
+          state: 'stopped', 
+          subdomain:'application', 
+          scripts: { start: './server.js' }, 
+          snapshots: [{ filename: 'FILENAME' }] 
         }
-      }))
+      }, { 'x-powered-by': 'Nodejitsu' })
+  })
 }).addBatch({
-  'apps view application2': runJitsuCommand(
-    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
-      .get('/apps/mickey/application2')
-      .respond({
-        body: {
-          app: { 
-            name: 'application', 
-            state: 'stopped', 
-            subdomain:'application', 
-            scripts: { start: './server.js' }, 
-            snapshots: [{ filename: 'FILENAME' }] 
-          }
-        }
-      }))
-}).addBatch({
-  'apps start application3': runJitsuCommand(
-    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
-      .post('/apps/mickey/application3/start')
-      .get('/apps/mickey/application3')
-      .respond({
-        body: { 
+  'apps start application3': shouldNodejitsuOk(function setup() {
+    nock('http://api.mockjitsu.com')
+      .post('/apps/tester/application3/start', {})
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
+      .get('/apps/tester/application3')
+        .reply(200, {
           app: { state: 'started' }
-        }
-      }))
+        }, { 'x-powered-by': 'Nodejitsu' })
+  })
 }).addBatch({
-  'apps stop application3': runJitsuCommand(
-    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
-      .post('/apps/mickey/application3/stop')
+  'apps stop application3': shouldNodejitsuOk(function setup() {
+    nock('http://api.mockjitsu.com')
+      .post('/apps/tester/application3/stop', {})
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
       .get('/apps/micke/application3')
-      .respond({
-        body: {
+      .reply(200, {
           app: { state: 'stopped' }
-        }
-      })
-    )
-}).addBatch({
+      }, { 'x-powered-by': 'Nodejitsu' })
+  })
+})/*.addBatch({
   'apps deploy': runJitsuCommand(
     function setup () {
       var packageFile = path.join(__dirname, '..', 'fixtures', 'example-app', 'package.json');
@@ -123,7 +113,7 @@ vows.describe('jitsu/commands/apps').addBatch({
         }
       })
     )
-}).export(module);
+})*/.export(module);
 
 /*exports ['jitsu apps create'] = makeCommandTest(
     ['apps','create', 'application3'],//command

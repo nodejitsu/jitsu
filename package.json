@@ -27,9 +27,7 @@
     "semver": "1.0.13"
   },
   "devDependencies": {
-    "it-is": "0.x.x",
-    "nodemock": "0.2.9beta",
-    "mock-request": "0.1.x >=0.1.2",
+    "nock": "0.8.x",
     "vows": "0.6.x"
   },
   "bin": {

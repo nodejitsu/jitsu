@@ -14,7 +14,7 @@ var assert = require('assert'),
 var mockPrompt = helper.mockPrompt,
     runJitsuCommand = helper.runJitsuCommand;
 
-vows.describe('jitsu/commands/users')/*.addBatch({
+vows.describe('jitsu/commands/users').addBatch({
   'users create elvis': runJitsuCommand(
     mockPrompt({ email: 'e@mailinator.com', password: '12345', 'confirm password': '12345'}),
     mockRequest.mock(helper.mockOptions, helper.mockDefaults)

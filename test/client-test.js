@@ -6,8 +6,6 @@
  */
  
 var assert = require('assert'),
-    optimist = require('optimist'),
-    mockRequest = require('mock-request'),
     vows = require('vows'),
     jitsu = require('../lib/jitsu'),
     helper = require('./helpers/mock-helpers');
@@ -16,7 +14,6 @@ var port = 90210,
     remoteHost = 'api.mockjitsu.com', 
     config, 
     server;
-
 
 //
 // TODO: This usage is currently undocumented
