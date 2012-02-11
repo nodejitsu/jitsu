@@ -1,107 +1,113 @@
 /*
- * users.js: Tests for `jitsu users *` command(s).
+ * env.js: Tests for `jitsu env *` command(s).
  *
  * (C) 2010, Nodejitsu Inc.
  *
  */
  
 var assert = require('assert'),
+    fs = require('fs'),
+    path = require('path'),
+    flatiron = require('flatiron'),
+    nock = require('nock'),
     vows = require('vows'),
-    mockRequest = require('mock-request'),
     jitsu = require('../../lib/jitsu'),
-    helper = require('../helpers/mock-helpers');
+    macros = require('../helpers/macros');
 
-var mockPrompt = helper.mockPrompt,
-    runJitsuCommand = helper.runJitsuCommand;
+var shouldNodejitsuOk = macros.shouldNodejitsuOk;
+
+var elvis = {
+  username: 'elvis',
+  email: 'e@mailinator.com',
+  password: '12345'
+};
+
+var jimmy = { 
+  username: "jimmy",
+  email: "j@mailinator.com",
+  password: "98765"
+};
 
 vows.describe('jitsu/commands/users').addBatch({
-  'users create elvis': runJitsuCommand(
-    mockPrompt({ email: 'e@mailinator.com', password: '12345', 'confirm password': '12345'}),
-    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
-      .post('/users/elvis', {
-        email: 'e@mailinator.com',
-        password: '12345',
-        username: 'elvis'
-      }))
+  'users create elvis': shouldNodejitsuOk(function setup() {
+    jitsu.prompt.override = flatiron.common.clone(elvis);
+    jitsu.prompt.override['confirm password'] = elvis.password;
+    
+    nock('http://api.mockjitsu.com')
+      .post('/users/elvis', elvis)
+      .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
+  })
 }).addBatch({
-  'users create elvis': runJitsuCommand(
+  'users create elvis': shouldNodejitsuOk(
     'should respond with a 400 error',
     function assertion (ign, err) {
       err = ign;
       assert.equal(err.statusCode, '400');
     },
-    mockPrompt({email: 'e@mailinator.com', password: '12345'}),
-    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
-      .post('/users/elvis', {
-        email: 'e@mailinator.com',
-        password: '12345',
-        username: 'elvis'
-      })
-      .respond({
-        statusCode: 400
-      }))
+    function setup() {
+      jitsu.prompt.override = flatiron.common.clone(elvis);
+      jitsu.prompt.override['confirm password'] = elvis.password;
+
+      nock('http://api.mockjitsu.com')
+        .post('/users/elvis', elvis)
+        .reply(400, '', { 'x-powered-by': 'Nodejitsu' })
+    })
 }).addBatch({
-  'users create elvis': runJitsuCommand(
-    'should respond with a 403 error',
-    function assertion (ign, err) {
-      err = ign;
-      assert.equal(err.statusCode, '403');
-    },
-    mockPrompt({ email: 'e@mailinator.com', password: '12345' }),
-    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
-      .post('/users/elvis', {
-        email: 'e@mailinator.com',
-        password: '12345',
-        username: 'elvis'        
-      })
-      .respond({
-        statusCode: 403
-      }))
-}).addBatch({
-  'users create elvis': runJitsuCommand(
+  'users create elvis': shouldNodejitsuOk(
     'should respond with a 500 error',
     function assertion (ign, err) {
       err = ign;
       assert.equal(err.statusCode, '500');
     },
-    mockPrompt({ email: 'e@mailinator.com', password: '12345' }),
-    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
-      .post('/users/elvis', {
-        email: 'e@mailinator.com',
-        password: '12345',
-        username: 'elvis'        
-      })
-      .respond({
-        statusCode: 500
-      }))
+    function setup() {
+      jitsu.prompt.override = flatiron.common.clone(elvis);
+      jitsu.prompt.override['confirm password'] = elvis.password;
+
+      nock('http://api.mockjitsu.com')
+        .post('/users/elvis', elvis)
+        .reply(500, '', { 'x-powered-by': 'Nodejitsu' })
+    })
 }).addBatch({
-  'users create jimmy': runJitsuCommand(
-    mockPrompt({ email: 'j@mailinator.com', password: '98765' }),
-    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
-      .post('/users/jimmy', { 
-        email: "j@mailinator.com",
-        password: "98765",
-        username: "jimmy"
-      }))
-})*/.addBatch({
-  'users available jimmy': runJitsuCommand(
-    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
+  'users create jimmy': shouldNodejitsuOk(function setup() {
+    jitsu.prompt.override = flatiron.common.clone(jimmy);
+    jitsu.prompt.override['confirm password'] = jimmy.password;
+    
+    nock('http://api.mockjitsu.com')
+      .post('/users/jimmy', jimmy)
+      .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
+  })
+}).addBatch({
+  'users available jimmy': shouldNodejitsuOk(function setup() {
+    nock('http://api.mockjitsu.com')
       .get('/users/jimmy/available')
-      .respond({
-        body: { available: true }
-      }))
-})/*.addBatch({
-  'users confirm jimmy': runJitsuCommand(
-    mockPrompt({'Invite code': 'f4387f4'}),
-    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
-      .post('/users/jimmy/confirm')
-      .respond({
-        body: {
-          username: 'jimmy',
-          inviteCode: 'f4387f4'
-        }
-      }))
+      .reply(200, { available: true }, { 'x-powered-by': 'Nodejitsu' })
+  })
 }).addBatch({
+  'users confirm jimmy': shouldNodejitsuOk(function setup() {
+    jitsu.prompt.override['invite code'] = 'f4387f4';
+    jitsu.prompt.override['set password'] = '123456';
+    jitsu.prompt.override['confirm password'] = '123456';
+    
+    var testConf = path.join(__dirname, '..', 'fixtures', 'test-jitsuconf'),
+        conf = path.join(__dirname, '..', 'fixtures', 'dot-jitsuconf');
+        
+    fs.writeFileSync(
+      testConf, 
+      fs.readFileSync(conf, 'utf8'),
+      'utf8'
+    );
+    
+    jitsu.config.stores.file.file = testConf;
+    jitsu.config.stores.file.loadSync();
+    
+    nock('http://api.mockjitsu.com')
+      .post('/users/jimmy/confirm', { username: 'jimmy', inviteCode: 'f4387f4'})
+      .reply(200, {
+        username: 'jimmy',
+        inviteCode: 'f4387f4'
+      }, { 'x-powered-by': 'Nodejitsu' })
+  })
+})/*.addBatch({
   'users confirm jimmy': runJitsuCommand(
     mockPrompt({ 'Invite code': 'f4387f4' }),
     mockRequest.mock(helper.mockOptions, helper.mockDefaults)
@@ -112,8 +118,8 @@ vows.describe('jitsu/commands/users').addBatch({
         }
       })
     )
-})*/.addBatch({
+}).addBatch({
   'users forgot jimmy': runJitsuCommand(
     mockRequest.mock(helper.mockOptions, helper.mockDefaults)
       .post('/users/jimmy/forgot'))
-}).export(module);
+})*/.export(module);
