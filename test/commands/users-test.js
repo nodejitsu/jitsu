@@ -102,10 +102,12 @@ vows.describe('jitsu/commands/users').addBatch({
     
     nock('http://api.mockjitsu.com')
       .post('/users/jimmy/confirm', { username: 'jimmy', inviteCode: 'f4387f4'})
-      .reply(200, {
-        username: 'jimmy',
-        inviteCode: 'f4387f4'
-      }, { 'x-powered-by': 'Nodejitsu' })
+        .reply(200, {
+          username: 'jimmy',
+          inviteCode: 'f4387f4'
+        }, { 'x-powered-by': 'Nodejitsu' })
+      .post('/users/jimmy/forgot', { 'new-password': '123456' })
+        .reply(200, { 'set-password': '123456' }, { 'x-powered-by': 'Nodejitsu' })
   })
 })/*.addBatch({
   'users confirm jimmy': runJitsuCommand(
