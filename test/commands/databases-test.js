@@ -17,11 +17,6 @@ var mockPrompt2 = helper.mockPrompt2,
     runJitsuCommand = helper.runJitsuCommand;
 
 vows.describe('jitsu/commands/databases').addBatch({
-  'This test requires jitsu be unauthorized': function () {
-    jitsu.skipAuth = false;
-    assert.isFalse(jitsu.skipAuth);
-  }
-}).addBatch({
   'databases list': runJitsuCommand(
     mockRequest.mock(helper.mockOptions, helper.mockDefaults)
       .get('/auth')
