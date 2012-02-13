@@ -10,9 +10,7 @@ exports.shouldNodejitsuOk = function () {
   var args = Array.prototype.slice.call(arguments),
       assertion = "should respond with no error",
       assertFn,
-      setupFn,
-      mockRequest,
-      userPrompts;
+      setupFn;
       
   args.forEach(function (a) {
     if (typeof a === 'function' && a.name === 'setup') {
@@ -23,12 +21,6 @@ exports.shouldNodejitsuOk = function () {
     }
     else if (typeof a === 'string') {
       assertion = a;
-    }
-    else if (a instanceof Array) {
-      userPrompts = a;
-    }
-    else {
-      userPrompts = [a];
     }
   });
   
