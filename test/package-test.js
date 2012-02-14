@@ -7,14 +7,11 @@
  
 var assert = require('assert'),
     fs = require('fs'),
-    join = require('path').join,
+    path = require('path'),
     vows = require('vows'),
     analyzer = require('require-analyzer'),
-    eyes = require('eyes'),
-    nodemock = require('nodemock'),
-    nm = require('nodemock'),
     jitsu = require('../lib/jitsu'),
-    helper = require('./helpers/mock-helpers');
+    macros = require('./helpers/macros');
 
 //
 //  package.create prompts user to create package.json
@@ -26,8 +23,6 @@ var assert = require('assert'),
 //
 //  package.write prompts the user for 'ok' and then writes the new file.
 //
-var mockPrompt2 = helper.mockPrompt2;
-
 function makeProperties (answer) {
   var expected = [];
   for (var name in answer) {
@@ -44,8 +39,8 @@ function mockAnalyzer (useAnalyzer, start) {
 }
 
 function assertCreatePackage (useAnalyzer) {
-  var dir = join(__dirname,'fixtures','example-app'),
-      start = join(__dirname,'fixtures','example-app','server.js'),
+  var dir = path.join(__dirname,'fixtures','example-app'),
+      start = path.join(__dirname,'fixtures','example-app','server.js'),
       pkg = {
         name: 'example-app', 
         subdomain: 'example-app', 
@@ -67,7 +62,7 @@ function assertCreatePackage (useAnalyzer) {
 
   return {
     topic: function () {
-      var packageFile = join(__dirname, 'fixtures', 'example-app', 'package.json'),
+      var packageFile = path.join(__dirname, 'fixtures', 'example-app', 'package.json'),
           pkg;
           
       pkg = {
@@ -78,7 +73,7 @@ function assertCreatePackage (useAnalyzer) {
       };
 
       fs.writeFileSync(packageFile, JSON.stringify(pkg));
-      process.chdir(join(__dirname, 'fixtures', 'example-app'));
+      process.chdir(path.join(__dirname, 'fixtures', 'example-app'));
 
       optimist.argv.noanalyze = !useAnalyzer;
       analyzer.analyze = analyzerMock.analyze;
@@ -96,8 +91,8 @@ function assertCreatePackage (useAnalyzer) {
 }
 
 function assertValidatePackage (useAnalyzer) {
-  var dir = join(__dirname, 'fixtures', 'example-app'),
-      start = join(__dirname, 'fixtures', 'example-app', 'server.js'),
+  var dir = path.join(__dirname, 'fixtures', 'example-app'),
+      start = path.join(__dirname, 'fixtures', 'example-app', 'server.js'),
       pkgMissing = {
         name: 'example-app', 
         subdomain: 'example-app', 
@@ -126,11 +121,11 @@ function assertValidatePackage (useAnalyzer) {
       
   return {
     topic: function () {
-      var packageFile = join(__dirname, 'fixtures', 'example-app', 'package.json');
+      var packageFile = path.join(__dirname, 'fixtures', 'example-app', 'package.json');
 
       jitsu.prompt = promptMock;
       fs.writeFileSync(packageFile, JSON.stringify(pkgMissing));
-      process.chdir(join(__dirname, 'fixtures', 'example-app'));
+      process.chdir(path.join(__dirname, 'fixtures', 'example-app'));
 
       optimist.argv.noanalyze = !useAnalyzer;
       analyzer.analyze = analyzerMock.analyze;
