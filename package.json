@@ -17,7 +17,7 @@
   "preferGlobal": true,
   "dependencies": {
     "colors": "0.6.0-1",
-    "flatiron": "0.1.11",
+    "flatiron": "0.1.12",
     "flatiron-cli-config": "0.1.1",
     "flatiron-cli-users": "0.1.0",
     "npm": "1.1.1",
