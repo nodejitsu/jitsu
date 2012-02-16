@@ -36,7 +36,7 @@
   },
   "main": "./lib/jitsu",
   "scripts": {
-    "test": "vows test/commands/*-test.js test/*-test.js --isolate --spec"
+    "test": "vows test/commands/*-test.js --spec"
   },
   "engines": {
     "node": ">= 0.4.0"

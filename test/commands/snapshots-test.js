@@ -56,6 +56,7 @@ vows.describe('jitsu/commans/snapshots').addBatch({
   'snapshots destroy application3': shouldNodejitsuOk(function setup() {
     jitsu.prompt.override.answer = 'yes';
     jitsu.prompt.override.snapshot = '0.0.0-1';
+    jitsu.prompt.override.destroy = 'yes';
     
     nock('http://api.mockjitsu.com')
       .get('/apps/tester/application3/snapshots')

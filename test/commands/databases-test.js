@@ -68,6 +68,7 @@ vows.describe('jitsu/commands/databases').addBatch({
 }).addBatch({
   'databases destroy test3': shouldNodejitsuOk(function setup() {
     jitsu.prompt.override.answer = 'yes';
+    jitsu.prompt.override.destroy = 'yes';
     
     nock('http://api.mockjitsu.com')
       .delete('/databases/tester/test3', {})

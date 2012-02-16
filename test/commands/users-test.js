@@ -28,15 +28,35 @@ var jimmy = {
   password: "98765"
 };
 
-vows.describe('jitsu/commands/users')/*.addBatch({
-  'users confirm jimmy': runJitsuCommand(
-    mockPrompt({ 'Invite code': 'f4387f4' }),
-    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
-      .post('/users/jimmy/confirm')
-      .respond({
-        body: {
-          error: 'username jimmy is taken'
-        }
-      })
-    )
-})*/.export(module);
+vows.describe('jitsu/commands/users').addBatch({
+  'users confirm jimmy': shouldNodejitsuOk(
+    'should respond with a 400 error',
+    function assertion (ign, err) {
+      err = ign;
+      assert.equal(err.statusCode, '400');
+    },
+    function setup() {
+      jitsu.prompt.override['invite code'] = 'f4387f4';
+    
+      nock('http://api.mockjitsu.com')
+        .post('/users/jimmy/confirm', { username: 'jimmy', 'inviteCode': 'f4387f4' })
+        .reply(400, {
+          result: {
+            error: 'Invalid Invite Code'
+          }
+        }, { 'x-powered-by': 'Nodejitsu' });
+    }
+  ),
+}).addBatch({
+  'users confirm elvis': shouldNodejitsuOk(function setup() {
+    jitsu.prompt.override['invite code'] = 'f4387f4';
+    jitsu.prompt.override['login'] = 'no';
+  
+    nock('http://api.mockjitsu.com')
+      .post('/users/elvis/confirm', { username: 'elvis', 'inviteCode': 'f4387f4' })
+      .reply(200, {
+        message: 'Your ninja status has been confirmed!',
+        hasPassword: true
+      }, { 'x-powered-by': 'Nodejitsu' });
+  })
+}).export(module);
