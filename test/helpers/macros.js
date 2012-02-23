@@ -71,12 +71,12 @@ exports.useAppFixture = function () {
     name: 'example-app',
     subdomain: 'example-app',
     scripts: { start: 'server.js' },
-    version: '0.0.0'
+    version: '0.0.0-1'
   };
 
   var cwd = process.cwd();
 
-  fs.writeFileSync(packageFile, JSON.stringify(pkg))
+  fs.writeFileSync(packageFile, JSON.stringify(pkg, true, 2))
 
   // Change directories
   process.chdir(path.join(__dirname, '..', 'fixtures', 'example-app'));
