@@ -202,9 +202,9 @@ vows.describe('jitsu/commands/env').addBatch({
       nock('http://api.mockjitsu.com')
         .get('/apps/tester/barbaz')
           .reply(200, {
-              app: { 
+              app: {
                 name: 'barbaz',
-                state: 'stopped', 
+                state: 'stopped',
                 env: { foo: 'bar', baz: 'buzz', test: 'truthy' },
                 subdomain:'barbaz', 
                 scripts: { start: './server.js' }, 
