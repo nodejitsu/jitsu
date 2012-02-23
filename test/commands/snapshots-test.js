@@ -6,13 +6,17 @@
  */
  
 var nock = require('nock'),
+    assert = require('assert'),
     vows = require('vows'),
     path = require('path'),
     fs = require('fs'),
     jitsu = require('../../lib/jitsu'),
     macros = require('../helpers/macros');
 
-var shouldNodejitsuOk = macros.shouldNodejitsuOk;
+var shouldNodejitsuOk = macros.shouldNodejitsuOk,
+    useAppFixture = macros.useAppFixture;
+
+var mainDirectory = process.cwd();
 
 // Snapshots tests with specified app names
 vows.describe('jitsu/commands/snapshots').addBatch({
@@ -77,20 +81,7 @@ vows.describe('jitsu/commands/snapshots').addBatch({
   // This tests jitsu's ability to infer the app name.
   'snapshots list': shouldNodejitsuOk(function setup() {
 
-    // Rest the package.json of our fixture app
-    var packageFile = path.join(__dirname, '..', 'fixtures', 'example-app', 'package.json');
-    var pkg = {
-      name: 'example-app',
-      subdomain: 'example-app',
-      scripts: { start: 'server.js' },
-      version: '0.0.0'
-    };
-
-    fs.writeFileSync(packageFile, JSON.stringify(pkg))
-
-    // Change directories
-    process.chdir(path.join(__dirname, '..', 'fixtures', 'example-app'));
-
+    useAppFixture();
 
     nock('http://api.mockjitsu.com')
       .get('/apps/tester/example-app/snapshots')
@@ -101,5 +92,8 @@ vows.describe('jitsu/commands/snapshots').addBatch({
           md5: 'q34rq43r5t5g4w56t45t'
         }] 
       }, { 'x-powered-by': 'Nodejitsu' });
+  }, function assertion (err) {
+    process.chdir(mainDirectory);
+    assert.ok(!err);
   })
 }).export(module);
