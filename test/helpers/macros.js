@@ -2,6 +2,7 @@
 var assert = require('assert'),
     http = require('http'),
     path = require('path'),
+    fs = require('fs'),
     util = require('util'),
     base64 = require('flatiron').common.base64,
     jitsu = require('../../lib/jitsu');
@@ -62,3 +63,23 @@ exports.shouldNodejitsuOk = function () {
   
   return context;
 };
+
+exports.useAppFixture = function () {
+  // Reset the package.json of our fixture app
+  var packageFile = path.join(__dirname, '..', 'fixtures', 'example-app', 'package.json');
+  var pkg = {
+    name: 'example-app',
+    subdomain: 'example-app',
+    scripts: { start: 'server.js' },
+    version: '0.0.0'
+  };
+
+  var cwd = process.cwd();
+
+  fs.writeFileSync(packageFile, JSON.stringify(pkg))
+
+  // Change directories
+  process.chdir(path.join(__dirname, '..', 'fixtures', 'example-app'));
+
+  return cwd;
+}
