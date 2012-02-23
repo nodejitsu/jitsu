@@ -85,7 +85,6 @@ vows.describe('jitsu/commands/apps').addBatch({
       }, { 'x-powered-by': 'Nodejitsu' })
   }, function assertion (err) {
     process.chdir(mainDirectory);
-    console.error(err);
     assert.ok(!err);
   })
 }).addBatch({
@@ -102,7 +101,6 @@ vows.describe('jitsu/commands/apps').addBatch({
         }, { 'x-powered-by': 'Nodejitsu' })
   }, function assertion (err) {
     process.chdir(mainDirectory);
-    console.error(err);
     assert.ok(!err);
   })
 }).addBatch({
@@ -119,7 +117,6 @@ vows.describe('jitsu/commands/apps').addBatch({
       }, { 'x-powered-by': 'Nodejitsu' })
   }, function assertion (err) {
     process.chdir(mainDirectory);
-    console.error(err);
     assert.ok(!err);
   })
 }).export(module);
