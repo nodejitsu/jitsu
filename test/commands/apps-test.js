@@ -33,6 +33,20 @@ vows.describe('jitsu/commands/apps').addBatch({
       }, { 'x-powered-by': 'Nodejitsu' })
   })
 }).addBatch({
+  'apps list tester': shouldNodejitsuOk(function setup() {
+    nock('http://api.mockjitsu.com')
+      .get('/apps/tester')
+      .reply(200, {
+        apps:[{ 
+          name: 'application', 
+          state: 'stopped', 
+          subdomain:'application', 
+          scripts: { start: './server.js' }, 
+          snapshots: [{ filename: 'FILENAME' }] 
+        }]
+      }, { 'x-powered-by': 'Nodejitsu' })
+  })
+}).addBatch({
   'apps view application2': shouldNodejitsuOk(function setup() {
     nock('http://api.mockjitsu.com')
       .get('/apps/tester/application2')
@@ -67,7 +81,42 @@ vows.describe('jitsu/commands/apps').addBatch({
       }, { 'x-powered-by': 'Nodejitsu' })
   })
 })
+
 .addBatch({
+  'apps view tester/application2': shouldNodejitsuOk(function setup() {
+    nock('http://api.mockjitsu.com')
+      .get('/apps/tester/application2')
+      .reply(200, {
+        app: { 
+          name: 'application', 
+          state: 'stopped', 
+          subdomain:'application', 
+          scripts: { start: './server.js' }, 
+          snapshots: [{ filename: 'FILENAME' }] 
+        }
+      }, { 'x-powered-by': 'Nodejitsu' })
+  })
+}).addBatch({
+  'apps start tester/application3': shouldNodejitsuOk(function setup() {
+    nock('http://api.mockjitsu.com')
+      .post('/apps/tester/application3/start', {})
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
+      .get('/apps/tester/application3')
+        .reply(200, {
+          app: { state: 'started' }
+        }, { 'x-powered-by': 'Nodejitsu' })
+  })
+}).addBatch({
+  'apps stop tester/application3': shouldNodejitsuOk(function setup() {
+    nock('http://api.mockjitsu.com')
+      .post('/apps/tester/application3/stop', {})
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
+      .get('/apps/tester/application3')
+      .reply(200, {
+          app: { state: 'stopped' }
+      }, { 'x-powered-by': 'Nodejitsu' })
+  })
+}).addBatch({
   'apps view': shouldNodejitsuOk(function setup() {
 
     useAppFixture();
