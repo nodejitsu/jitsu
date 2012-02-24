@@ -246,7 +246,6 @@ vows.describe('jitsu/commands/apps').addBatch({
         }, { 'x-powered-by': 'Nodejitsu' });
 
   }, function assertion (err) {
-    console.error(err && err.stack);
     process.chdir(mainDirectory);
     assert.ok(!err);
   })
