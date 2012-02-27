@@ -65,7 +65,7 @@ vows.describe('jitsu/commans/snapshots').addBatch({
       })
       .post('/apps/mickey/application2/snapshots/0.0.0-1/activate')
     )
-}).addBatch({
+})/*.addBatch({
   'snapshots destroy application3': runJitsuCommand([
       mockPrompt2({answer: 'yes'}),
       mockPrompt({'snapshot': '0.0.0-1'})
@@ -82,4 +82,4 @@ vows.describe('jitsu/commans/snapshots').addBatch({
       })
       .del('/apps/mickey/application3/snapshots/0.0.0-1')
     )
-}).export(module);
+})*/.export(module);
