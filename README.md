@@ -5,7 +5,7 @@
 
 ## Overview
 
-[Jitsu](http://github.com/nodejitsu/jitsu) is a [Command Line Tool (CLI)](http://en.wikipedia.org/wiki/Command-line_interface) for managing and deploying Node.js applications. It's open-source and easy to use. [We've](http://github.com/nodejitsu) designed `jitsu` to be suitable for command line beginners, but still be powerful and extensible enough for production usage.
+[Jitsu](https://github.com/nodejitsu/jitsu) is a [Command Line Tool (CLI)](http://en.wikipedia.org/wiki/Command-line_interface) for managing and deploying Node.js applications. It's open-source and easy to use. [We've](https://github.com/nodejitsu) designed `jitsu` to be suitable for command line beginners, but still be powerful and extensible enough for production usage.
 
 `jitsu` requires `npm`, the [node package manager](http://npmjs.org).
 
@@ -23,11 +23,11 @@
 `jitsu` is built on some amazing technologies which we've been actively building with the community since 2009. `jitsu` is fully extendable and extremely modular ( see [Libaries](#Libraries) section ).
 
  - Allows for seamless deployment of your Node.js applications to the cloud
- - Ships with use-full boilerplates and sample applications through [Node Apps](http://github.com/nodeapps/) project integration
+ - Ships with use-full boilerplates and sample applications through [Node Apps](https://github.com/nodeapps) project integration
  - Fully supports `npm` dependency resolution on deployment to [Nodejitsu](http://nodejitsu.com)
- - Full support of [Nodejitu's API](http://github.com/nodejitsu/nodejitsu-api) ( a plethora of node.js goodies )
- - Integrated multi-level multi-transport logging support via [Winston](http://github.com/indexzero/winston/)
- - Too many to list... seek [further knowledge ](http://github.com/nodejitsu/handbook) or just try it out!
+ - Full support of [Nodejitu's API](https://github.com/nodejitsu/nodejitsu-api) ( a plethora of node.js goodies )
+ - Integrated multi-level multi-transport logging support via [Winston](https://github.com/flatiron/winston)
+ - Too many to list... seek [further knowledge ](https://github.com/nodejitsu/handbook) or just try it out!
 
 
 # One-Line Node App Installation
@@ -154,12 +154,12 @@ If you need to authenticate yourselves to the proxy, you can try this command.
 - [npm](http://npmjs.org) - Node Package Manager
 - [colors](https://github.com/marak/colors.js) - Terminal Colors module
 - [optimist](https://github.com/substack/node-optimist) - CLI Options Parsing
-- [request](http://github.com/mikeal/request) - http request module
+- [request](https://github.com/mikeal/request) - http request module
 - [async](https://github.com/caolan/async) - Asynchronous Iteration
 - [vows](http://vowsjs.org) - Asynchronous BDD testing library
 - [winston](https://github.com/flatiron/winston) - Multi-transport logging library
 
 ### Need more?
-The documentation for `jitsu` and the [Nodejitsu](http://nodejitsu.com) APIs is open-source and a work in-progress. For more information checkout the [Nodejitsu Handbook](http://github.com/nodejitsu/handbook)
+The documentation for `jitsu` and the [Nodejitsu](http://nodejitsu.com) APIs is open-source and a work in-progress. For more information checkout the [Nodejitsu Handbook](https://github.com/nodejitsu/handbook)
 
 #### (C) Copyright 2010, [Nodejitsu](http://nodejitsu.com) Inc.
