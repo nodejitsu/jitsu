@@ -152,12 +152,12 @@ If you need to authenticate yourselves to the proxy, you can try this command.
 `jitsu` is built on a few well developed, well maintained Node.js libraries. The [Nodejitsu](http://nodejitsu.com) team and friends have been building and using these projects actively for the past two years. They are the most used Node libraries (see: [http://search.npmjs.org/](http://search.npmjs.org/)) and are actively maintained by Nodejitsu and other core members of the Node.js community. Each library serves a specific function and we highly suggest you check each one out individually if you wish to increase your knowledge of Node.js
 
 - [npm](http://npmjs.org) - Node Package Manager
-- [colors](http://github.com/marak/colors) - Terminal Colors module
-- [optimist](http://github.com/substack/optimist) - CLI Options Parsing
+- [colors](https://github.com/marak/colors.js) - Terminal Colors module
+- [optimist](https://github.com/substack/node-optimist) - CLI Options Parsing
 - [request](http://github.com/mikeal/request) - http request module
 - [async](https://github.com/caolan/async) - Asynchronous Iteration
 - [vows](http://vowsjs.org) - Asynchronous BDD testing library
-- [winston](http://github.com/indexzero/winston/) - Multi-transport logging library
+- [winston](https://github.com/flatiron/winston) - Multi-transport logging library
 
 ### Need more?
 The documentation for `jitsu` and the [Nodejitsu](http://nodejitsu.com) APIs is open-source and a work in-progress. For more information checkout the [Nodejitsu Handbook](http://github.com/nodejitsu/handbook)
