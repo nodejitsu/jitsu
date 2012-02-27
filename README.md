@@ -1,4 +1,5 @@
 # jitsu [![Build Status](https://secure.travis-ci.org/nodejitsu/jitsu.png)](http://travis-ci.org/nodejitsu/jitsu)
+### v0.7.100 Node v0.4.12 deprecation branch
 *Flawless command line deployment of Node.js apps to the cloud*
 
 <img src="https://github.com/nodejitsu/jitsu/raw/master/assets/jitsu.png"/>
@@ -6,6 +7,8 @@
 ## Overview
 
 [Jitsu](https://github.com/nodejitsu/jitsu) is a [Command Line Tool (CLI)](http://en.wikipedia.org/wiki/Command-line_interface) for managing and deploying Node.js applications. It's open-source and easy to use. [We've](https://github.com/nodejitsu) designed `jitsu` to be suitable for command line beginners, but still be powerful and extensible enough for production usage.
+
+This version of jitsu is compatible with node v0.4.12 only. Newer versions of jitsu require node v0.6.6 or later.
 
 `jitsu` requires `npm`, the [node package manager](http://npmjs.org).
 
