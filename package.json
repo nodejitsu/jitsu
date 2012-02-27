@@ -8,7 +8,7 @@
     "platform-as-a-service",
     "deployment"
   ],
-  "version": "0.7.7-1",
+  "version": "0.7.7-2",
   "author": "Nodejitsu Inc. <support@nodejitsu.com>",
   "repository": {
     "type": "git",
@@ -22,12 +22,12 @@
     "eyes": "0.1.x",
     "nconf": "0.2.x",
     "npm": ">= 1.0.100 < 1.1.0",
-    "ncp": "0.2.x",
+    "ncp": "0.2.5",
     "optimist": "0.2.x",
     "nodejitsu-api": "0.2.x",
     "pkginfo": "0.2.x",
     "prompt": "0.1.x >=0.1.7",
-    "request": "2.9.x",
+    "request": "2.9.100",
     "require-analyzer": "0.4.x",
     "rimraf": "1.0.x",
     "winston": "0.5.x",
