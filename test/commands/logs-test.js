@@ -41,7 +41,7 @@ vows.describe('jitsu/commands/logs').addBatch({
                 message: 'This is a message on stderr',
                 level: 'info',
                 event: 'drone:stderr',
-                user: 'jesusabdullah'
+                user: 'tester'
               }
             },
             {
@@ -53,7 +53,7 @@ vows.describe('jitsu/commands/logs').addBatch({
                 message: 'This is also a message',
                 level: 'info',
                 event: 'drone:stdout',
-                user: 'jesusabdullah'
+                user: 'tester'
               }
             },
             {
@@ -65,7 +65,7 @@ vows.describe('jitsu/commands/logs').addBatch({
                 message: 'This is a message',
                 level: 'info',
                 event: 'drone:stdout',
-                user: 'jesusabdullah'
+                user: 'tester'
               }
             },
 
@@ -83,5 +83,190 @@ vows.describe('jitsu/commands/logs').addBatch({
   }, function assertion (err) {
     process.chdir(mainDirectory);
     assert.ok(!err);
+  })
+}).addBatch({
+  'logs app': shouldNodejitsuOk(function setup() {
+
+    useAppFixture();
+    
+    nock('http://api.mockjitsu.com')
+      .post('/logs/tester/example-app', {
+        from: "NOW-1DAY",
+        until: "NOW",
+        rows: 100
+      })
+        .reply(200, {
+          data: [
+            {
+              isjson: true,
+              timestamp: '2012-12-21T02:00:00.000z',
+              inputid: '5656',
+              json: {
+                app: 'example-app',
+                message: 'This is a message on stderr',
+                level: 'info',
+                event: 'drone:stderr',
+                user: 'tester'
+              }
+            },
+            {
+              isjson: true,
+              timestamp: '2012-12-21T01:00:00.000z',
+              inputid: '5656',
+              json: {
+                app: 'example-app',
+                message: 'This is also a message',
+                level: 'info',
+                event: 'drone:stdout',
+                user: 'tester'
+              }
+            },
+            {
+              isjson: true,
+              timestamp: '2012-12-21T00:00:00.000z',
+              inputid: '5656',
+              json: {
+                app: 'example-app',
+                message: 'This is a message',
+                level: 'info',
+                event: 'drone:stdout',
+                user: 'tester'
+              }
+            },
+
+          ],
+          numFound: 3,
+          context: {
+            rows: '50',
+            from: 'NOW-1DAY',
+            until: 'NOW',
+            start: 0,
+            query: 'json.user:tester AND json.app:example-app',
+            order: 'desc'
+          }
+        }, { 'x-powered-by': 'Nodejitsu' })
+  }, function assertion (err) {
+    process.chdir(mainDirectory);
+    assert.ok(!err);
+  })
+}).addBatch({
+  'logs app application': shouldNodejitsuOk(function setup() {
+    
+    nock('http://api.mockjitsu.com')
+      .post('/logs/tester/application', {
+        from: "NOW-1DAY",
+        until: "NOW",
+        rows: 100
+      })
+        .reply(200, {
+          data: [
+            {
+              isjson: true,
+              timestamp: '2012-12-21T02:00:00.000z',
+              inputid: '5656',
+              json: {
+                app: 'application',
+                message: 'This is a message on stderr',
+                level: 'info',
+                event: 'drone:stderr',
+                user: 'tester'
+              }
+            },
+            {
+              isjson: true,
+              timestamp: '2012-12-21T01:00:00.000z',
+              inputid: '5656',
+              json: {
+                app: 'application',
+                message: 'This is also a message',
+                level: 'info',
+                event: 'drone:stdout',
+                user: 'tester'
+              }
+            },
+            {
+              isjson: true,
+              timestamp: '2012-12-21T00:00:00.000z',
+              inputid: '5656',
+              json: {
+                app: 'application',
+                message: 'This is a message',
+                level: 'info',
+                event: 'drone:stdout',
+                user: 'tester'
+              }
+            },
+
+          ],
+          numFound: 3,
+          context: {
+            rows: '50',
+            from: 'NOW-1DAY',
+            until: 'NOW',
+            start: 0,
+            query: 'json.user:tester AND json.app:application',
+            order: 'desc'
+          }
+        }, { 'x-powered-by': 'Nodejitsu' });
+  })
+}).addBatch({
+  'logs app application 10': shouldNodejitsuOk(function setup() {
+    
+    nock('http://api.mockjitsu.com')
+      .post('/logs/tester/application', {
+        from: "NOW-1DAY",
+        until: "NOW",
+        rows: "10"
+      })
+        .reply(200, {
+          data: [
+            {
+              isjson: true,
+              timestamp: '2012-12-21T02:00:00.000z',
+              inputid: '5656',
+              json: {
+                app: 'application',
+                message: 'This is a message on stderr',
+                level: 'info',
+                event: 'drone:stderr',
+                user: 'tester'
+              }
+            },
+            {
+              isjson: true,
+              timestamp: '2012-12-21T01:00:00.000z',
+              inputid: '5656',
+              json: {
+                app: 'application',
+                message: 'This is also a message',
+                level: 'info',
+                event: 'drone:stdout',
+                user: 'tester'
+              }
+            },
+            {
+              isjson: true,
+              timestamp: '2012-12-21T00:00:00.000z',
+              inputid: '5656',
+              json: {
+                app: 'application',
+                message: 'This is a message',
+                level: 'info',
+                event: 'drone:stdout',
+                user: 'tester'
+              }
+            },
+
+          ],
+          numFound: 3,
+          context: {
+            rows: '50',
+            from: 'NOW-1DAY',
+            until: 'NOW',
+            start: 0,
+            query: 'json.user:tester AND json.app:application',
+            order: 'desc'
+          }
+        }, { 'x-powered-by': 'Nodejitsu' });
   })
 }).export(module);
