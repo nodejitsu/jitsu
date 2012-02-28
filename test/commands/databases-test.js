@@ -4,84 +4,74 @@
  * (C) 2011, Nodejitsu Inc.
  *
  */
- 
-var assert = require('assert'),
-    fs = require('fs'),
-    path = require('path'),
-    winston = require('winston').cli(),
-    mockRequest = require('mock-request'),
+
+var nock = require('nock'),
     vows = require('vows'),
     jitsu = require('../../lib/jitsu'),
-    helper = require('../helpers/mock-helpers');
+    macros = require('../helpers/macros');
 
-var mockPrompt2 = helper.mockPrompt2,
-    runJitsuCommand = helper.runJitsuCommand;
+var shouldNodejitsuOk = macros.shouldNodejitsuOk;
 
 vows.describe('jitsu/commands/databases').addBatch({
-  'This test requires jitsu be unauthorized': function () {
-    jitsu.skipAuth = false;
-    assert.isFalse(jitsu.skipAuth);
-  }
+  'databases list': shouldNodejitsuOk(function setup() {
+    nock('http://api.mockjitsu.com')
+      .get('/databases/tester')
+      .reply(200, [{
+        name: "test",
+        type: "couch",
+        user: "mickey",
+        metadata: {
+          ok: true,
+          id: "Server/nodejitsudb951231780457",
+          created: true
+        },
+        id: "mickey-test",
+        resource: "Database"
+      }], { 'x-powered-by': 'Nodejitsu' });
+  })
 }).addBatch({
-  'databases list': runJitsuCommand(
-    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
-      .get('/auth')
-      .get('/databases/mickey')
-      .respond({
-        body: [{
-          "name": "test",
-          "type": "couch",
-          "user": "mickey",
-          "metadata": {
-            "ok": true,
-            "id": "Server/nodejitsudb951231780457",
-            "created": true
+  'databases get test': shouldNodejitsuOk(function setup() {
+    nock('http://api.mockjitsu.com')
+      .get('/databases/tester/test')
+      .reply(200, {
+        name: "test",
+        type: "couch",
+        user: "mickey",
+        metadata: {
+          ok: true,
+          id: "Server/nodejitsudb951231780457",
+          created: true
+        },
+        id: "mickey-test",
+        resource: "Database"
+      }, { 'x-powered-by': 'Nodejitsu' });
+  })
+}).addBatch({
+  'databases create couch test2': shouldNodejitsuOk(function setup() {
+    nock('http://api.mockjitsu.com')
+      .post('/databases/tester/test2', { type: 'couch' })
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
+      .get('/databases/tester/test2')
+        .reply(200, {
+          name: "test2",
+          type: "couch",
+          user: "mickey",
+          metadata: {
+            ok: true,
+            id: "Server/nodejitsudb951231780457",
+            created: true
           },
-          "id": "mickey-test",
-          "resource": "Database"
-        }]
-      }))
+          id: "mickey-test2",
+          resource: "Database"
+        }, { 'x-powered-by': 'Nodejitsu' });
+  })
 }).addBatch({
-  'databases get test': runJitsuCommand(
-    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
-      .get('/databases/mickey/test')
-      .respond({
-        body: {
-          "name": "test",
-          "type": "couch",
-          "user": "mickey",
-          "metadata": {
-            "ok": true,
-            "id": "Server/nodejitsudb951231780457",
-            "created": true
-          },
-          "id": "mickey-test",
-          "resource": "Database"
-        }
-      }))
-}).addBatch({
-  'databases create couch test2': runJitsuCommand(
-    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
-      .post('/databases/mickey/test2')
-      .get('/databases/mickey/test2')
-      .respond({
-        body: {
-          "name": "test2",
-          "type": "couch",
-          "user": "mickey",
-          "metadata": {
-            "ok": true,
-            "id": "Server/nodejitsudb951231780457",
-            "created": true
-          },
-          "id": "mickey-test2",
-          "resource": "Database"
-        }
-      }))
-}).addBatch({
-  'databases destroy test3': runJitsuCommand(
-    mockPrompt2({answer: 'yes'}),
-    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
-      .del('/databases/mickey/test3')
-    )
+  'databases destroy test3': shouldNodejitsuOk(function setup() {
+    jitsu.prompt.override.answer = 'yes';
+    jitsu.prompt.override.destroy = 'yes';
+    
+    nock('http://api.mockjitsu.com')
+      .delete('/databases/tester/test3', {})
+      .reply(200, '', { 'x-powered-by': 'Nodejitsu' });
+  })
 }).export(module);

@@ -8,7 +8,7 @@
     "platform-as-a-service",
     "deployment"
   ],
-  "version": "0.7.7-2",
+  "version": "0.8.0",
   "author": "Nodejitsu Inc. <support@nodejitsu.com>",
   "repository": {
     "type": "git",
@@ -16,35 +16,27 @@
   },
   "preferGlobal": true,
   "dependencies": {
-    "async": "0.1.x",
-    "cliff": "0.1.x",
-    "colors": "0.x.x",
-    "eyes": "0.1.x",
-    "nconf": "0.2.x",
-    "npm": ">= 1.0.100 < 1.1.0",
-    "ncp": "0.2.5",
-    "optimist": "0.2.x",
-    "nodejitsu-api": "0.2.x",
-    "pkginfo": "0.2.x",
-    "prompt": "0.1.x >=0.1.7",
+    "colors": "0.6.0-1",
+    "flatiron": "git+https://github.com/flatiron/flatiron.git#61e6f0abed94f73424e52db98e6a27f2691dea7f",
+    "flatiron-cli-config": "0.1.1",
+    "flatiron-cli-users": "0.1.1",
+    "npm": "1.1.1",
+    "nodejitsu-api": "0.2.4-1",
+    "pkginfo": "0.2.2",
     "request": "2.9.100",
-    "require-analyzer": "0.4.x",
-    "rimraf": "1.0.x",
-    "winston": "0.5.x",
-    "semver": "1.0.x"
+    "require-analyzer": "0.4.0-1",
+    "semver": "1.0.13"
   },
   "devDependencies": {
-    "it-is": "0.x.x",
-    "nodemock": "0.2.9beta",
-    "mock-request": "0.1.x >=0.1.2",
-    "vows": "0.5.x"
+    "nock": "0.8.x",
+    "vows": "0.6.x"
   },
   "bin": {
     "jitsu": "./bin/jitsu"
   },
   "main": "./lib/jitsu",
   "scripts": {
-    "test": "vows test/commands/*-test.js test/*-test.js --isolate --spec"
+    "test": "vows test/commands/*-test.js --spec"
   },
   "engines": {
     "node": ">= 0.4.0"

@@ -1,5 +1,5 @@
 /*
- * apps.js: Tests for `jitsu apps *` command(s).
+ * apps-test.js: Tests for `jitsu apps *` command(s).
  *
  * (C) 2010, Nodejitsu Inc.
  *
@@ -8,91 +8,152 @@
 var assert = require('assert'),
     fs = require('fs'),
     path = require('path'),
-    winston = require('winston').cli(),
-    mockRequest = require('mock-request'),
+    nock = require('nock'),
     vows = require('vows'),
     jitsu = require('../../lib/jitsu'),
-    helper = require('../helpers/mock-helpers');
+    macros = require('../helpers/macros');
 
-var mockPrompt2 = helper.mockPrompt2,
-    runJitsuCommand = helper.runJitsuCommand;
+var shouldNodejitsuOk = macros.shouldNodejitsuOk,
+    useAppFixture = macros.useAppFixture;
+
+var mainDirectory = process.cwd();
 
 vows.describe('jitsu/commands/apps').addBatch({
-  'This test requires jitsu be unauthorized': function () {
-    jitsu.skipAuth = false;
-    assert.isFalse(jitsu.skipAuth);
-  }
+  'apps list': shouldNodejitsuOk(function setup() {
+    nock('http://api.mockjitsu.com')
+      .get('/apps/tester')
+      .reply(200, {
+        apps:[{ 
+          name: 'application', 
+          state: 'stopped', 
+          subdomain:'application', 
+          scripts: { start: './server.js' }, 
+          snapshots: [{ filename: 'FILENAME' }] 
+        }]
+      }, { 'x-powered-by': 'Nodejitsu' })
+  })
 }).addBatch({
-  'apps list': runJitsuCommand(
-    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
-      .get('/auth')
-      .get('/apps/mickey')
-      .respond({
-        body: {
-          apps:[{ 
-            name: 'application', 
-            state: 'stopped', 
-            subdomain:'application', 
-            scripts: { start: './server.js' }, 
-            snapshots: [{ filename: 'FILENAME' }] 
-          }]
+  'apps view application2': shouldNodejitsuOk(function setup() {
+    nock('http://api.mockjitsu.com')
+      .get('/apps/tester/application2')
+      .reply(200, {
+        app: {
+          _id: 'tester/application2',
+          name: 'application2', 
+          state: 'stopped', 
+          subdomain:'application2', 
+          scripts: { start: './server.js' }, 
+          snapshots: [{
+            id: '0.0.0',
+            filename: 'FILENAME',
+            ctime: 1234567898765,
+          }] 
         }
-      }))
+      }, { 'x-powered-by': 'Nodejitsu' })
+  })
 }).addBatch({
-  'apps view application2': runJitsuCommand(
-    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
-      .get('/apps/mickey/application2')
-      .respond({
-        body: {
-          app: { 
-            name: 'application', 
-            state: 'stopped', 
-            subdomain:'application', 
-            scripts: { start: './server.js' }, 
-            snapshots: [{ filename: 'FILENAME' }] 
+  'apps start application3': shouldNodejitsuOk(function setup() {
+    nock('http://api.mockjitsu.com')
+      .post('/apps/tester/application3/start', {})
+        .reply(200, {}, { 'x-powered-by': 'Nodejitsu' })
+      .get('/apps/tester/application3')
+        .reply(200, {
+          app: {
+            state: 'started',
+            subdomain: 'application3'
           }
-        }
-      }))
+        }, { 'x-powered-by': 'Nodejitsu' })
+  })
 }).addBatch({
-  'apps start application3': runJitsuCommand(
-    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
-      .post('/apps/mickey/application3/start')
-      .get('/apps/mickey/application3')
-      .respond({
-        body: { 
-          app: { state: 'started' }
-        }
-      }))
-}).addBatch({
-  'apps stop application3': runJitsuCommand(
-    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
-      .post('/apps/mickey/application3/stop')
-      .get('/apps/micke/application3')
-      .respond({
-        body: {
+  'apps stop application3': shouldNodejitsuOk(function setup() {
+    nock('http://api.mockjitsu.com')
+      .post('/apps/tester/application3/stop', {})
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
+      .get('/apps/tester/application3')
+      .reply(200, {
           app: { state: 'stopped' }
-        }
-      })
-    )
-}).addBatch({
-  'apps deploy': runJitsuCommand(
-    function setup () {
-      var packageFile = path.join(__dirname, '..', 'fixtures', 'example-app', 'package.json');
-      var pkg = {
-        name: 'example-app',
-        subdomain: 'example-app',
-        scripts: { start: 'server.js' },
-        version: '0.0.0'
-      };
+      }, { 'x-powered-by': 'Nodejitsu' })
+  })
+})
+.addBatch({
+  'apps view': shouldNodejitsuOk(function setup() {
 
-      fs.writeFileSync(packageFile, JSON.stringify(pkg))
-      process.chdir(path.join(__dirname, '..', 'fixtures', 'example-app'));
-    },
-    mockPrompt2({answer: 'yes'}),
-    mockRequest.mock(helper.mockOptions, helper.mockDefaults)
-      .get('/apps/mickey/example-app')
-      .respond({
-        body: {
+    useAppFixture();
+
+    nock('http://api.mockjitsu.com')
+      .get('/apps/tester/example-app')
+      .reply(200, {
+        app: {
+          _id: 'tester/example-app',
+          name: 'application', 
+          state: 'stopped', 
+          subdomain: 'application', 
+          scripts: { start: './server.js' }, 
+          snapshots: [{
+            id: '0.0.0-1',
+            filename: 'FILENAME',
+            ctime: 1234567898765,
+          }] 
+        }
+      }, { 'x-powered-by': 'Nodejitsu' })
+  }, function assertion (err) {
+    process.chdir(mainDirectory);
+    assert.ok(!err);
+  })
+}).addBatch({
+  'apps start': shouldNodejitsuOk(function setup() {
+
+    useAppFixture();
+
+    nock('http://api.mockjitsu.com')
+      .post('/apps/tester/example-app/start', {})
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
+      .get('/apps/tester/example-app')
+        .reply(200, {
+          app: {
+            state: 'started',
+            subdomain: 'example-app'
+          }
+        }, { 'x-powered-by': 'Nodejitsu' })
+  }, function assertion (err) {
+    process.chdir(mainDirectory);
+    assert.ok(!err);
+  })
+}).addBatch({
+  'apps stop': shouldNodejitsuOk(function setup() {
+
+    useAppFixture();
+
+    nock('http://api.mockjitsu.com')
+      .post('/apps/tester/example-app/stop', {})
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
+      .get('/apps/tester/example-app')
+      .reply(200, {
+          app: { state: 'stopped' }
+      }, { 'x-powered-by': 'Nodejitsu' })
+  }, function assertion (err) {
+    process.chdir(mainDirectory);
+    assert.ok(!err);
+  })
+}).addBatch({
+  'apps deploy': shouldNodejitsuOk(function setup() {
+
+    useAppFixture();
+
+    jitsu.prompt.override.answer = 'yes';
+
+    nock('http://api.mockjitsu.com')
+      .filteringRequestBody(function (route) {
+        return '*';
+      })
+      .post('/apps/tester/example-app/snapshots/0.0.0-2', '*')
+        .reply(200, {
+          app: { state: 'stopped' }
+        }, { 'x-powered-by': 'Nodejitsu' })
+
+    nock('http://api.mockjitsu.com')
+      .get('/apps/tester/example-app')
+        .reply(200, {
           app: {
             name: 'example-app', 
             state: 'stopped', 
@@ -100,50 +161,57 @@ vows.describe('jitsu/commands/apps').addBatch({
             scripts: { start: './server.js' }, 
             snapshots: [{ filename: 'FILENAME' }] 
           }
-        }
-      })
-      .post('/apps/mickey/example-app/snapshots/0.0.0-1',null,{'Content-Type' : 'application/octet-stream'})
-      .put('/apps/mickey/example-app')
-      .respond({
-        body: {
+        }, { 'x-powered-by': 'Nodejitsu' })
+      .put('/apps/tester/example-app', {
+          name: 'example-app',
+          subdomain: 'example-app',
+          scripts: {
+            start: 'server.js'
+          },
+          version: '0.0.0-2'
+        })
+        .reply(200, {
           app: { state: 'stopped' }
-        }
-      })
-      .post('/apps/mickey/example-app/snapshots/0.0.0-1/activate')
-      .post('/apps/mickey/example-app/stop')
-      .post('/apps/mickey/example-app/start')
-      .get('/apps/mickey/example-app')
-      .respond({
-        body: {
-          app: { 
+        }, { 'x-powered-by': 'Nodejitsu' })
+      .post('/apps/tester/example-app/snapshots/0.0.0-2/activate', {})
+        .reply(200, {
+          app: {
+            name: 'example-app',
+            subdomain: 'example-app',
+            scripts: { start: 'server.js' },
+            version: '0.0.0-2'
+          }
+        }, { 'x-powered-by': 'Nodejitsu' })
+      .post('/apps/tester/example-app/stop', {})
+        .reply(200, {
+          app: {
+            name: 'example-app',
+            subdomain: 'example-app',
+            scripts: { start: 'server.js' },
+            version: '0.0.0-2'
+          }
+        }, { 'x-powered-by': 'Nodejitsu' })
+      .post('/apps/tester/example-app/start', {})
+        .reply(200, {
+          app: {
             name: 'example-app',
             subdomain: 'example-app',
             scripts: { start: 'server.js' },
             version: '0.0.0'
           }
-        }
-      })
-    )
-}).export(module);
+        }, { 'x-powered-by': 'Nodejitsu' })
+      .get('/apps/tester/example-app')
+        .reply(200, {
+          app: {
+            name: 'example-app',
+            subdomain: 'example-app',
+            scripts: { start: 'server.js' },
+            version: '0.0.0-2'
+          }
+        }, { 'x-powered-by': 'Nodejitsu' });
 
-/*exports ['jitsu apps create'] = makeCommandTest(
-    ['apps','create', 'application3'],//command
-    mockPrompt(jitsu.package.properties(__dirname), {}),//no prompt //an auth is requested only once.
-    [ [ { method:'POST', //post request to start app
-          uri:'http://api.mockjitsu.com:90210/apps/mickey/application3/stop',
-          headers:{ 'Content-Type':"application/json" },
-          //body: '{}' //not really necessary to send the body.
-        },
-        {  }, // one snapshot
-        200 ],
-      [ { method:'GET', //get request to view app status.
-          uri:'http://api.mockjitsu.com:90210/apps/mickey/application3',
-          headers:{ 'Content-Type':"application/json" },
-          //body: '{}' //not really necessary to send the body.
-        },
-        { app: //response body
-          { state: 'stopped' } },
-        200 ]
-    ],
-    assert.ifError )
-*/
+  }, function assertion (err) {
+    process.chdir(mainDirectory);
+    assert.ok(!err);
+  })
+}).export(module);

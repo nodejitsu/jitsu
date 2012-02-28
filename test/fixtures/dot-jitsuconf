@@ -1,12 +1,10 @@
 {
   "protocol": "http",
   "remoteHost": "api.mockjitsu.com",
-  "port": "90210",
   "userconfig": ".jitsuconf",
   "loglevel": "silly",
-  "tmproot": "/tmp",
   "tar": "tar",
   "gzipbin": "gzip",
-  "username": "EXAMPLE-USER",
+  "username": "tester",
   "password": "EXAMPLE-PASSWORD"
 }
