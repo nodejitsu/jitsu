@@ -33,20 +33,6 @@ vows.describe('jitsu/commands/apps').addBatch({
       }, { 'x-powered-by': 'Nodejitsu' })
   })
 }).addBatch({
-  'apps list tester': shouldNodejitsuOk(function setup() {
-    nock('http://api.mockjitsu.com')
-      .get('/apps/tester')
-      .reply(200, {
-        apps:[{ 
-          name: 'application', 
-          state: 'stopped', 
-          subdomain:'application', 
-          scripts: { start: './server.js' }, 
-          snapshots: [{ filename: 'FILENAME' }] 
-        }]
-      }, { 'x-powered-by': 'Nodejitsu' })
-  })
-}).addBatch({
   'apps view application2': shouldNodejitsuOk(function setup() {
     nock('http://api.mockjitsu.com')
       .get('/apps/tester/application2')
@@ -89,50 +75,7 @@ vows.describe('jitsu/commands/apps').addBatch({
       }, { 'x-powered-by': 'Nodejitsu' })
   })
 })
-
 .addBatch({
-  'apps view tester/application2': shouldNodejitsuOk(function setup() {
-    nock('http://api.mockjitsu.com')
-      .get('/apps/tester/application2')
-      .reply(200, {
-        app: {
-          _id: 'tester/application2',
-          name: 'application', 
-          state: 'stopped', 
-          subdomain: 'application', 
-          scripts: { start: './server.js' }, 
-          snapshots: [{
-            id: '0.0.0',
-            filename: 'FILENAME',
-            ctime: 1234567898765,
-          }] 
-        }
-      }, { 'x-powered-by': 'Nodejitsu' })
-  })
-}).addBatch({
-  'apps start tester/application3': shouldNodejitsuOk(function setup() {
-    nock('http://api.mockjitsu.com')
-      .post('/apps/tester/application3/start', {})
-        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
-      .get('/apps/tester/application3')
-        .reply(200, {
-          app: {
-            state: 'started',
-            subdomain: 'application3'
-          }
-        }, { 'x-powered-by': 'Nodejitsu' })
-  })
-}).addBatch({
-  'apps stop tester/application3': shouldNodejitsuOk(function setup() {
-    nock('http://api.mockjitsu.com')
-      .post('/apps/tester/application3/stop', {})
-        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
-      .get('/apps/tester/application3')
-      .reply(200, {
-          app: { state: 'stopped' }
-      }, { 'x-powered-by': 'Nodejitsu' })
-  })
-}).addBatch({
   'apps view': shouldNodejitsuOk(function setup() {
 
     useAppFixture();
@@ -192,9 +135,7 @@ vows.describe('jitsu/commands/apps').addBatch({
     process.chdir(mainDirectory);
     assert.ok(!err);
   })
-})
-
-.addBatch({
+}).addBatch({
   'apps deploy': shouldNodejitsuOk(function setup() {
 
     useAppFixture();
@@ -273,6 +214,4 @@ vows.describe('jitsu/commands/apps').addBatch({
     process.chdir(mainDirectory);
     assert.ok(!err);
   })
-})
-
-.export(module);
+}).export(module);

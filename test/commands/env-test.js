@@ -61,36 +61,6 @@ vows.describe('jitsu/commands/env').addBatch({
       }, { 'x-powered-by': 'Nodejitsu' })
   })
 }).addBatch({
-  'env list tester/foobar': shouldNodejitsuOk(function setup() {
-    nock('http://api.mockjitsu.com')
-      .get('/apps/tester/foobar')
-      .reply(200, {
-        app: { 
-          name: 'application', 
-          state: 'stopped', 
-          env: { foo: 'bar', baz: 'buzz' },
-          subdomain:'application', 
-          scripts: { start: './server.js' }, 
-          snapshots: [{ filename: 'FILENAME' }] 
-        }
-      }, { 'x-powered-by': 'Nodejitsu' })
-  })
-}).addBatch({
-  'env list tester/barbaz': shouldNodejitsuOk(function setup() {
-    nock('http://api.mockjitsu.com')
-      .get('/apps/tester/barbaz')
-      .reply(200, {
-        app: { 
-          name: 'barbaz', 
-          state: 'stopped', 
-          env: { ping: 'fizz', pong: 'buzz' },
-          subdomain:'barbaz',
-          scripts: { start: './server.js' }, 
-          snapshots: [{ filename: 'FILENAME' }] 
-        }
-      }, { 'x-powered-by': 'Nodejitsu' })
-  })
-}).addBatch({
   'env get foo': shouldNodejitsuOk(function setup() {
     nock('http://api.mockjitsu.com')
       .get('/apps/tester/jitsu')
