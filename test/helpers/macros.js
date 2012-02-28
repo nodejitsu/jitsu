@@ -71,7 +71,8 @@ exports.useAppFixture = function () {
     name: 'example-app',
     subdomain: 'example-app',
     scripts: { start: 'server.js' },
-    version: '0.0.0-1'
+    version: '0.0.0-1',
+    engines: { node: 'v0.6.x' }
   };
 
   var cwd = process.cwd();

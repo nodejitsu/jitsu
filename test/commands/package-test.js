@@ -47,7 +47,8 @@ vows.describe('jitsu/commands/package').addBatch({
         name: 'example-app',
         subdomain: 'example-app',
         scripts: { start: 'server.js' },
-        version: '0.0.0-1'
+        version: '0.0.0-1',
+        engines: { node: 'v0.6.x' }
       };
 
       fs.writeFileSync(packageFile, JSON.stringify(pkg, true, 2))

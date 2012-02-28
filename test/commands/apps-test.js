@@ -168,7 +168,8 @@ vows.describe('jitsu/commands/apps').addBatch({
           scripts: {
             start: 'server.js'
           },
-          version: '0.0.0-2'
+          version: '0.0.0-2',
+          engines: { node: 'v0.6.x' }
         })
         .reply(200, {
           app: { state: 'stopped' }
@@ -212,6 +213,7 @@ vows.describe('jitsu/commands/apps').addBatch({
 
   }, function assertion (err) {
     process.chdir(mainDirectory);
+    console.error(err);
     assert.ok(!err);
   })
 }).export(module);
