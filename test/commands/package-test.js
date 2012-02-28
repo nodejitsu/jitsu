@@ -32,7 +32,8 @@ vows.describe('jitsu/commands/package').addBatch({
     },
     function setup() {
       var tmproot = jitsu.config.get('tmproot'),
-          targetPackage = path.join(tmproot, 'tester-example-app-0.0.0-1.tgz');
+          targetPackage = path.join(tmproot, 'tester-example-app-0.0.0-1.tgz'),
+          packageFile = path.join(__dirname, '..', 'fixtures', 'example-app', 'package.json');;
       
       jitsu.argv.noanalyze = true;
       jitsu.prompt.override['invite code'] = 'f4387f4';
@@ -41,6 +42,15 @@ vows.describe('jitsu/commands/package').addBatch({
       // Change directory to the sample app
       //
       process.chdir(path.join(__dirname, '..', 'fixtures', 'example-app'));
+
+      var pkg = {
+        name: 'example-app',
+        subdomain: 'example-app',
+        scripts: { start: 'server.js' },
+        version: '0.0.0-1'
+      };
+
+      fs.writeFileSync(packageFile, JSON.stringify(pkg, true, 2))
       
       //
       // Attempt to remove any existing tarballs
