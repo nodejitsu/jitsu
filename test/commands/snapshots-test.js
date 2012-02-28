@@ -154,4 +154,25 @@ vows.describe('jitsu/commands/snapshots').addBatch({
     process.chdir(mainDirectory);
     assert.ok(!err);
   })
+}).addBatch({
+  'snapshots activate': shouldNodejitsuOk(function setup() {
+    jitsu.prompt.override.snapshot = '0.0.0-1';
+
+    useAppFixture();
+
+    nock('http://api.mockjitsu.com')
+      .get('/apps/tester/example-app/snapshots')
+        .reply(200, {
+          snapshots: [{
+            id: '0.0.0-1', 
+            ctime: new Date(), 
+            md5: 'q34rq43r5t5g4w56t45t'
+          }]
+        }, { 'x-powered-by': 'Nodejitsu' })
+      .post('/apps/tester/example-app/snapshots/0.0.0-1/activate', {})
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' });
+  }, function assertion (err) {
+    process.chdir(mainDirectory);
+    assert.ok(!err);
+  })
 }).export(module);
