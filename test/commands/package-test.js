@@ -21,7 +21,7 @@ vows.describe('jitsu/commands/package').addBatch({
     'should create the target tarball',
     function (_, err) {
       var tmproot = jitsu.config.get('tmproot'),
-          targetPackage = path.join(tmproot, 'tester-example-app-0.0.0-2.tgz');
+          targetPackage = path.join(tmproot, 'tester-example-app-0.0.0-1.tgz');
       
       try {
         fs.statSync(targetPackage);
@@ -32,7 +32,7 @@ vows.describe('jitsu/commands/package').addBatch({
     },
     function setup() {
       var tmproot = jitsu.config.get('tmproot'),
-          targetPackage = path.join(tmproot, 'tester-example-app-0.0.0-2.tgz');
+          targetPackage = path.join(tmproot, 'tester-example-app-0.0.0-1.tgz');
       
       jitsu.argv.noanalyze = true;
       jitsu.prompt.override['invite code'] = 'f4387f4';
