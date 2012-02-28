@@ -1,5 +1,5 @@
 /*
- * env.js: Tests for `jitsu env *` command(s).
+ * users-test.js: Tests for `jitsu users *` commands not included in cli-users.
  *
  * (C) 2010, Nodejitsu Inc.
  *

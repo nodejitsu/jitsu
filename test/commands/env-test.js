@@ -1,5 +1,5 @@
 /*
- * env.js: Tests for `jitsu env *` command(s).
+ * env-test.js: Tests for `jitsu env *` command(s).
  *
  * (C) 2010, Nodejitsu Inc.
  *

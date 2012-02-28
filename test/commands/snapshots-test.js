@@ -1,5 +1,5 @@
 /*
- * snapshots.js: Tests for `jitsu snapshots *` command(s).
+ * snapshots-test.js: Tests for `jitsu snapshots *` command(s).
  *
  * (C) 2010, Nodejitsu Inc.
  *
