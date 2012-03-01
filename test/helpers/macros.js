@@ -64,10 +64,12 @@ exports.shouldNodejitsuOk = function () {
   return context;
 };
 
-exports.useAppFixture = function () {
+exports.useAppFixture = function (pkg) {
   // Reset the package.json of our fixture app
-  var packageFile = path.join(__dirname, '..', 'fixtures', 'example-app', 'package.json');
-  var pkg = {
+  var packageFile = path.join(__dirname, '..', 'fixtures', 'example-app', 'package.json'),
+      cwd = process.cwd();
+
+  pkg = pkg || {
     name: 'example-app',
     subdomain: 'example-app',
     scripts: { start: 'server.js' },
@@ -75,9 +77,11 @@ exports.useAppFixture = function () {
     engines: { node: 'v0.6.x' }
   };
 
-  var cwd = process.cwd();
+  if (typeof pkg !== 'string') {
+    pkg = JSON.stringify(pkg, true, 2);
+  }
 
-  fs.writeFileSync(packageFile, JSON.stringify(pkg, true, 2));
+  fs.writeFileSync(packageFile, pkg);
 
   // Change directories
   process.chdir(path.join(__dirname, '..', 'fixtures', 'example-app'));
