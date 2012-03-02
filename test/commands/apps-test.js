@@ -126,11 +126,149 @@ vows.describe('jitsu/commands/apps').addBatch({
 
     nock('http://api.mockjitsu.com')
       .post('/apps/tester/example-app/stop', {})
-        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' });
+
+  }, function assertion (err) {
+    process.chdir(mainDirectory);
+    assert.ok(!err);
+  })
+}).addBatch({
+  'apps deploy': shouldNodejitsuOk(function setup() {
+
+    // Test for trying to use a taken subdomain
+    useAppFixture({
+      "name": "example-app",
+      "subdomain": "taken",
+      "scripts": {
+        "start": "server.js"
+      },
+      "version": "0.0.0",
+      "engines": {
+        "node": "0.6.x"
+      }
+    });
+
+
+    jitsu.prompt.override.answer = 'yes';
+    jitsu.prompt.override.subdomain = 'example-app';
+
+    nock('http://api.mockjitsu.com')
       .get('/apps/tester/example-app')
-      .reply(200, {
+        .reply(500, {
+          error: 'not found'
+        }, { 'x-powered-by': 'Nodejitsu' })
+      .get('/apps/tester')
+        .reply(200, {
+          apps: []
+        }, { 'x-powered-by': 'Nodejitsu' })
+      .post('/apps/tester/example-app/available', {
+        name: 'example-app',
+        subdomain: 'taken',
+        scripts: {
+          start: 'server.js'
+        },
+        version: '0.0.0',
+        engines: {
+          node: '0.6.x'
+        },
+        analyzed: true,
+        state: 'stopped'
+      })
+        .reply(200, {
+          available: false,
+          subdomain: false,
+          appname: true
+        }, { 'x-powered-by': 'Nodejitsu' })
+      .post('/apps/tester/example-app/available', {
+        name: 'example-app',
+        scripts: {
+          start: 'server.js'
+        },
+        version: '0.0.0',
+        engines: {
+          node: '0.6.x'
+        },
+        analyzed: true,
+        state: 'stopped',
+        subdomain: 'example-app'
+      })
+        .reply(200, {
+          available: true,
+        }, { 'x-powered-by': 'Nodejitsu' })
+      .put('/apps/tester/example-app', {
+          name: 'example-app',
+          scripts: {
+            start: 'server.js'
+          },
+          version: '0.0.0',
+          engines: { node: '0.6.x' },
+          analyzed: true,
+          state: 'stopped',
+          subdomain: 'example-app'
+        })
+        .reply(200, {
           app: { state: 'stopped' }
-      }, { 'x-powered-by': 'Nodejitsu' })
+        }, { 'x-powered-by': 'Nodejitsu' })
+      .post('/apps/tester/example-app', {
+        name: 'example-app',
+        scripts: {
+          start: 'server.js'
+        },
+        version: '0.0.0',
+        engines: { node: '0.6.x' },
+        analyzed: true,
+        state: 'stopped',
+        subdomain: 'example-app'
+      })
+        .reply(201, "", { 'x-powered-by': 'Nodejitsu' });
+
+    nock('http://api.mockjitsu.com')
+      .filteringRequestBody(function (route) {
+        return '*';
+      })
+      .post('/apps/tester/example-app/snapshots/0.0.0', '*')
+        .reply(200, {
+          app: { state: 'stopped' }
+        }, { 'x-powered-by': 'Nodejitsu' });
+
+    nock('http://api.mockjitsu.com')
+      .post('/apps/tester/example-app/snapshots/0.0.0/activate', {})
+        .reply(200, {
+          app: {
+            name: 'example-app',
+            subdomain: 'example-app',
+            scripts: { start: 'server.js' },
+            version: '0.0.0'
+          }
+        }, { 'x-powered-by': 'Nodejitsu' })
+      .post('/apps/tester/example-app/stop', {})
+        .reply(200, {
+          app: {
+            name: 'example-app',
+            subdomain: 'example-app',
+            scripts: { start: 'server.js' },
+            version: '0.0.0'
+          }
+        }, { 'x-powered-by': 'Nodejitsu' })
+      .post('/apps/tester/example-app/start', {})
+        .reply(200, {
+          app: {
+            name: 'example-app',
+            subdomain: 'example-app',
+            scripts: { start: 'server.js' },
+            version: '0.0.0'
+          }
+        }, { 'x-powered-by': 'Nodejitsu' })
+      .get('/apps/tester/example-app')
+        .reply(200, {
+          app: {
+            name: 'example-app',
+            subdomain: 'example-app',
+            scripts: { start: 'server.js' },
+            version: '0.0.0'
+          }
+        }, { 'x-powered-by': 'Nodejitsu' });
+
   }, function assertion (err) {
     process.chdir(mainDirectory);
     assert.ok(!err);
