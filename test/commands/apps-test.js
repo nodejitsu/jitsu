@@ -157,10 +157,6 @@ vows.describe('jitsu/commands/apps').addBatch({
         .reply(500, {
           error: 'not found'
         }, { 'x-powered-by': 'Nodejitsu' })
-      .get('/apps/tester')
-        .reply(200, {
-          apps: []
-        }, { 'x-powered-by': 'Nodejitsu' })
       .post('/apps/tester/example-app/available', {
         name: 'example-app',
         subdomain: 'taken',
