@@ -17,7 +17,7 @@
   "preferGlobal": true,
   "dependencies": {
     "colors": "0.6.0-1",
-    "flatiron": "git+https://github.com/flatiron/flatiron.git#61e6f0abed94f73424e52db98e6a27f2691dea7f",
+    "flatiron": "0.1.14",
     "flatiron-cli-config": "0.1.1",
     "flatiron-cli-users": "0.1.1",
     "npm": "1.1.1",
