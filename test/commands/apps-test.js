@@ -454,11 +454,27 @@ vows.describe('jitsu/commands/apps').addBatch({
     assert.ok(!err);
   })
 }).addBatch({
-  'apps deploy': shouldNodejitsuOk('Should deny access',function setup() {
+  'apps deploy': shouldNodejitsuOk('should prompt for credentials', function setup() {
 
     useAppFixture();
 
+    jitsu.config.stores.file.file = path.join(__dirname, '..', 'fixtures', 'logged-out-jitsuconf');
+    jitsu.config.stores.file.loadSync();
+
+    jitsu.prompt.override.username = 'tester';
+    jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
+
     jitsu.prompt.override.answer = 'yes';
+
+    nock('http://api.mockjitsu.com')
+      .filteringRequestBody(function (route) {
+        return '*';
+      })
+      .post('/apps/tester/example-app/snapshots/0.0.0-2', '*')
+        .reply(200, {
+          app: { state: 'stopped' }
+        }, { 'x-powered-by': 'Nodejitsu' })
+
 
     // Test access denied behavior
     // Remark: In real life, the "tester" field actually says "undefined",
@@ -483,10 +499,88 @@ vows.describe('jitsu/commands/apps').addBatch({
       .get('/apps/tester/example-app')
         .reply(403, {
           error: "Authorization failed with the provided credentials."
+        }, { 'x-powered-by': 'Nodejitsu' })
+      .get('/auth')
+        .reply(200, {
+          user: 'tester',
+          authorized: true,
+          role: 'user'
+        }, { 'x-powered-by': 'Nodejitsu 0.6.14' })
+      .post('/apps/tester/example-app/available', {
+        name: 'example-app',
+        subdomain: 'example-app',
+        scripts: {
+          start: 'server.js'
+        },
+        version: '0.0.0-1',
+        engines: {
+          node: '0.6.x'
+        }
+      })
+        .reply(200, {
+          available: true,
+        }, { 'x-powered-by': 'Nodejitsu' })
+      .get('/apps/tester/example-app')
+        .reply(200, {
+          app: {
+            name: 'example-app', 
+            state: 'stopped', 
+            subdomain:'example-app', 
+            scripts: { start: './server.js' }, 
+            snapshots: [{ filename: 'FILENAME' }] 
+          }
+        }, { 'x-powered-by': 'Nodejitsu' })
+      .put('/apps/tester/example-app', {
+          name: 'example-app',
+          subdomain: 'example-app',
+          scripts: {
+            start: 'server.js'
+          },
+          version: '0.0.0-2',
+          engines: { node: 'v0.6.x' }
+        })
+        .reply(200, {
+          app: { state: 'stopped' }
+        }, { 'x-powered-by': 'Nodejitsu' })
+      .post('/apps/tester/example-app/snapshots/0.0.0-2/activate', {})
+        .reply(200, {
+          app: {
+            name: 'example-app',
+            subdomain: 'example-app',
+            scripts: { start: 'server.js' },
+            version: '0.0.0-2'
+          }
+        }, { 'x-powered-by': 'Nodejitsu' })
+      .post('/apps/tester/example-app/stop', {})
+        .reply(200, {
+          app: {
+            name: 'example-app',
+            subdomain: 'example-app',
+            scripts: { start: 'server.js' },
+            version: '0.0.0-2'
+          }
+        }, { 'x-powered-by': 'Nodejitsu' })
+      .post('/apps/tester/example-app/start', {})
+        .reply(200, {
+          app: {
+            name: 'example-app',
+            subdomain: 'example-app',
+            scripts: { start: 'server.js' },
+            version: '0.0.0-2'
+          }
+        }, { 'x-powered-by': 'Nodejitsu' })
+      .get('/apps/tester/example-app')
+        .reply(200, {
+          app: {
+            name: 'example-app',
+            subdomain: 'example-app',
+            scripts: { start: 'server.js' },
+            version: '0.0.0-1'
+          }
         }, { 'x-powered-by': 'Nodejitsu' });
 
   }, function assertion (err, ignore) {
     process.chdir(mainDirectory);
-    assert.ok(err);
+    assert.ok(!err);
   })
 }).export(module);
