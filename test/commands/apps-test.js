@@ -370,4 +370,38 @@ vows.describe('jitsu/commands/apps').addBatch({
     process.chdir(mainDirectory);
     assert.ok(!err);
   })
+}).addBatch({
+  'apps deploy': shouldNodejitsuOk(function setup() {
+
+    useAppFixture();
+
+    jitsu.prompt.override.answer = 'yes';
+
+    // Test access denied behavior
+    // Remark: In real life, the "tester" field actually says "undefined",
+    // but it shouldn't actually matter as long as we reply with a 403.
+    nock('http://api.mockjitsu.com')
+      .post('/apps/tester/example-app/available', {
+        name: 'example-app',
+        subdomain: 'example-app',
+        scripts: {
+          start: 'server.js'
+        },
+        version: '0.0.0-1',
+        engines: {
+          node: '0.6.x'
+        }
+      })
+        .reply(200, {
+          available: true,
+        }, { 'x-powered-by': 'Nodejitsu' })
+      .get('/apps/tester/example-app')
+        .reply(403, {
+          error: "Authorization failed with the provided credentials."
+        }, { 'x-powered-by': 'Nodejitsu' });
+
+  }, function assertion (err, ignore) {
+    process.chdir(mainDirectory);
+    assert.ok(err);
+  })
 }).export(module);
