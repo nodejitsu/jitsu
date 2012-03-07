@@ -32,6 +32,25 @@ vows.describe('jitsu/commands/snapshots').addBatch({
       }, { 'x-powered-by': 'Nodejitsu' });
   })
 }).addBatch({
+  'snapshots list application': shouldNodejitsuOk('should prompt for credentials', function setup() {
+
+    jitsu.config.stores.file.file = path.join(__dirname, '..', 'fixtures', 'logged-out-jitsuconf');
+    jitsu.config.stores.file.loadSync();
+
+    jitsu.prompt.override.username = 'tester';
+    jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
+
+    nock('http://api.mockjitsu.com')
+      .get('/apps/tester/application/snapshots')
+      .reply(200, {
+        snapshots: [{
+          id: '0.0.0', 
+          ctime: new Date(), 
+          md5: 'q34rq43r5t5g4w56t45t'
+        }] 
+      }, { 'x-powered-by': 'Nodejitsu' });
+  })
+}).addBatch({
   'snapshots list application2': shouldNodejitsuOk(function setup() {
     nock('http://api.mockjitsu.com')
       .get('/apps/tester/application2/snapshots')
@@ -42,6 +61,28 @@ vows.describe('jitsu/commands/snapshots').addBatch({
           md5: 'q34rq43r5t5g4w56t45t'
         }] 
       }, { 'x-powered-by': 'Nodejitsu' });
+  })
+}).addBatch({
+  'snapshots activate application2': shouldNodejitsuOk('should prompt for credentials', function setup() {
+
+    jitsu.config.stores.file.file = path.join(__dirname, '..', 'fixtures', 'logged-out-jitsuconf');
+    jitsu.config.stores.file.loadSync();
+
+    jitsu.prompt.override.username = 'tester';
+    jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
+    jitsu.prompt.override.snapshot = '0.0.0-1';
+
+    nock('http://api.mockjitsu.com')
+      .get('/apps/tester/application2/snapshots')
+        .reply(200, {
+          snapshots: [{
+            id: '0.0.0-1', 
+            ctime: new Date(), 
+            md5: 'q34rq43r5t5g4w56t45t'
+          }]
+        }, { 'x-powered-by': 'Nodejitsu' })
+      .post('/apps/tester/application2/snapshots/0.0.0-1/activate', {})
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' });
   })
 }).addBatch({
   'snapshots activate application2': shouldNodejitsuOk(function setup() {
@@ -60,7 +101,54 @@ vows.describe('jitsu/commands/snapshots').addBatch({
         .reply(200, '', { 'x-powered-by': 'Nodejitsu' });
   })
 }).addBatch({
+  'snapshots activate application2': shouldNodejitsuOk('should prompt for credentials', function setup() {
+
+    jitsu.config.stores.file.file = path.join(__dirname, '..', 'fixtures', 'logged-out-jitsuconf');
+    jitsu.config.stores.file.loadSync();
+
+    jitsu.prompt.override.username = 'tester';
+    jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
+    jitsu.prompt.override.snapshot = '0.0.0-1';
+
+    nock('http://api.mockjitsu.com')
+      .get('/apps/tester/application2/snapshots')
+        .reply(200, {
+          snapshots: [{
+            id: '0.0.0-1', 
+            ctime: new Date(), 
+            md5: 'q34rq43r5t5g4w56t45t'
+          }]
+        }, { 'x-powered-by': 'Nodejitsu' })
+      .post('/apps/tester/application2/snapshots/0.0.0-1/activate', {})
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' });
+  })
+}).addBatch({
   'snapshots destroy application3': shouldNodejitsuOk(function setup() {
+    jitsu.prompt.override.answer = 'yes';
+    jitsu.prompt.override.snapshot = '0.0.0-1';
+    jitsu.prompt.override.destroy = 'yes';
+    
+    nock('http://api.mockjitsu.com')
+      .get('/apps/tester/application3/snapshots')
+        .reply(200, {
+          snapshots: [{
+            id: '0.0.0-1', 
+            ctime: new Date(), 
+            md5: 'q34rq43r5t5g4w56t45t'
+          }]
+        }, { 'x-powered-by': 'Nodejitsu' })
+      .delete('/apps/tester/application3/snapshots/0.0.0-1', {})
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' });
+  })
+})
+.addBatch({
+  'snapshots destroy application3': shouldNodejitsuOk('should prompt for credentials', function setup() {
+
+    jitsu.config.stores.file.file = path.join(__dirname, '..', 'fixtures', 'logged-out-jitsuconf');
+    jitsu.config.stores.file.loadSync();
+
+    jitsu.prompt.override.username = 'tester';
+    jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
     jitsu.prompt.override.answer = 'yes';
     jitsu.prompt.override.snapshot = '0.0.0-1';
     jitsu.prompt.override.destroy = 'yes';
