@@ -371,7 +371,7 @@ vows.describe('jitsu/commands/apps').addBatch({
     assert.ok(!err);
   })
 }).addBatch({
-  'apps deploy': shouldNodejitsuOk(function setup() {
+  'apps deploy': shouldNodejitsuOk('Should deny access',function setup() {
 
     useAppFixture();
 
