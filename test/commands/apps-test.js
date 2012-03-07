@@ -33,6 +33,27 @@ vows.describe('jitsu/commands/apps').addBatch({
       }, { 'x-powered-by': 'Nodejitsu' })
   })
 }).addBatch({
+  'apps list': shouldNodejitsuOk('should prompt for credentials', function setup() {
+
+    jitsu.config.stores.file.file = path.join(__dirname, '..', 'fixtures', 'logged-out-jitsuconf');
+    jitsu.config.stores.file.loadSync();
+
+    jitsu.prompt.override.username = 'tester';
+    jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
+
+    nock('http://api.mockjitsu.com')
+      .get('/apps/tester')
+      .reply(200, {
+        apps:[{ 
+          name: 'application', 
+          state: 'stopped', 
+          subdomain:'application', 
+          scripts: { start: './server.js' }, 
+          snapshots: [{ filename: 'FILENAME' }] 
+        }]
+      }, { 'x-powered-by': 'Nodejitsu' })
+  })
+}).addBatch({
   'apps view application2': shouldNodejitsuOk(function setup() {
     nock('http://api.mockjitsu.com')
       .get('/apps/tester/application2')
