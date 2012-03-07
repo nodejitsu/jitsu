@@ -73,7 +73,54 @@ vows.describe('jitsu/commands/apps').addBatch({
       }, { 'x-powered-by': 'Nodejitsu' })
   })
 }).addBatch({
+  'apps view application2': shouldNodejitsuOk('should prompt for credentials', function setup() {
+
+    jitsu.config.stores.file.file = path.join(__dirname, '..', 'fixtures', 'logged-out-jitsuconf');
+    jitsu.config.stores.file.loadSync();
+
+    jitsu.prompt.override.username = 'tester';
+    jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
+
+    nock('http://api.mockjitsu.com')
+      .get('/apps/tester/application2')
+      .reply(200, {
+        app: {
+          _id: 'tester/application2',
+          name: 'application2', 
+          state: 'stopped', 
+          subdomain:'application2', 
+          scripts: { start: './server.js' }, 
+          snapshots: [{
+            id: '0.0.0',
+            filename: 'FILENAME',
+            ctime: 1234567898765,
+          }] 
+        }
+      }, { 'x-powered-by': 'Nodejitsu' })
+  })
+}).addBatch({
   'apps start application3': shouldNodejitsuOk(function setup() {
+    nock('http://api.mockjitsu.com')
+      .post('/apps/tester/application3/start', {})
+        .reply(200, {}, { 'x-powered-by': 'Nodejitsu' })
+      .get('/apps/tester/application3')
+        .reply(200, {
+          app: {
+            state: 'started',
+            subdomain: 'application3'
+          }
+        }, { 'x-powered-by': 'Nodejitsu' })
+  })
+}).addBatch({
+  'apps start application3': shouldNodejitsuOk('should prompt for credentials', function setup() {
+
+    jitsu.config.stores.file.file = path.join(__dirname, '..', 'fixtures', 'logged-out-jitsuconf');
+    jitsu.config.stores.file.loadSync();
+
+    jitsu.prompt.override.username = 'tester';
+    jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
+
+
     nock('http://api.mockjitsu.com')
       .post('/apps/tester/application3/start', {})
         .reply(200, {}, { 'x-powered-by': 'Nodejitsu' })
@@ -100,6 +147,37 @@ vows.describe('jitsu/commands/apps').addBatch({
   'apps view': shouldNodejitsuOk(function setup() {
 
     useAppFixture();
+
+    nock('http://api.mockjitsu.com')
+      .get('/apps/tester/example-app')
+      .reply(200, {
+        app: {
+          _id: 'tester/example-app',
+          name: 'application', 
+          state: 'stopped', 
+          subdomain: 'application', 
+          scripts: { start: './server.js' }, 
+          snapshots: [{
+            id: '0.0.0-1',
+            filename: 'FILENAME',
+            ctime: 1234567898765,
+          }] 
+        }
+      }, { 'x-powered-by': 'Nodejitsu' })
+  }, function assertion (err) {
+    process.chdir(mainDirectory);
+    assert.ok(!err);
+  })
+}).addBatch({
+  'apps view': shouldNodejitsuOk('should prompt for credentials', function setup() {
+
+    useAppFixture();
+
+    jitsu.config.stores.file.file = path.join(__dirname, '..', 'fixtures', 'logged-out-jitsuconf');
+    jitsu.config.stores.file.loadSync();
+
+    jitsu.prompt.override.username = 'tester';
+    jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
 
     nock('http://api.mockjitsu.com')
       .get('/apps/tester/example-app')
