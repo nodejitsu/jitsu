@@ -479,6 +479,8 @@ vows.describe('jitsu/commands/apps').addBatch({
     // Test access denied behavior
     // Remark: In real life, the "tester" field actually says "undefined",
     // but it shouldn't actually matter as long as we reply with a 403.
+    // TODO: Right now, the 403 results in an error. However, other commands
+    // automatically redirect to login.
     nock('http://api.mockjitsu.com')
       .post('/apps/tester/example-app/available', {
         name: 'example-app',
