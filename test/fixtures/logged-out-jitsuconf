@@ -1,0 +1,8 @@
+{
+  "protocol": "http",
+  "remoteHost": "api.mockjitsu.com",
+  "userconfig": ".jitsuconf",
+  "loglevel": "silly",
+  "tar": "tar",
+  "gzipbin": "gzip"
+}
