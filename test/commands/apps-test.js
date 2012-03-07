@@ -120,7 +120,6 @@ vows.describe('jitsu/commands/apps').addBatch({
     jitsu.prompt.override.username = 'tester';
     jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
 
-
     nock('http://api.mockjitsu.com')
       .post('/apps/tester/application3/start', {})
         .reply(200, {}, { 'x-powered-by': 'Nodejitsu' })
@@ -142,42 +141,27 @@ vows.describe('jitsu/commands/apps').addBatch({
           app: { state: 'stopped' }
       }, { 'x-powered-by': 'Nodejitsu' })
   })
-})
-.addBatch({
-  'apps view': shouldNodejitsuOk(function setup() {
-
-    useAppFixture();
-
-    nock('http://api.mockjitsu.com')
-      .get('/apps/tester/example-app')
-      .reply(200, {
-        app: {
-          _id: 'tester/example-app',
-          name: 'application', 
-          state: 'stopped', 
-          subdomain: 'application', 
-          scripts: { start: './server.js' }, 
-          snapshots: [{
-            id: '0.0.0-1',
-            filename: 'FILENAME',
-            ctime: 1234567898765,
-          }] 
-        }
-      }, { 'x-powered-by': 'Nodejitsu' })
-  }, function assertion (err) {
-    process.chdir(mainDirectory);
-    assert.ok(!err);
-  })
 }).addBatch({
-  'apps view': shouldNodejitsuOk('should prompt for credentials', function setup() {
-
-    useAppFixture();
+  'apps stop application3': shouldNodejitsuOk('should prompt for credentials', function setup() {
 
     jitsu.config.stores.file.file = path.join(__dirname, '..', 'fixtures', 'logged-out-jitsuconf');
     jitsu.config.stores.file.loadSync();
 
     jitsu.prompt.override.username = 'tester';
     jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
+
+    nock('http://api.mockjitsu.com')
+      .post('/apps/tester/application3/stop', {})
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
+      .get('/apps/tester/application3')
+      .reply(200, {
+          app: { state: 'stopped' }
+      }, { 'x-powered-by': 'Nodejitsu' })
+  })
+}).addBatch({
+  'apps view': shouldNodejitsuOk(function setup() {
+
+    useAppFixture();
 
     nock('http://api.mockjitsu.com')
       .get('/apps/tester/example-app')
@@ -370,7 +354,7 @@ vows.describe('jitsu/commands/apps').addBatch({
     assert.ok(!err);
   })
 }).addBatch({
-  'apps deploy': shouldNodejitsuOk(function setup() {
+  'apps deploy': shouldNodejitsuOk('should be able to handle a broken package.json', function setup() {
 
     // Simulate a broken package.json
     useAppFixture('{ "name": "example-app", "subdomain": "example-app", }');
