@@ -31,6 +31,28 @@ vows.describe('jitsu/commands/env').addBatch({
       }, { 'x-powered-by': 'Nodejitsu' })
   })
 }).addBatch({
+  'env list': shouldNodejitsuOk('should prompt for credentials', function setup() {
+
+    jitsu.config.stores.file.file = path.join(__dirname, '..', 'fixtures', 'logged-out-jitsuconf');
+    jitsu.config.stores.file.loadSync();
+
+    jitsu.prompt.override.username = 'tester';
+    jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
+
+    nock('http://api.mockjitsu.com')
+      .get('/apps/tester/jitsu')
+      .reply(200, {
+        app: { 
+          name: 'application', 
+          state: 'stopped', 
+          env: { foo: 'bar', baz: 'buzz' },
+          subdomain:'application', 
+          scripts: { start: './server.js' }, 
+          snapshots: [{ filename: 'FILENAME' }] 
+        }
+      }, { 'x-powered-by': 'Nodejitsu' })
+  })
+}).addBatch({
   'env list foobar': shouldNodejitsuOk(function setup() {
     nock('http://api.mockjitsu.com')
       .get('/apps/tester/foobar')
@@ -76,6 +98,28 @@ vows.describe('jitsu/commands/env').addBatch({
       }, { 'x-powered-by': 'Nodejitsu' })
   })
 }).addBatch({
+  'env get foo': shouldNodejitsuOk('should prompt for credentials', function setup() {
+
+    jitsu.config.stores.file.file = path.join(__dirname, '..', 'fixtures', 'logged-out-jitsuconf');
+    jitsu.config.stores.file.loadSync();
+
+    jitsu.prompt.override.username = 'tester';
+    jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
+
+    nock('http://api.mockjitsu.com')
+      .get('/apps/tester/jitsu')
+      .reply(200, {
+        app: { 
+          name: 'application', 
+          state: 'stopped', 
+          env: { foo: 'bar', baz: 'buzz' },
+          subdomain:'application', 
+          scripts: { start: './server.js' }, 
+          snapshots: [{ filename: 'FILENAME' }] 
+        }
+      }, { 'x-powered-by': 'Nodejitsu' })
+  })
+}).addBatch({
   'env get barbaz ping': shouldNodejitsuOk(function setup() {
     nock('http://api.mockjitsu.com')
       .get('/apps/tester/barbaz')
@@ -92,6 +136,30 @@ vows.describe('jitsu/commands/env').addBatch({
   })
 }).addBatch({
   'env set test truthy': shouldNodejitsuOk(function setup() {
+    nock('http://api.mockjitsu.com')
+      .get('/apps/tester/jitsu')
+        .reply(200, {
+          app: { 
+            name: 'application', 
+            state: 'stopped', 
+            env: { foo: 'bar', baz: 'buzz' },
+            subdomain:'application', 
+            scripts: { start: './server.js' }, 
+            snapshots: [{ filename: 'FILENAME' }] 
+          }
+        }, { 'x-powered-by': 'Nodejitsu' })
+      .put('/apps/tester/application', { env: { foo: 'bar', baz: 'buzz', test: 'truthy' } })
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' });    
+  })
+}).addBatch({
+  'env set test truthy': shouldNodejitsuOk('should prompt for credentials', function setup() {
+
+    jitsu.config.stores.file.file = path.join(__dirname, '..', 'fixtures', 'logged-out-jitsuconf');
+    jitsu.config.stores.file.loadSync();
+
+    jitsu.prompt.override.username = 'tester';
+    jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
+
     nock('http://api.mockjitsu.com')
       .get('/apps/tester/jitsu')
         .reply(200, {
@@ -143,6 +211,31 @@ vows.describe('jitsu/commands/env').addBatch({
   })
 }).addBatch({
   'env delete delete': shouldNodejitsuOk(function setup () {
+    nock('http://api.mockjitsu.com')
+      .get('/apps/tester/jitsu')
+        .reply(200, {
+          app: { 
+            name: 'application',
+            state: 'stopped', 
+            env: { foo: 'bar', baz: 'buzz', test: 'truthy', delete: 'test' },
+            subdomain:'application', 
+            scripts: { start: './server.js' }, 
+            snapshots: [{ filename: 'FILENAME' }] 
+          }
+        }, { 'x-powered-by': 'Nodejitsu' })
+      .put('/apps/tester/application', { env: { foo: 'bar', baz: 'buzz', test: 'truthy' } })
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' });
+  })
+}).addBatch({
+  'env delete delete': shouldNodejitsuOk('should prompt for credentials', function setup () {
+
+    jitsu.config.stores.file.file = path.join(__dirname, '..', 'fixtures', 'logged-out-jitsuconf');
+    jitsu.config.stores.file.loadSync();
+
+    jitsu.prompt.override.username = 'tester';
+    jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
+
+
     nock('http://api.mockjitsu.com')
       .get('/apps/tester/jitsu')
         .reply(200, {
