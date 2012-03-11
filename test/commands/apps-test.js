@@ -238,7 +238,7 @@ vows.describe('jitsu/commands/apps').addBatch({
     nock('http://api.mockjitsu.com')
       .get('/apps/tester/example-app')
         .reply(500, {
-          error: 'not found',
+          error: 'not_found',
           reason: 'missing'
         }, { 'x-powered-by': 'Nodejitsu' })
       .post('/apps/tester/example-app/available', {
@@ -581,6 +581,6 @@ vows.describe('jitsu/commands/apps').addBatch({
 
   }, function assertion (err, ignore) {
     process.chdir(mainDirectory);
-    assert.ok(!err);
+    assert.isNotNull(err);
   })
 }).export(module);
