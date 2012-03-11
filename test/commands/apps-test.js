@@ -537,7 +537,7 @@ vows.describe('jitsu/commands/apps').addBatch({
             start: 'server.js'
           },
           version: '0.0.0-2',
-          engines: { node: 'v0.6.x' }
+          engines: { node: '0.6.x' }
         })
         .reply(200, {
           app: { state: 'stopped' }
