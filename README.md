@@ -20,7 +20,7 @@
 
 ## Features
 
-`jitsu` is built on some amazing technologies which we've been actively building with the community since 2009. `jitsu` is fully extendable and extremely modular ( see [Libaries](#Libraries) section ).
+`jitsu` is built on some amazing technologies which we've been actively building with the community since 2009. `jitsu` is fully extendable and extremely modular ( see [Libraries](#Libraries) section ).
 
  - Allows for seamless deployment of your Node.js applications to the cloud
  - Ships with use-full boilerplates and sample applications through [Node Apps](https://github.com/nodeapps) project integration
