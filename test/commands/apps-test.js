@@ -476,11 +476,7 @@ vows.describe('jitsu/commands/apps').addBatch({
         }, { 'x-powered-by': 'Nodejitsu' })
 
 
-    // Test access denied behavior
-    // Remark: In real life, the "tester" field actually says "undefined",
-    // but it shouldn't actually matter as long as we reply with a 403.
-    // TODO: Right now, the 403 results in an error. However, other commands
-    // automatically redirect to login.
+    // Test access denied behavior.
     nock('http://api.mockjitsu.com')
       .post('/apps/tester/example-app/available', {
         name: 'example-app',
@@ -581,6 +577,6 @@ vows.describe('jitsu/commands/apps').addBatch({
 
   }, function assertion (err, ignore) {
     process.chdir(mainDirectory);
-    assert.isNotNull(err);
+    assert.isNull(err);
   })
 }).export(module);
