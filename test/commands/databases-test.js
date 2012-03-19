@@ -116,6 +116,29 @@ vows.describe('jitsu/commands/databases').addBatch({
         }, { 'x-powered-by': 'Nodejitsu' });
   })
 }).addBatch({
+  'databases create': shouldNodejitsuOk(function setup() {
+
+    jitsu.prompt.override['database name'] = 'test4';
+    jitsu.prompt.override['database type'] = 'mongo';
+
+    nock('http://api.mockjitsu.com')
+      .post('/databases/tester/test4', { type: 'mongo' })
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
+      .get('/databases/tester/test4')
+        .reply(200, {
+          name: "test4",
+          type: "couch",
+          user: "tester",
+          metadata: {
+            ok: true,
+            id: "Server/nodejitsudb951231780457",
+            created: true
+          },
+          id: "tester-test4",
+          resource: "Database"
+        }, { 'x-powered-by': 'Nodejitsu' });
+  })
+}).addBatch({
   'databases create couch test2': shouldNodejitsuOk('should prompt for credentials', function setup() {
 
     jitsu.config.stores.file.file = path.join(__dirname, '..', 'fixtures', 'logged-out-jitsuconf');
