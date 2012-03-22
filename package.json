@@ -37,7 +37,7 @@
   "main": "./lib/jitsu",
   "scripts": {
     "test": "vows test/commands/*-test.js --spec",
-    "postinstall": "jitsu wizard"
+    "postinstall": "node ./bin/jitsu wizard"
   },
   "engines": {
     "node": ">= 0.4.0"
