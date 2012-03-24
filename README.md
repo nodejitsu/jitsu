@@ -32,16 +32,15 @@
 
 # One-Line Node App Installation
 
-*( inside an empty directory )*
+**If you don't have an application yet, you can use one of ours!**
 
      jitsu install
 
-
 # One-Line Node App Deployment
 
-*( inside the path of your Node.js application )*
-
      jitsu deploy
+
+*( inside the path of your Node.js application )*
 
 
 This will create a new application, package.json, and deploy your path to [Nodejitsu](http://nodejitsu.com). If it's your first deployment, you'll be prompted for some information such as *subdomain* and *start script* but it's really easy and we promise it will only take a few seconds.
@@ -71,10 +70,6 @@ If it's your first time using `jitsu`, you will be prompted to login with an exi
    
    **Common Commands:**
 
-   *To install a pre-built application*
-
-     jitsu install
-
    *To sign up for [Nodejitsu](http://nodejitsu.com)*
 
      jitsu signup
@@ -82,6 +77,10 @@ If it's your first time using `jitsu`, you will be prompted to login with an exi
    *To log into [Nodejitsu](http://nodejitsu.com)*
 
      jitsu login
+
+   *To install a pre-built application*
+
+     jitsu install
 
    *Deploys current path to [Nodejitsu](http://nodejitsu.com)*
    
