@@ -2,7 +2,7 @@
 
 var jitsu = require('../lib/jitsu');
 
-require('completed').setup({
+require('complete').setup({
   program: 'jitsu',
   completion: '../lib/jitsu/completion'
 });
