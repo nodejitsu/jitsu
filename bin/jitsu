@@ -1,11 +1,9 @@
 #!/usr/bin/env node
 
-var jitsu = require('../lib/jitsu');
+// Completion
+require('../lib/jitsu/completion');
 
-require('complete').setup({
-  program: 'jitsu',
-  completion: '../lib/jitsu/completion'
-});
+var jitsu = require('../lib/jitsu');
 
 jitsu.start(function (err) {
   if (!err) {
