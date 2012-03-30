@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-// Completion
 require('../lib/jitsu/completion');
 
 var jitsu = require('../lib/jitsu');
