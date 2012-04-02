@@ -8,7 +8,7 @@
     "platform-as-a-service",
     "deployment"
   ],
-  "version": "0.8.2-1",
+  "version": "0.8.4-1",
   "author": "Nodejitsu Inc. <support@nodejitsu.com>",
   "repository": {
     "type": "git",
@@ -17,11 +17,11 @@
   "preferGlobal": true,
   "dependencies": {
     "colors": "0.6.0-1",
-    "flatiron": "0.1.14",
+    "flatiron": "0.1.16",
     "flatiron-cli-config": "0.1.1",
     "flatiron-cli-users": "0.1.1",
-    "npm": "1.1.4",
-    "nodejitsu-api": "0.2.4-1",
+    "npm": "1.1.12",
+    "nodejitsu-api": "0.2.5",
     "pkginfo": "0.2.2",
     "request": "2.9.100",
     "require-analyzer": "0.4.0-3",
@@ -36,7 +36,8 @@
   },
   "main": "./lib/jitsu",
   "scripts": {
-    "test": "vows test/commands/*-test.js --spec"
+    "test": "vows test/commands/*-test.js --spec",
+    "postinstall": "node ./bin/jitsu help"
   },
   "engines": {
     "node": ">= 0.4.0"
