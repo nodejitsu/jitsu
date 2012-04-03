@@ -1,22 +1,24 @@
 #!/usr/bin/env node
 
+require('../lib/jitsu/completion');
+
 var jitsu = require('../lib/jitsu');
 
 jitsu.start(function (err) {
   if (!err) {
     jitsu.log.info('Nodejitsu'.grey + ' ok'.green.bold);
   }
-  
+
   process.stdout.on('drain', function () {
     process.exit(err ? 1 : 0);
   })
-  
+
   function onexit (code, status) {
     if (err) {
       process.removeListener('exit', onexit);
       process.exit(1);
-    }  
+    }
   }
-  
+
   process.on('exit', onexit);
 });
