@@ -62,9 +62,10 @@ vows.describe('jitsu/commands/keys').addBatch({
     jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
     jitsu.prompt.override.type = 'api';
     jitsu.prompt.override.name = 'test2';
+    jitsu.prompt.override.ttl = '0';
 
     nock('http://api.mockjitsu.com')
-      .post('/users/tester/keys/test2', { type: 'api', name: 'test2' })
+      .post('/users/tester/keys/test2', { name: 'test2' })
       .reply(200,
         { type: 'api', name: 'test2', value: 'asdas90d8208rhkhfh92yur3932' }
       , { 'x-powered-by': 'Nodejitsu' })
@@ -84,7 +85,7 @@ vows.describe('jitsu/commands/keys').addBatch({
     jitsu.prompt.override.name = 'test3';
 
     nock('http://api.mockjitsu.com')
-      .delete('/users/tester/keys/test3')
+      .delete('/users/tester/keys/test3', {})
       .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
       .get('/users/tester/keys/test3')
       .reply(500,
