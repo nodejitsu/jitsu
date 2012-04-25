@@ -69,6 +69,7 @@ vows.describe('jitsu/commands/snapshots').addBatch({
     jitsu.config.stores.file.loadSync();
 
     jitsu.prompt.override.username = 'tester';
+    jitsu.prompt.override.username = 'tester';
     jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
     jitsu.prompt.override.snapshot = '0.0.0-1';
 
@@ -82,7 +83,14 @@ vows.describe('jitsu/commands/snapshots').addBatch({
           }]
         }, { 'x-powered-by': 'Nodejitsu' })
       .post('/apps/tester/application2/snapshots/0.0.0-1/activate', {})
-        .reply(200, '', { 'x-powered-by': 'Nodejitsu' });
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
+      .post('/apps/tester/application2/stop', {})
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
+      .post('/apps/tester/application2/start', {})
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
+      .get('/apps/tester/application2', '')
+        .reply(200, { subdomain: "tester.application2" } , { 'x-powered-by': 'Nodejitsu' });
+
   })
 }).addBatch({
   'snapshots activate application2': shouldNodejitsuOk(function setup() {
@@ -98,7 +106,13 @@ vows.describe('jitsu/commands/snapshots').addBatch({
           }]
         }, { 'x-powered-by': 'Nodejitsu' })
       .post('/apps/tester/application2/snapshots/0.0.0-1/activate', {})
-        .reply(200, '', { 'x-powered-by': 'Nodejitsu' });
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
+      .post('/apps/tester/application2/stop', {})
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
+      .post('/apps/tester/application2/start', {})
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
+      .get('/apps/tester/application2', '')
+        .reply(200, { subdomain: "tester.application2" } , { 'x-powered-by': 'Nodejitsu' });
   })
 }).addBatch({
   'snapshots activate application2': shouldNodejitsuOk('should prompt for credentials', function setup() {
@@ -120,7 +134,14 @@ vows.describe('jitsu/commands/snapshots').addBatch({
           }]
         }, { 'x-powered-by': 'Nodejitsu' })
       .post('/apps/tester/application2/snapshots/0.0.0-1/activate', {})
-        .reply(200, '', { 'x-powered-by': 'Nodejitsu' });
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
+      .post('/apps/tester/application2/stop', {})
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
+      .post('/apps/tester/application2/start', {})
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
+      .get('/apps/tester/application2', '')
+        .reply(200, { subdomain: "tester.application2" } , { 'x-powered-by': 'Nodejitsu' });
+
   })
 }).addBatch({
   'snapshots destroy application3': shouldNodejitsuOk(function setup() {
@@ -200,7 +221,14 @@ vows.describe('jitsu/commands/snapshots').addBatch({
           }]
         }, { 'x-powered-by': 'Nodejitsu' })
       .post('/apps/tester/example-app/snapshots/0.0.0-1/activate', {})
-        .reply(200, '', { 'x-powered-by': 'Nodejitsu' });
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
+      .post('/apps/tester/example-app/stop', {})
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
+      .post('/apps/tester/example-app/start', {})
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
+      .get('/apps/tester/example-app', '')
+        .reply(200, { subdomain: "tester.example-app" } , { 'x-powered-by': 'Nodejitsu' });
+
   }, function assertion (err) {
     process.chdir(mainDirectory);
     assert.ok(!err);
