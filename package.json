@@ -9,7 +9,11 @@
     "deployment"
   ],
   "version": "0.8.7",
-  "author": "Nodejitsu Inc. <support@nodejitsu.com>",
+  "author": "Nodejitsu Inc. <info@nodejitsu.com>",
+  "maintainers": [
+    "AvianFlu <avianflu@nodejitsu.com>",
+    "Marak <marak@nodejitsu.com>"
+  ],
   "repository": {
     "type": "git",
     "url": "http://github.com/nodejitsu/jitsu.git"
@@ -44,3 +48,4 @@
     "node": ">= 0.4.0"
   }
 }
+
