@@ -82,13 +82,9 @@ If it's your first time using `jitsu`, you will be prompted to login with an exi
 
      jitsu install
 
-   *Deploys current path to [Nodejitsu](http://nodejitsu.com)*
+   *Deploys application in the current path to [Nodejitsu](http://nodejitsu.com)*
    
      jitsu deploy
-   
-   *Creates a new application on [Nodejitsu](http://nodejitsu.com)*
-   
-     jitsu create
    
    *Lists all applications for the current user*
    
