@@ -31,7 +31,8 @@
     "request": "2.9.100",
     "require-analyzer": "0.4.0-3",
     "semver": "1.0.13",
-    "complete": "0.3.x"
+    "complete": "0.3.x",
+    "wizard": "0.0.x"
   },
   "devDependencies": {
     "nock": "0.8.x",
