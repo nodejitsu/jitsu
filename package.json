@@ -26,7 +26,7 @@
     "flatiron-cli-config": "0.1.1",
     "flatiron-cli-users": "0.1.1",
     "npm": "1.1.16",
-    "nodejitsu-api": "0.2.6",
+    "nodejitsu-api": "0.3.0",
     "pkginfo": "0.2.2",
     "request": "2.9.100",
     "require-analyzer": "0.4.0-3",
