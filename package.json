@@ -22,7 +22,7 @@
   "dependencies": {
     "colors": "0.6.0-1",
     "dateformat": "1.0.2-1.2.3",
-    "flatiron": "0.1.16",
+    "flatiron": "0.2.5",
     "flatiron-cli-config": "0.1.1",
     "flatiron-cli-users": "0.1.1",
     "npm": "1.1.16",
