@@ -9,12 +9,12 @@
 
 `jitsu` requires `npm`, the [node package manager](http://npmjs.org).
 
-## One-line npm install
+## One-line jitsu install
 
     [sudo] curl http://npmjs.org/install.sh | sh
 
 
-## One-line jitsu install
+## One-line npm install
 
     [sudo] npm install jitsu -g
 
