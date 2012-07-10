@@ -135,6 +135,14 @@ vows.describe('jitsu/commands/env').addBatch({
       }, { 'x-powered-by': 'Nodejitsu' })
   })
 }).addBatch({
+  'env set': shouldNodejitsuOk(
+    'Should exit with an error',
+    function assertion (ign, err) {
+      err = ign;
+      assert.isTrue(!!err);
+    }
+  )
+}).addBatch({
   'env set test truthy': shouldNodejitsuOk(function setup() {
     nock('http://api.mockjitsu.com')
       .get('/apps/tester/jitsu')
