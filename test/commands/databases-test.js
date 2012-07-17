@@ -18,18 +18,20 @@ vows.describe('jitsu/commands/databases').addBatch({
   'databases list': shouldNodejitsuOk(function setup() {
     nock('http://api.mockjitsu.com')
       .get('/databases/tester')
-      .reply(200, [{
-        name: "test",
-        type: "couch",
-        user: "tester",
-        metadata: {
-          ok: true,
-          id: "Server/nodejitsudb951231780457",
-          created: true
-        },
-        id: "tester-test",
-        resource: "Database"
-      }], { 'x-powered-by': 'Nodejitsu' });
+      .reply(200, {
+        databases: [{
+          name: "test",
+          type: "couch",
+          user: "tester",
+          metadata: {
+            ok: true,
+            id: "Server/nodejitsudb951231780457",
+            created: true
+          },
+          id: "tester-test",
+          resource: "Database"
+        }]
+      }, { 'x-powered-by': 'Nodejitsu' });
   })
 }).addBatch({
   'databases list': shouldNodejitsuOk('should prompt for credentials', function setup() {
@@ -42,34 +44,38 @@ vows.describe('jitsu/commands/databases').addBatch({
 
     nock('http://api.mockjitsu.com')
       .get('/databases/tester')
-      .reply(200, [{
-        name: "test",
-        type: "couch",
-        user: "tester",
-        metadata: {
-          ok: true,
-          id: "Server/nodejitsudb951231780457",
-          created: true
-        },
-        id: "tester-test",
-        resource: "Database"
-      }], { 'x-powered-by': 'Nodejitsu' });
+      .reply(200, {
+        databases: [{
+          name: "test",
+          type: "couch",
+          user: "tester",
+          metadata: {
+            ok: true,
+            id: "Server/nodejitsudb951231780457",
+            created: true
+          },
+          id: "tester-test",
+          resource: "Database"
+        }]
+      }, { 'x-powered-by': 'Nodejitsu' });
   })
 }).addBatch({
   'databases get test': shouldNodejitsuOk(function setup() {
     nock('http://api.mockjitsu.com')
       .get('/databases/tester/test')
       .reply(200, {
-        name: "test",
-        type: "couch",
-        user: "tester",
-        metadata: {
-          ok: true,
-          id: "Server/nodejitsudb951231780457",
-          created: true
-        },
-        id: "tester-test",
-        resource: "Database"
+        database: {
+          name: "test",
+          type: "couch",
+          user: "tester",
+          metadata: {
+            ok: true,
+            id: "Server/nodejitsudb951231780457",
+            created: true
+          },
+          id: "tester-test",
+          resource: "Database"
+        }
       }, { 'x-powered-by': 'Nodejitsu' });
   })
 }).addBatch({
@@ -84,26 +90,8 @@ vows.describe('jitsu/commands/databases').addBatch({
     nock('http://api.mockjitsu.com')
       .get('/databases/tester/test')
       .reply(200, {
-        name: "test",
-        type: "couch",
-        user: "tester",
-        metadata: {
-          ok: true,
-          id: "Server/nodejitsudb951231780457",
-          created: true
-        },
-        id: "tester-test",
-        resource: "Database"
-      }, { 'x-powered-by': 'Nodejitsu' });
-  })
-}).addBatch({
-  'databases create couch test2': shouldNodejitsuOk(function setup() {
-    nock('http://api.mockjitsu.com')
-      .post('/databases/tester/test2', { type: 'couch' })
-        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
-      .get('/databases/tester/test2')
-        .reply(200, {
-          name: "test2",
+        database: {
+          name: "test",
           type: "couch",
           user: "tester",
           metadata: {
@@ -111,8 +99,30 @@ vows.describe('jitsu/commands/databases').addBatch({
             id: "Server/nodejitsudb951231780457",
             created: true
           },
-          id: "tester-test2",
+          id: "tester-test",
           resource: "Database"
+        }
+      }, { 'x-powered-by': 'Nodejitsu' });
+  })
+}).addBatch({
+  'databases create couch test2': shouldNodejitsuOk(function setup() {
+    nock('http://api.mockjitsu.com')
+      .post('/databases/tester/test2', { type: 'couch' })
+        .reply(200, { database: {} }, { 'x-powered-by': 'Nodejitsu' })
+      .get('/databases/tester/test2')
+        .reply(200, {
+          database: {
+            name: "test2",
+            type: "couch",
+            user: "tester",
+            metadata: {
+              ok: true,
+              id: "Server/nodejitsudb951231780457",
+              created: true
+            },
+            id: "tester-test2",
+            resource: "Database"
+          }
         }, { 'x-powered-by': 'Nodejitsu' });
   })
 }).addBatch({
@@ -123,21 +133,23 @@ vows.describe('jitsu/commands/databases').addBatch({
 
     nock('http://api.mockjitsu.com')
       .post('/databases/tester/test3', { type: 'mongo' })
-        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
+        .reply(200, { database: {} }, { 'x-powered-by': 'Nodejitsu' })
       .get('/databases/tester/test3')
         .reply(200, {
-          name: "test3",
-          type: "mongo",
-          user: "tester",
-          metadata: {
-            ok: true,
-            created: true,
-            config: {
-              MONGOHQ_URL: 'mongo://this.is.only.a.test.mongohq.com'
-            }
-          },
-          id: "tester-test3",
-          resource: "Database"
+          database: {
+            name: "test3",
+            type: "mongo",
+            user: "tester",
+            metadata: {
+              ok: true,
+              created: true,
+              config: {
+                MONGOHQ_URL: 'mongo://this.is.only.a.test.mongohq.com'
+              }
+            },
+            id: "tester-test3",
+            resource: "Database"
+          }
         }, { 'x-powered-by': 'Nodejitsu' });
   })
 }).addBatch({
@@ -151,19 +163,21 @@ vows.describe('jitsu/commands/databases').addBatch({
 
     nock('http://api.mockjitsu.com')
       .post('/databases/tester/test4', { type: 'couch' })
-        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
+        .reply(200, { database: {} }, { 'x-powered-by': 'Nodejitsu' })
       .get('/databases/tester/test4')
         .reply(200, {
-          name: "test4",
-          type: "couch",
-          user: "tester",
-          metadata: {
-            ok: true,
-            id: "Server/nodejitsudb951231780457",
-            created: true
-          },
-          id: "tester-test4",
-          resource: "Database"
+          database: {
+            name: "test4",
+            type: "couch",
+            user: "tester",
+            metadata: {
+              ok: true,
+              id: "Server/nodejitsudb951231780457",
+              created: true
+            },
+            id: "tester-test4",
+            resource: "Database"
+          }
         }, { 'x-powered-by': 'Nodejitsu' });
   })
 }).addBatch({
