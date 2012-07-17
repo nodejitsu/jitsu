@@ -8,7 +8,7 @@
     "platform-as-a-service",
     "deployment"
   ],
-  "version": "0.9.4",
+  "version": "0.9.5",
   "author": "Nodejitsu Inc. <info@nodejitsu.com>",
   "maintainers": [
     "AvianFlu <avianflu@nodejitsu.com>",
@@ -29,7 +29,7 @@
     "fstream": "0.1.18",
     "fstream-npm": "0.1.0",
     "npm": "1.1.16",
-    "nodejitsu-api": "0.3.0",
+    "nodejitsu-api": "0.3.1",
     "pkginfo": "0.2.3",
     "request": "2.9.100",
     "require-analyzer": "0.4.0-3",
