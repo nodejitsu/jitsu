@@ -36,7 +36,8 @@
     "spawn-command": "0.0.1",
     "semver": "1.0.14",
     "tar": "0.1.13",
-    "wizard": "0.0.1"
+    "wizard": "0.0.1",
+    "utile": "~0.1.2"
   },
   "devDependencies": {
     "nock": "0.8.x",
@@ -53,4 +54,3 @@
     "node": ">= 0.4.0"
   }
 }
-
