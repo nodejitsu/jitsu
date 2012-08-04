@@ -144,7 +144,7 @@ vows.describe('jitsu/commands/databases').addBatch({
               ok: true,
               created: true,
               config: {
-                MONGOHQ_URL: 'mongo://this.is.only.a.test.mongohq.com'
+                MONGOHQ_URL: 'mongo://nodejitsu:pass@this.is.only.a.test.mongohq.com/path'
               }
             },
             id: "tester-test3",
