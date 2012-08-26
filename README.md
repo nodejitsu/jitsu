@@ -1,4 +1,4 @@
-# jitsu [![Build Status](https://secure.travis-ci.org/nodejitsu/jitsu.png)](http://travis-ci.org/nodejitsu/jitsu)
+# jitsu [![Build Status](https://secure.travis-ci.org/nodejitsu/jitsu.png?branch=master)](http://travis-ci.org/nodejitsu/jitsu)
 *Flawless command line deployment of Node.js apps to the cloud*
 
 <img src="https://github.com/nodejitsu/jitsu/raw/master/assets/jitsu.png"/>
