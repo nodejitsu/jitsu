@@ -29,7 +29,7 @@ vows.describe('jitsu/commands/malformed').addBatch({
   function setup() {
     useAppFixture();
 
-    jitsu.prompt.override.proceed = 'yes';
+    jitsu.prompt.override.confirm = 'yes';
   }, function assertion (err, ignore) {
 
     process.chdir(mainDirectory);

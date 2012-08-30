@@ -279,7 +279,7 @@ vows.describe('jitsu/commands/env').addBatch({
 }).addBatch({
   'env clear': shouldNodejitsuOk('The current app should have an empty env',
     function setup() {
-      jitsu.prompt.override['yesno'] = 'yes';
+      jitsu.prompt.override.confirm = 'yes';
       nock('http://api.mockjitsu.com')
         .get('/apps/tester/jitsu')
           .reply(200, {
@@ -299,7 +299,7 @@ vows.describe('jitsu/commands/env').addBatch({
 }).addBatch({
   'env clear barbaz': shouldNodejitsuOk('The specified app should have an empty env',
     function setup() {
-      jitsu.prompt.override['yesno'] = 'yes';
+      jitsu.prompt.override.confirm = 'yes';
       nock('http://api.mockjitsu.com')
         .get('/apps/tester/barbaz')
           .reply(200, {
