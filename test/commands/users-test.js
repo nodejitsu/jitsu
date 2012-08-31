@@ -55,7 +55,7 @@ vows.describe('jitsu/commands/users').addBatch({
     nock('http://api.mockjitsu.com')
       .post('/users/elvis/confirm', { username: 'elvis', 'inviteCode': 'f4387f4' })
       .reply(200, {
-        message: 'Your ninja status has been confirmed!',
+        message: 'Ninja status has been confirmed!',
         hasPassword: true
       }, { 'x-powered-by': 'Nodejitsu' });
   })
