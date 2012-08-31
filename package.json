@@ -1,6 +1,6 @@
 {
   "name": "jitsu",
-  "description": "Flawless command line deployment of your Node.js apps to the cloud",
+  "description": "Flawless command line deployment of Node.js apps to the cloud",
   "keywords": [
     "cli",
     "nodejitsu",
@@ -8,7 +8,7 @@
     "platform-as-a-service",
     "deployment"
   ],
-  "version": "0.9.7-1",
+  "version": "0.9.8",
   "author": "Nodejitsu Inc. <info@nodejitsu.com>",
   "maintainers": [
     "AvianFlu <avianflu@nodejitsu.com>",
