@@ -1,10 +1,10 @@
 {
   "name": "example-app",
-  "subdomain": "example-app",
+  "subdomain": "taken",
   "scripts": {
     "start": "server.js"
   },
-  "version": "0.0.0-1",
+  "version": "0.0.0",
   "engines": {
     "node": "0.6.x"
   }
