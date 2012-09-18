@@ -232,7 +232,7 @@ vows.describe('jitsu/commands/apps').addBatch({
     });
 
 
-    jitsu.prompt.override.answer = 'yes';
+    jitsu.prompt.override.confirm = 'yes';
     jitsu.prompt.override.subdomain = 'example-app';
 
     nock('http://api.mockjitsu.com')
@@ -374,7 +374,7 @@ vows.describe('jitsu/commands/apps').addBatch({
     jitsu.prompt.override.username = 'tester';
     jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
 
-    jitsu.prompt.override.answer = 'yes';
+    jitsu.prompt.override.confirm = 'yes';
 
     nock('http://api.mockjitsu.com')
       .filteringRequestBody(function (route) {
