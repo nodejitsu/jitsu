@@ -5,6 +5,4 @@
   "loglevel": "silly",
   "tar": "tar",
   "gzipbin": "gzip",
-  "username": "tester",
-  "password": "EXAMPLE-PASSWORD"
 }
