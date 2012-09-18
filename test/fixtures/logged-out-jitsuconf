@@ -4,5 +4,7 @@
   "userconfig": ".jitsuconf",
   "loglevel": "silly",
   "tar": "tar",
-  "gzipbin": "gzip"
+  "gzipbin": "gzip",
+  "username": "tester",
+  "password": "EXAMPLE-PASSWORD"
 }
