@@ -4,5 +4,5 @@
   "userconfig": ".jitsuconf",
   "loglevel": "silly",
   "tar": "tar",
-  "gzipbin": "gzip",
+  "gzipbin": "gzip"
 }
