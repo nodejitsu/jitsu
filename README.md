@@ -11,7 +11,7 @@
 
 ## One-line npm install
 
-    [sudo] curl http://npmjs.org/install.sh | sh
+    [sudo] curl https://npmjs.org/install.sh | sh
 
 
 ## One-line jitsu install
