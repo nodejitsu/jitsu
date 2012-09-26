@@ -84,8 +84,6 @@ vows.describe('jitsu/commands/snapshots').addBatch({
         }, { 'x-powered-by': 'Nodejitsu' })
       .post('/apps/tester/application2/snapshots/0.0.0-1/activate', {})
         .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
-      .post('/apps/tester/application2/stop', {})
-        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
       .post('/apps/tester/application2/start', {})
         .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
       .get('/apps/tester/application2', '')
@@ -106,8 +104,6 @@ vows.describe('jitsu/commands/snapshots').addBatch({
           }]
         }, { 'x-powered-by': 'Nodejitsu' })
       .post('/apps/tester/application2/snapshots/0.0.0-1/activate', {})
-        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
-      .post('/apps/tester/application2/stop', {})
         .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
       .post('/apps/tester/application2/start', {})
         .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
@@ -134,8 +130,6 @@ vows.describe('jitsu/commands/snapshots').addBatch({
           }]
         }, { 'x-powered-by': 'Nodejitsu' })
       .post('/apps/tester/application2/snapshots/0.0.0-1/activate', {})
-        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
-      .post('/apps/tester/application2/stop', {})
         .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
       .post('/apps/tester/application2/start', {})
         .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
@@ -221,8 +215,6 @@ vows.describe('jitsu/commands/snapshots').addBatch({
           }]
         }, { 'x-powered-by': 'Nodejitsu' })
       .post('/apps/tester/example-app/snapshots/0.0.0-1/activate', {})
-        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
-      .post('/apps/tester/example-app/stop', {})
         .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
       .post('/apps/tester/example-app/start', {})
         .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
