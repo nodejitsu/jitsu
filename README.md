@@ -138,6 +138,44 @@ If you need to authenticate yourselves to the proxy, you can try this command.
     jitsu config set proxy http://user:pass@proxy.domain.com:3128/
 
 <a name="Libraries"></a>
+
+##jitsu hooks
+
+You can add pre-deploy and post-deploy hooks to jitsu for running build scripts, tagging releases or anything else you want to do. These are hooks that are executed before or after deploying your application on the local machine. They are stored in your package.json:
+
+    {
+      "name": "test-app",
+      "subdomain": "test-app",
+      "scripts": {
+        "predeploy": "echo This will be run before deploying the app",
+        "postdeploy": "echo This will be run after deploying the app",
+        "start": "app.js"
+      },
+      "engines": {
+        "node": "0.6.x"
+      },
+      "version": "0.0.0"
+    }
+
+Which results in the following output when deploying:
+
+    $ jitsu deploy
+    info:    Welcome to Nodejitsu nodejitsu
+    info:    It worked if it ends with Nodejitsu ok
+    info:    Executing command deploy
+    info:    Analyzing your application dependencies in app.js
+    info:    Checking app availability test-app
+    info:    Creating app test-app
+    This will be run before deploying the app
+    info:    Creating snapshot 0.0.0
+    info:    Updating app test-app
+    info:    Activating snapshot 0.0.0 for test-app
+    info:    Starting app test-app
+    info:    App test-app is now started
+    info:    http://test-app.jit.su on Port 80
+    This will be run after deploying the app
+    info:    Nodejitsu ok
+
 ## Libraries
 `jitsu` is built on a few well developed, well maintained Node.js libraries. The [Nodejitsu](http://nodejitsu.com) team and friends have been building and using these projects actively for the past two years. They are the most used Node libraries (see: [http://search.npmjs.org/](http://search.npmjs.org/)) and are actively maintained by Nodejitsu and other core members of the Node.js community. Each library serves a specific function and we highly suggest you check each one out individually if you wish to increase your knowledge of Node.js
 
