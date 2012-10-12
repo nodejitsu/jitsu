@@ -9,5 +9,7 @@ jitsu.start(function (err) {
     jitsu.log.info('Nodejitsu'.grey + ' ok'.green.bold);
   }
 
-  process.exit(err ? 1 : 0);
+  process.stdout.on('drain', function () {
+    process.exit(err ? 1 : 0);
+  });
 });
