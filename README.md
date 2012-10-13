@@ -117,6 +117,13 @@ All configuration data for your local `jitsu` install is located in the *.jitsuc
 
 If you need to have multiple configuration files, use --localconf or --jitsuconf options.
 
+Some Examples:
+
+    jitsu config set colors false   # disable colors
+    jitsu config set timeout 480000 # set request timeouts to 8 minutes
+    jitsu config set analyze false  # disable package analyzer
+    jitsu config set protocol https # Always use HTTP Secure
+
 ##jitsu options
 
     jitsu [commands] [options]
