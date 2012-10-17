@@ -29,7 +29,7 @@
     "fstream": "0.1.18",
     "fstream-npm": "0.1.1",
     "npm": "1.1.59",
-    "nodejitsu-api": "0.3.x",
+    "nodejitsu-api": "0.3.3",
     "pkginfo": "0.2.3",
     "request": "2.11.0",
     "require-analyzer": "0.4.0-3",
@@ -44,9 +44,6 @@
     "nock": "0.8.x",
     "vows": "0.6.x"
   },
-  "bundledDependencies": [
-    "nodejitsu.api"
-  ],
   "bin": {
     "jitsu": "./bin/jitsu"
   },
