@@ -8,7 +8,7 @@
     "platform-as-a-service",
     "deployment"
   ],
-  "version": "0.10.3-1",
+  "version": "0.10.3-2",
   "author": "Nodejitsu Inc. <info@nodejitsu.com>",
   "maintainers": [
     "AvianFlu <avianflu@nodejitsu.com>",
@@ -23,7 +23,7 @@
     "colors": "0.6.0-1",
     "complete": "0.3.1",
     "dateformat": "1.0.2-1.2.3",
-    "flatiron": "0.2.9",
+    "flatiron": "0.3.0",
     "flatiron-cli-config": "0.1.3",
     "flatiron-cli-users": "0.1.1",
     "fstream": "0.1.18",
