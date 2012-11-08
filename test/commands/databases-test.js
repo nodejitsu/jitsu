@@ -141,11 +141,13 @@ vows.describe('jitsu/commands/databases').addBatch({
             type: "mongo",
             user: "tester",
             metadata: {
-              ok: true,
-              created: true,
-              config: {
-                MONGOHQ_URL: 'mongo://nodejitsu:pass@this.is.only.a.test.mongohq.com/path'
-              }
+              id: 63562,
+              port: 10039,
+              host: 'this.is.only.a.test.mongohq.com',
+              uri: 'mongo://nodejitsu:pass@this.is.only.a.test.mongohq.com:10039',
+              username: 'nodejitsu',
+              password: 'pass',
+              dbname: '/path'
             },
             id: "tester-test3",
             resource: "Database"
