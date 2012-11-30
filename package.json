@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "nock": "0.8.x",
-    "vows": "0.6.x"
+    "vows": "0.7.x"
   },
   "bin": {
     "jitsu": "./bin/jitsu"
