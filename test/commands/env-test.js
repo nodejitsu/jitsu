@@ -357,6 +357,12 @@ vows.describe('jitsu/commands/env').addBatch({
     function setup() {
       jitsu.prompt.override.confirm = 'yes';
       nock('http://api.mockjitsu.com')
+        .get('/apps/tester/env_vars.json')
+          .reply(400, {
+              result: {
+                error: 'not_found'
+              }
+            }, { 'x-powered-by': 'Nodejitsu' })
         .get('/apps/tester/jitsu')
           .reply(200, {
               app: {
