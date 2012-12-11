@@ -435,10 +435,16 @@ vows.describe('jitsu/commands/env').addBatch({
     }
   )
 }).addBatch({
-  'env load enviroment.json': shouldNodejitsuOk('The current app should load enviroment variables from the specified file',
+  'env load env_vars.json': shouldNodejitsuOk('The current app should load enviroment variables from the specified file',
     function setup() {
       jitsu.prompt.override.confirm = 'yes';
       nock('http://api.mockjitsu.com')
+        .get('/apps/tester/env_vars.json')
+          .reply(400, {
+              result: {
+                error: 'not_found'
+              }
+            }, { 'x-powered-by': 'Nodejitsu' })
         .get('/apps/tester/jitsu')
           .reply(200, {
               app: {
@@ -455,7 +461,7 @@ vows.describe('jitsu/commands/env').addBatch({
     }
   )
 }).addBatch({
-  'env load barbaz enviroment.json': shouldNodejitsuOk('The specified app should load enviroment variables from the specified file',
+  'env load barbaz env_vars.json': shouldNodejitsuOk('The specified app should load enviroment variables from the specified file',
     function setup() {
       jitsu.prompt.override.confirm = 'yes';
       nock('http://api.mockjitsu.com')
