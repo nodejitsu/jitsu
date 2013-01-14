@@ -32,7 +32,7 @@
     "nodejitsu-api": "0.3.6",
     "pkginfo": "0.2.3",
     "request": "2.9.203",
-    "require-analyzer": "0.4.0-3",
+    "require-analyzer": "0.5.0",
     "spawn-command": "0.0.2",
     "semver": "1.0.14",
     "tar": "0.1.13",
