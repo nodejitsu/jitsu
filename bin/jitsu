@@ -3,7 +3,7 @@
 require('../lib/jitsu/completion');
 
 var jitsu = require('../lib/jitsu');
-
+require('nock').recorder.rec()
 jitsu.start(function (err) {
   if (!err) {
     jitsu.log.info('Nodejitsu'.grey + ' ok'.green.bold);
