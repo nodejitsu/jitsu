@@ -4,7 +4,7 @@
  * (C) 2010, Nodejitsu Inc.
  *
  */
- 
+
 var assert = require('assert'),
     fs = require('fs'),
     path = require('path'),
@@ -18,17 +18,26 @@ var shouldNodejitsuOk = macros.shouldNodejitsuOk,
 
 var mainDirectory = process.cwd();
 
+var cloud = [{ drones: 0, provider: 'jitsu', datacenter: 'foobar' }],
+    endpoints = {
+      "endpoints": {
+        "jitsu": {
+          "foobar": "api.mockjitsu.com"
+        }
+      }
+    };
+
 vows.describe('jitsu/commands/apps').addBatch({
   'apps list': shouldNodejitsuOk(function setup() {
     nock('http://api.mockjitsu.com')
       .get('/apps/tester')
       .reply(200, {
-        apps:[{ 
-          name: 'application', 
-          state: 'stopped', 
-          subdomain:'application', 
-          scripts: { start: './server.js' }, 
-          snapshots: [{ filename: 'FILENAME' }] 
+        apps:[{
+          name: 'application',
+          state: 'stopped',
+          subdomain:'application',
+          scripts: { start: './server.js' },
+          snapshots: [{ filename: 'FILENAME' }]
         }]
       }, { 'x-powered-by': 'Nodejitsu' })
   })
@@ -44,12 +53,12 @@ vows.describe('jitsu/commands/apps').addBatch({
     nock('http://api.mockjitsu.com')
       .get('/apps/tester')
       .reply(200, {
-        apps:[{ 
-          name: 'application', 
-          state: 'stopped', 
-          subdomain:'application', 
-          scripts: { start: './server.js' }, 
-          snapshots: [{ filename: 'FILENAME' }] 
+        apps:[{
+          name: 'application',
+          state: 'stopped',
+          subdomain:'application',
+          scripts: { start: './server.js' },
+          snapshots: [{ filename: 'FILENAME' }]
         }]
       }, { 'x-powered-by': 'Nodejitsu' })
   })
@@ -60,17 +69,21 @@ vows.describe('jitsu/commands/apps').addBatch({
       .reply(200, {
         app: {
           _id: 'tester/application2',
-          name: 'application2', 
-          state: 'stopped', 
-          subdomain:'application2', 
-          scripts: { start: './server.js' }, 
+          name: 'application2',
+          state: 'stopped',
+          subdomain:'application2',
+          scripts: { start: './server.js' },
           snapshots: [{
             id: '0.0.0',
             filename: 'FILENAME',
             ctime: 1234567898765,
-          }] 
+          }]
         }
       }, { 'x-powered-by': 'Nodejitsu' })
+      .get('/endpoints')
+      .reply(200, endpoints, { 'x-powered-by': 'Nodejitsu' })
+      .get('/apps/tester/application2/cloud')
+      .reply(200, cloud, { 'x-powered-by': 'Nodejitsu' })
   })
 }).addBatch({
   'apps view application2': shouldNodejitsuOk('should prompt for credentials', function setup() {
@@ -86,15 +99,15 @@ vows.describe('jitsu/commands/apps').addBatch({
       .reply(200, {
         app: {
           _id: 'tester/application2',
-          name: 'application2', 
-          state: 'stopped', 
-          subdomain:'application2', 
-          scripts: { start: './server.js' }, 
+          name: 'application2',
+          state: 'stopped',
+          subdomain:'application2',
+          scripts: { start: './server.js' },
           snapshots: [{
             id: '0.0.0',
             filename: 'FILENAME',
             ctime: 1234567898765,
-          }] 
+          }]
         }
       }, { 'x-powered-by': 'Nodejitsu' })
   })
@@ -110,6 +123,10 @@ vows.describe('jitsu/commands/apps').addBatch({
             subdomain: 'application3'
           }
         }, { 'x-powered-by': 'Nodejitsu' })
+      .get('/endpoints')
+        .reply(200, endpoints, { 'x-powered-by': 'Nodejitsu' })
+      .get('/apps/tester/application3/cloud')
+        .reply(200, cloud, { 'x-powered-by': 'Nodejitsu' })
   })
 }).addBatch({
   'apps start application3': shouldNodejitsuOk('should prompt for credentials', function setup() {
@@ -130,6 +147,10 @@ vows.describe('jitsu/commands/apps').addBatch({
             subdomain: 'application3'
           }
         }, { 'x-powered-by': 'Nodejitsu' })
+      .get('/endpoints')
+        .reply(200, endpoints, { 'x-powered-by': 'Nodejitsu' })
+      .get('/apps/tester/application3/cloud')
+        .reply(200, cloud, { 'x-powered-by': 'Nodejitsu' })
   })
 }).addBatch({
   'apps stop application3': shouldNodejitsuOk(function setup() {
@@ -137,9 +158,13 @@ vows.describe('jitsu/commands/apps').addBatch({
       .post('/apps/tester/application3/stop', {})
         .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
       .get('/apps/tester/application3')
-      .reply(200, {
+        .reply(200, {
           app: { state: 'stopped' }
-      }, { 'x-powered-by': 'Nodejitsu' })
+        }, { 'x-powered-by': 'Nodejitsu' })
+      .get('/endpoints')
+        .reply(200, endpoints, { 'x-powered-by': 'Nodejitsu' })
+      .get('/apps/tester/application3/cloud')
+        .reply(200, cloud, { 'x-powered-by': 'Nodejitsu' })
   })
 }).addBatch({
   'apps stop application3': shouldNodejitsuOk('should prompt for credentials', function setup() {
@@ -157,6 +182,10 @@ vows.describe('jitsu/commands/apps').addBatch({
       .reply(200, {
           app: { state: 'stopped' }
       }, { 'x-powered-by': 'Nodejitsu' })
+      .get('/endpoints')
+      .reply(200, endpoints, { 'x-powered-by': 'Nodejitsu' })
+      .get('/apps/tester/application3/cloud')
+      .reply(200, cloud, { 'x-powered-by': 'Nodejitsu' })
   })
 }).addBatch({
   'apps view': shouldNodejitsuOk(function setup() {
@@ -168,17 +197,18 @@ vows.describe('jitsu/commands/apps').addBatch({
       .reply(200, {
         app: {
           _id: 'tester/example-app',
-          name: 'application', 
-          state: 'stopped', 
-          subdomain: 'application', 
-          scripts: { start: './server.js' }, 
+          name: 'application',
+          state: 'stopped',
+          subdomain: 'application',
+          scripts: { start: './server.js' },
           snapshots: [{
             id: '0.0.0-1',
             filename: 'FILENAME',
             ctime: 1234567898765,
-          }] 
+          }]
         }
       }, { 'x-powered-by': 'Nodejitsu' })
+
   }, function assertion (err) {
     process.chdir(mainDirectory);
     assert.ok(!err);
@@ -198,6 +228,10 @@ vows.describe('jitsu/commands/apps').addBatch({
             subdomain: 'example-app'
           }
         }, { 'x-powered-by': 'Nodejitsu' })
+      .get('/endpoints')
+        .reply(200, endpoints, { 'x-powered-by': 'Nodejitsu' })
+      .get('/apps/tester/example-app/cloud')
+        .reply(200, cloud, { 'x-powered-by': 'Nodejitsu' })
   }, function assertion (err) {
     process.chdir(mainDirectory);
     assert.ok(!err);
@@ -209,7 +243,11 @@ vows.describe('jitsu/commands/apps').addBatch({
 
     nock('http://api.mockjitsu.com')
       .post('/apps/tester/example-app/stop', {})
-        .reply(200, '', { 'x-powered-by': 'Nodejitsu' });
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
+      .get('/endpoints')
+        .reply(200, endpoints, { 'x-powered-by': 'Nodejitsu' })
+      .get('/apps/tester/example-app/cloud')
+        .reply(200, cloud, { 'x-powered-by': 'Nodejitsu' })
 
   }, function assertion (err) {
     process.chdir(mainDirectory);
@@ -300,7 +338,11 @@ vows.describe('jitsu/commands/apps').addBatch({
         state: 'stopped',
         subdomain: 'example-app'
       })
-        .reply(201, "", { 'x-powered-by': 'Nodejitsu' });
+        .reply(201, "", { 'x-powered-by': 'Nodejitsu' })
+      .get('/endpoints')
+        .reply(200, endpoints, { 'x-powered-by': 'Nodejitsu' })
+      .get('/apps/tester/example-app/cloud')
+        .reply(200, cloud, { 'x-powered-by': 'Nodejitsu' })
 
     nock('http://api.mockjitsu.com')
       .filteringRequestBody(function (route) {
@@ -431,11 +473,11 @@ vows.describe('jitsu/commands/apps').addBatch({
       .get('/apps/tester/example-app')
         .reply(200, {
           app: {
-            name: 'example-app', 
-            state: 'stopped', 
-            subdomain:'example-app', 
-            scripts: { start: './server.js' }, 
-            snapshots: [{ filename: 'FILENAME' }] 
+            name: 'example-app',
+            state: 'stopped',
+            subdomain:'example-app',
+            scripts: { start: './server.js' },
+            snapshots: [{ filename: 'FILENAME' }]
           }
         }, { 'x-powered-by': 'Nodejitsu' })
       .put('/apps/tester/example-app', {
@@ -485,7 +527,11 @@ vows.describe('jitsu/commands/apps').addBatch({
             scripts: { start: 'server.js' },
             version: '0.0.0-1'
           }
-        }, { 'x-powered-by': 'Nodejitsu' });
+        }, { 'x-powered-by': 'Nodejitsu' })
+      .get('/endpoints')
+        .reply(200, endpoints, { 'x-powered-by': 'Nodejitsu' })
+      .get('/apps/tester/example-app/cloud')
+        .reply(200, cloud, { 'x-powered-by': 'Nodejitsu' })
 
   }, function assertion (err, ignore) {
     process.chdir(mainDirectory);
