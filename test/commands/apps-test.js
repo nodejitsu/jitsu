@@ -541,77 +541,102 @@ vows.describe('jitsu/commands/apps').addBatch({
             engines: {
               node: '0.6.x'
             }
-          })
-            .reply(200, {
-              available: true,
-            }, { 'x-powered-by': 'Nodejitsu' })
-          .get('/apps/tester/example-app')
-            .reply(200, {
-              app: {
-                name: 'example-app',
-                state: 'stopped',
-                subdomain:'example-app',
-                scripts: { start: './server.js' },
-                snapshots: [{ filename: 'FILENAME' }]
-              }
-            }, { 'x-powered-by': 'Nodejitsu' })
-          .put('/apps/tester/example-app', {
-              name: 'example-app',
-              subdomain: 'example-app',
-              scripts: {
-                start: 'server.js'
-              },
-              version: '0.0.0-2',
-              engines: { node: '0.6.x' }
-            })
-            .reply(200, {
-              app: { state: 'stopped' }
-            }, { 'x-powered-by': 'Nodejitsu' })
-          .post('/apps/tester/example-app/snapshots/0.0.0-2/activate', {})
-            .reply(200, {
-              app: {
-                name: 'example-app',
-                subdomain: 'example-app',
-                scripts: { start: 'server.js' },
-                version: '0.0.0-2'
-              }
-            }, { 'x-powered-by': 'Nodejitsu' })
-          .post('/apps/tester/example-app/stop', {})
-            .reply(200, {
-              app: {
-                name: 'example-app',
-                subdomain: 'example-app',
-                scripts: { start: 'server.js' },
-                version: '0.0.0-2'
-              }
-            }, { 'x-powered-by': 'Nodejitsu' })
-          .post('/apps/tester/example-app/start', {})
-            .reply(200, {
-              app: {
-                name: 'example-app',
-                subdomain: 'example-app',
-                scripts: { start: 'server.js' },
-                version: '0.0.0-2'
-              }
-            }, { 'x-powered-by': 'Nodejitsu' })
-          .get('/apps/tester/example-app')
-            .reply(200, {
-              app: {
-                name: 'example-app',
-                subdomain: 'example-app',
-                scripts: { start: 'server.js' },
-                version: '0.0.0-1'
-              }
-            }, { 'x-powered-by': 'Nodejitsu' })
-          .get('/endpoints')
-            .reply(200, endpoints, { 'x-powered-by': 'Nodejitsu' })
-          .get('/apps/tester/example-app/cloud')
-            .reply(200, cloud, { 'x-powered-by': 'Nodejitsu' });
+          }, { 'x-powered-by': 'Nodejitsu' })
+        .get('/endpoints')
+          .reply(200, endpoints, { 'x-powered-by': 'Nodejitsu' })
+        .get('/apps/tester/example-app/cloud')
+          .reply(200, cloud, { 'x-powered-by': 'Nodejitsu' })
     },
     function assertion (err, ignore) {
       process.chdir(mainDirectory);
       assert.isNull(err);
       fs.writeFileSync(loggedOutFile, loggedOutConf, 'utf8');
     }    
+  )
+}).addBatch({
+  'cloud example-app': shouldNodejitsuOk(
+    function setup() {
+      nock('https://api.mockjitsu.com')
+        .get('/apps/tester/example-app')
+        .reply(200, {
+          app: {
+            config: {
+              cloud: [{
+                provider: 'joyent',
+                datacenter: 'us-east-1',
+                drones: 2
+              }]
+            }
+          }
+        }, { 'x-powered-by': 'Nodejitsu' });
+    }
+  )
+}).addBatch({
+  'cloud': shouldNodejitsuOk(
+    function setup() {
+      useAppFixture();
+
+      nock('https://api.mockjitsu.com')
+        .get('/apps/tester/example-app')
+        .reply(200, {
+          app: {
+            config: {
+              cloud: [{
+                provider: 'joyent',
+                datacenter: 'us-east-1',
+                drones: 2
+              }]
+            }
+          }
+        }, { 'x-powered-by': 'Nodejitsu' });
+    },
+    'should show cloud info',
+    function assertion (err, ignore) {
+      process.chdir(mainDirectory);
+      assert.isNull(err);
+    }
+  )
+}).addBatch({
+  'cloud example-app joyent': shouldNodejitsuOk(
+    function setup() {
+      nock('https://api.mockjitsu.com')
+        .get('/apps/tester/example-app')
+        .reply(200, {
+          app: {
+            config: {
+              cloud: [{
+                provider: 'joyent',
+                datacenter: 'us-east-1',
+                drones: 2
+              }]
+            }
+          }
+        }, { 'x-powered-by': 'Nodejitsu' });
+    }
+  )
+}).addBatch({
+  'cloud joyent': shouldNodejitsuOk(
+    function setup() {
+      useAppFixture();
+
+      nock('https://api.mockjitsu.com')
+        .get('/apps/tester/example-app')
+        .reply(200, {
+          app: {
+            config: {
+              cloud: [{
+                provider: 'joyent',
+                datacenter: 'us-east-1',
+                drones: 2
+              }]
+            }
+          }
+        }, { 'x-powered-by': 'Nodejitsu' });
+    },
+    'should show cloud info',
+    function assertion (err, ignore) {
+      process.chdir(mainDirectory);
+      assert.isNull(err);
+    }
   )
 }).export(module);
