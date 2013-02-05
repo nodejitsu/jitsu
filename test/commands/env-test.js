@@ -8,12 +8,17 @@
 var assert = require('assert'),
     fs = require('fs'),
     path = require('path'),
+    async = require('flatiron').common.async,
     nock = require('nock'),
     vows = require('vows'),
     jitsu = require('../../lib/jitsu'),
     macros = require('../helpers/macros');
 
 var shouldNodejitsuOk = macros.shouldNodejitsuOk;
+
+var fixturesDir = path.join(__dirname, '..', 'fixtures'),
+    loggedOutFile = path.join(fixturesDir, 'logged-out-jitsuconf')
+    loggedOutConf = fs.readFileSync(loggedOutFile, 'utf8');
 
 vows.describe('jitsu/commands/env').addBatch({
   'env list': shouldNodejitsuOk(function setup() {
@@ -33,7 +38,7 @@ vows.describe('jitsu/commands/env').addBatch({
 }).addBatch({
   'env list': shouldNodejitsuOk('should prompt for credentials', function setup() {
 
-    jitsu.config.stores.file.file = path.join(__dirname, '..', 'fixtures', 'logged-out-jitsuconf');
+    jitsu.config.stores.file.file = loggedOutFile;
     jitsu.config.stores.file.loadSync();
 
     jitsu.prompt.override.username = 'tester';
@@ -100,7 +105,7 @@ vows.describe('jitsu/commands/env').addBatch({
 }).addBatch({
   'env get foo': shouldNodejitsuOk('should prompt for credentials', function setup() {
 
-    jitsu.config.stores.file.file = path.join(__dirname, '..', 'fixtures', 'logged-out-jitsuconf');
+    jitsu.config.stores.file.file = loggedOutFile;
     jitsu.config.stores.file.loadSync();
 
     jitsu.prompt.override.username = 'tester';
@@ -162,7 +167,7 @@ vows.describe('jitsu/commands/env').addBatch({
 }).addBatch({
   'env set test truthy': shouldNodejitsuOk('should prompt for credentials', function setup() {
 
-    jitsu.config.stores.file.file = path.join(__dirname, '..', 'fixtures', 'logged-out-jitsuconf');
+    jitsu.config.stores.file.file = loggedOutFile;
     jitsu.config.stores.file.loadSync();
 
     jitsu.prompt.override.username = 'tester';
@@ -237,7 +242,7 @@ vows.describe('jitsu/commands/env').addBatch({
 }).addBatch({
   'env delete delete': shouldNodejitsuOk('should prompt for credentials', function setup () {
 
-    jitsu.config.stores.file.file = path.join(__dirname, '..', 'fixtures', 'logged-out-jitsuconf');
+    jitsu.config.stores.file.file = loggedOutFile;
     jitsu.config.stores.file.loadSync();
 
     jitsu.prompt.override.username = 'tester';
@@ -495,4 +500,17 @@ vows.describe('jitsu/commands/env').addBatch({
           .reply(200, '', { 'x-powered-by': 'Nodejitsu' });
     }
   )
+}).addBatch({
+  "Remove": {
+    topic: function () {
+      async.forEach(
+        ['env.json', 'env_vars.json'],
+        fs.unlink,
+        this.callback
+      );
+    },
+    "test envvar .json files": function (err, _) {
+      assert.isNull(err);
+    }
+  }
 }).export(module);

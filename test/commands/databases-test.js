@@ -5,14 +5,19 @@
  *
  */
 
-var nock = require('nock'),
-    vows = require('vows'),
-    assert = require('assert'),
+var assert = require('assert'),
+    fs = require('fs'),
     path = require('path'),
+    nock = require('nock'),
+    vows = require('vows'),
     jitsu = require('../../lib/jitsu'),
     macros = require('../helpers/macros');
 
 var shouldNodejitsuOk = macros.shouldNodejitsuOk;
+
+var fixturesDir = path.join(__dirname, '..', 'fixtures'),
+    loggedOutFile = path.join(fixturesDir, 'logged-out-jitsuconf')
+    loggedOutConf = fs.readFileSync(loggedOutFile, 'utf8');
 
 vows.describe('jitsu/commands/databases').addBatch({
   'databases list': shouldNodejitsuOk(function setup() {
@@ -36,7 +41,7 @@ vows.describe('jitsu/commands/databases').addBatch({
 }).addBatch({
   'databases list': shouldNodejitsuOk('should prompt for credentials', function setup() {
 
-    jitsu.config.stores.file.file = path.join(__dirname, '..', 'fixtures', 'logged-out-jitsuconf');
+    jitsu.config.stores.file.file = loggedOutFile;
     jitsu.config.stores.file.loadSync();
 
     jitsu.prompt.override.username = 'tester';
@@ -81,7 +86,7 @@ vows.describe('jitsu/commands/databases').addBatch({
 }).addBatch({
   'databases get test': shouldNodejitsuOk('should prompt for credentials', function setup() {
 
-    jitsu.config.stores.file.file = path.join(__dirname, '..', 'fixtures', 'logged-out-jitsuconf');
+    jitsu.config.stores.file.file = loggedOutFile;
     jitsu.config.stores.file.loadSync();
 
     jitsu.prompt.override.username = 'tester';
@@ -157,7 +162,7 @@ vows.describe('jitsu/commands/databases').addBatch({
 }).addBatch({
   'databases create couch test4': shouldNodejitsuOk('should prompt for credentials', function setup() {
 
-    jitsu.config.stores.file.file = path.join(__dirname, '..', 'fixtures', 'logged-out-jitsuconf');
+    jitsu.config.stores.file.file = loggedOutFile;
     jitsu.config.stores.file.loadSync();
 
     jitsu.prompt.override.username = 'tester';
@@ -194,7 +199,7 @@ vows.describe('jitsu/commands/databases').addBatch({
 }).addBatch({
   'databases destroy test4': shouldNodejitsuOk('should prompt for credentials', function setup() {
 
-    jitsu.config.stores.file.file = path.join(__dirname, '..', 'fixtures', 'logged-out-jitsuconf');
+    jitsu.config.stores.file.file = loggedOutFile;
     jitsu.config.stores.file.loadSync();
 
     jitsu.prompt.override.username = 'tester';
