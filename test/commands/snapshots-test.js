@@ -32,7 +32,7 @@ var cloud = [{ drones: 0, provider: 'jitsu', datacenter: 'foobar' }],
     };    
 
 // Snapshots tests with specified app names
-vows.describe('jitsu/commands/snapshots')/*.addBatch({
+vows.describe('jitsu/commands/snapshots').addBatch({
   'snapshots list application': shouldNodejitsuOk(function setup() {
     nock('https://api.mockjitsu.com')
       .get('/apps/tester/application/snapshots')
@@ -216,7 +216,7 @@ vows.describe('jitsu/commands/snapshots')/*.addBatch({
       .delete('/apps/tester/application3/snapshots/0.0.0-1', {})
         .reply(200, '', { 'x-powered-by': 'Nodejitsu' });
   })
-})*/.addBatch({
+}).addBatch({
   // This tests jitsu's ability to infer the app name.
   'snapshots list': shouldNodejitsuOk(function setup() {
 
@@ -235,7 +235,7 @@ vows.describe('jitsu/commands/snapshots')/*.addBatch({
     process.chdir(mainDirectory);
     assert.ok(!err);
   })
-})/*.addBatch({
+}).addBatch({
   'snapshots activate': shouldNodejitsuOk(function setup() {
     jitsu.prompt.override.snapshot = '0.0.0-1';
 
@@ -291,4 +291,4 @@ vows.describe('jitsu/commands/snapshots')/*.addBatch({
     process.chdir(mainDirectory);
     assert.ok(!err);
   })
-})*/.export(module);
+}).export(module);
