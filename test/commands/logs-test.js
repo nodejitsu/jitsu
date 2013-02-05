@@ -24,7 +24,7 @@ vows.describe('jitsu/commands/logs').addBatch({
 
     useAppFixture();
     
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .post('/logs/tester/example-app', {
         from: "NOW-1DAY",
         until: "NOW",
@@ -95,7 +95,7 @@ vows.describe('jitsu/commands/logs').addBatch({
     jitsu.prompt.override.username = 'tester';
     jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
     
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .post('/logs/tester/example-app', {
         from: "NOW-1DAY",
         until: "NOW",
@@ -160,7 +160,7 @@ vows.describe('jitsu/commands/logs').addBatch({
 
     useAppFixture();
     
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .post('/logs/tester/example-app', {
         from: "NOW-1DAY",
         until: "NOW",
@@ -231,7 +231,7 @@ vows.describe('jitsu/commands/logs').addBatch({
     jitsu.prompt.override.username = 'tester';
     jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
     
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .post('/logs/tester/example-app', {
         from: "NOW-1DAY",
         until: "NOW",
@@ -294,7 +294,7 @@ vows.describe('jitsu/commands/logs').addBatch({
 }).addBatch({
   'logs app application': shouldNodejitsuOk(function setup() {
     
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .post('/logs/tester/application', {
         from: "NOW-1DAY",
         until: "NOW",
@@ -360,7 +360,7 @@ vows.describe('jitsu/commands/logs').addBatch({
     jitsu.prompt.override.username = 'tester';
     jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
     
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .post('/logs/tester/application', {
         from: "NOW-1DAY",
         until: "NOW",
@@ -420,7 +420,7 @@ vows.describe('jitsu/commands/logs').addBatch({
 }).addBatch({
   'logs app application 10': shouldNodejitsuOk(function setup() {
     
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .post('/logs/tester/application', {
         from: "NOW-1DAY",
         until: "NOW",

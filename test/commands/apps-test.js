@@ -29,7 +29,7 @@ var cloud = [{ drones: 0, provider: 'jitsu', datacenter: 'foobar' }],
 
 vows.describe('jitsu/commands/apps').addBatch({
   'apps list': shouldNodejitsuOk(function setup() {
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/apps/tester')
       .reply(200, {
         apps:[{
@@ -50,7 +50,7 @@ vows.describe('jitsu/commands/apps').addBatch({
     jitsu.prompt.override.username = 'tester';
     jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
 
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/apps/tester')
       .reply(200, {
         apps:[{
@@ -64,7 +64,7 @@ vows.describe('jitsu/commands/apps').addBatch({
   })
 }).addBatch({
   'apps view application2': shouldNodejitsuOk(function setup() {
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/apps/tester/application2')
       .reply(200, {
         app: {
@@ -94,7 +94,7 @@ vows.describe('jitsu/commands/apps').addBatch({
     jitsu.prompt.override.username = 'tester';
     jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
 
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/apps/tester/application2')
       .reply(200, {
         app: {
@@ -113,7 +113,7 @@ vows.describe('jitsu/commands/apps').addBatch({
   })
 }).addBatch({
   'apps start application3': shouldNodejitsuOk(function setup() {
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .post('/apps/tester/application3/start', {})
         .reply(200, {}, { 'x-powered-by': 'Nodejitsu' })
       .get('/apps/tester/application3')
@@ -137,7 +137,7 @@ vows.describe('jitsu/commands/apps').addBatch({
     jitsu.prompt.override.username = 'tester';
     jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
 
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .post('/apps/tester/application3/start', {})
         .reply(200, {}, { 'x-powered-by': 'Nodejitsu' })
       .get('/apps/tester/application3')
@@ -154,7 +154,7 @@ vows.describe('jitsu/commands/apps').addBatch({
   })
 }).addBatch({
   'apps stop application3': shouldNodejitsuOk(function setup() {
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .post('/apps/tester/application3/stop', {})
         .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
       .get('/apps/tester/application3')
@@ -175,7 +175,7 @@ vows.describe('jitsu/commands/apps').addBatch({
     jitsu.prompt.override.username = 'tester';
     jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
 
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .post('/apps/tester/application3/stop', {})
         .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
       .get('/apps/tester/application3')
@@ -192,7 +192,7 @@ vows.describe('jitsu/commands/apps').addBatch({
 
     useAppFixture();
 
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/apps/tester/example-app')
       .reply(200, {
         app: {
@@ -218,7 +218,7 @@ vows.describe('jitsu/commands/apps').addBatch({
 
     useAppFixture();
 
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .post('/apps/tester/example-app/start', {})
         .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
       .get('/apps/tester/example-app')
@@ -241,7 +241,7 @@ vows.describe('jitsu/commands/apps').addBatch({
 
     useAppFixture();
 
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .post('/apps/tester/example-app/stop', {})
         .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
       .get('/endpoints')
@@ -273,7 +273,7 @@ vows.describe('jitsu/commands/apps').addBatch({
     jitsu.prompt.override.confirm = 'yes';
     jitsu.prompt.override.subdomain = 'example-app';
 
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/apps/tester/example-app')
         .reply(500, {
           error: 'not_found',
@@ -344,7 +344,7 @@ vows.describe('jitsu/commands/apps').addBatch({
       .get('/apps/tester/example-app/cloud')
         .reply(200, cloud, { 'x-powered-by': 'Nodejitsu' })
 
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .filteringRequestBody(function (route) {
         return '*';
       })
@@ -353,7 +353,7 @@ vows.describe('jitsu/commands/apps').addBatch({
           app: { state: 'stopped' }
         }, { 'x-powered-by': 'Nodejitsu' });
 
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .post('/apps/tester/example-app/snapshots/0.0.0/activate', {})
         .reply(200, {
           app: {
@@ -418,7 +418,7 @@ vows.describe('jitsu/commands/apps').addBatch({
 
     jitsu.prompt.override.confirm = 'yes';
 
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .filteringRequestBody(function (route) {
         return '*';
       })
@@ -429,7 +429,7 @@ vows.describe('jitsu/commands/apps').addBatch({
 
 
     // Test access denied behavior.
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .post('/apps/tester/example-app/available', {
         name: 'example-app',
         subdomain: 'example-app',

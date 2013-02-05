@@ -16,7 +16,7 @@ var shouldNodejitsuOk = macros.shouldNodejitsuOk;
 
 vows.describe('jitsu/commands/databases').addBatch({
   'databases list': shouldNodejitsuOk(function setup() {
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/databases/tester')
       .reply(200, {
         databases: [{
@@ -42,7 +42,7 @@ vows.describe('jitsu/commands/databases').addBatch({
     jitsu.prompt.override.username = 'tester';
     jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
 
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/databases/tester')
       .reply(200, {
         databases: [{
@@ -61,7 +61,7 @@ vows.describe('jitsu/commands/databases').addBatch({
   })
 }).addBatch({
   'databases get test': shouldNodejitsuOk(function setup() {
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/databases/tester/test')
       .reply(200, {
         database: {
@@ -87,7 +87,7 @@ vows.describe('jitsu/commands/databases').addBatch({
     jitsu.prompt.override.username = 'tester';
     jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
 
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/databases/tester/test')
       .reply(200, {
         database: {
@@ -106,7 +106,7 @@ vows.describe('jitsu/commands/databases').addBatch({
   })
 }).addBatch({
   'databases create couch test2': shouldNodejitsuOk(function setup() {
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .post('/databases/tester/test2', { type: 'couch' })
         .reply(200, { database: {} }, { 'x-powered-by': 'Nodejitsu' })
       .get('/databases/tester/test2')
@@ -131,7 +131,7 @@ vows.describe('jitsu/commands/databases').addBatch({
     jitsu.prompt.override['database name'] = 'test3';
     jitsu.prompt.override['database type'] = 'mongo';
 
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .post('/databases/tester/test3', { type: 'mongo' })
         .reply(200, { database: {} }, { 'x-powered-by': 'Nodejitsu' })
       .get('/databases/tester/test3')
@@ -163,7 +163,7 @@ vows.describe('jitsu/commands/databases').addBatch({
     jitsu.prompt.override.username = 'tester';
     jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
 
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .post('/databases/tester/test4', { type: 'couch' })
         .reply(200, { database: {} }, { 'x-powered-by': 'Nodejitsu' })
       .get('/databases/tester/test4')
@@ -187,7 +187,7 @@ vows.describe('jitsu/commands/databases').addBatch({
     jitsu.prompt.override.answer = 'yes';
     jitsu.prompt.override.destroy = 'yes';
     
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .delete('/databases/tester/test3', {})
       .reply(200, '', { 'x-powered-by': 'Nodejitsu' });
   })
@@ -202,7 +202,7 @@ vows.describe('jitsu/commands/databases').addBatch({
     jitsu.prompt.override.answer = 'yes';
     jitsu.prompt.override.destroy = 'yes';
     
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .delete('/databases/tester/test4', {})
       .reply(200, '', { 'x-powered-by': 'Nodejitsu' });
   })

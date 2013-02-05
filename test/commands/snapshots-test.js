@@ -21,7 +21,7 @@ var mainDirectory = process.cwd();
 // Snapshots tests with specified app names
 vows.describe('jitsu/commands/snapshots').addBatch({
   'snapshots list application': shouldNodejitsuOk(function setup() {
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/apps/tester/application/snapshots')
       .reply(200, {
         snapshots: [{
@@ -40,7 +40,7 @@ vows.describe('jitsu/commands/snapshots').addBatch({
     jitsu.prompt.override.username = 'tester';
     jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
 
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/apps/tester/application/snapshots')
       .reply(200, {
         snapshots: [{
@@ -52,7 +52,7 @@ vows.describe('jitsu/commands/snapshots').addBatch({
   })
 }).addBatch({
   'snapshots list application2': shouldNodejitsuOk(function setup() {
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/apps/tester/application2/snapshots')
       .reply(200, {
         snapshots: [{
@@ -73,7 +73,7 @@ vows.describe('jitsu/commands/snapshots').addBatch({
     jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
     jitsu.prompt.override.snapshot = '0.0.0-1';
 
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/apps/tester/application2/snapshots')
         .reply(200, {
           snapshots: [{
@@ -94,7 +94,7 @@ vows.describe('jitsu/commands/snapshots').addBatch({
   'snapshots activate application2': shouldNodejitsuOk(function setup() {
     jitsu.prompt.override.snapshot = '0.0.0-1';
 
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/apps/tester/application2/snapshots')
         .reply(200, {
           snapshots: [{
@@ -120,7 +120,7 @@ vows.describe('jitsu/commands/snapshots').addBatch({
     jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
     jitsu.prompt.override.snapshot = '0.0.0-1';
 
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/apps/tester/application2/snapshots')
         .reply(200, {
           snapshots: [{
@@ -143,7 +143,7 @@ vows.describe('jitsu/commands/snapshots').addBatch({
     jitsu.prompt.override.snapshot = '0.0.0-1';
     jitsu.prompt.override.destroy = 'yes';
     
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/apps/tester/application3/snapshots')
         .reply(200, {
           snapshots: [{
@@ -168,7 +168,7 @@ vows.describe('jitsu/commands/snapshots').addBatch({
     jitsu.prompt.override.snapshot = '0.0.0-1';
     jitsu.prompt.override.destroy = 'yes';
     
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/apps/tester/application3/snapshots')
         .reply(200, {
           snapshots: [{
@@ -186,7 +186,7 @@ vows.describe('jitsu/commands/snapshots').addBatch({
 
     useAppFixture();
 
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/apps/tester/example-app/snapshots')
       .reply(200, {
         snapshots: [{
@@ -205,7 +205,7 @@ vows.describe('jitsu/commands/snapshots').addBatch({
 
     useAppFixture();
 
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/apps/tester/example-app/snapshots')
         .reply(200, {
           snapshots: [{
@@ -233,7 +233,7 @@ vows.describe('jitsu/commands/snapshots').addBatch({
 
     useAppFixture();
     
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/apps/tester/example-app/snapshots')
         .reply(200, {
           snapshots: [{
