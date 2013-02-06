@@ -18,7 +18,7 @@ var shouldNodejitsuOk = macros.shouldNodejitsuOk,
 
 var mainDirectory = process.cwd();
 
-var cloud = [{ drones: 0, provider: 'joyent', datacenter: 'us-east-1' }],
+var cloud = [{ drones: 2, provider: 'joyent', datacenter: 'us-east-1' }],
     endpoints = {
       "endpoints": {
         "joyent": {
@@ -648,6 +648,7 @@ vows.describe('jitsu/commands/apps').addBatch({
           app: {
             name: 'example-app',
             maxDrones: 2,
+            subdomain: 'example-app',
             config: {
               cloud: [{
                 provider: 'joyent',
