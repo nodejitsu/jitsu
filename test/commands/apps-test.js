@@ -31,7 +31,7 @@ var fixturesDir = path.join(__dirname, '..', 'fixtures'),
     loggedOutFile = path.join(fixturesDir, 'logged-out-jitsuconf')
     loggedOutConf = fs.readFileSync(loggedOutFile, 'utf8');  
 
-vows.describe('jitsu/commands/apps').addBatch({
+vows.describe('jitsu/commands/apps')/*.addBatch({
   'apps list': shouldNodejitsuOk(function setup() {
     nock('https://api.mockjitsu.com')
       .get('/apps/tester')
@@ -553,7 +553,7 @@ vows.describe('jitsu/commands/apps').addBatch({
       fs.writeFileSync(loggedOutFile, loggedOutConf, 'utf8');
     }    
   )
-}).addBatch({
+})*/.addBatch({
   'cloud example-app': shouldNodejitsuOk(
     function setup() {
       nock('https://api.mockjitsu.com')
@@ -789,13 +789,28 @@ vows.describe('jitsu/commands/apps').addBatch({
     }
   )
 }).addBatch({
-  'cloud unknow-provider': shouldNodejitsuOk(
+  'cloud example-app unknow-provider somedc': shouldNodejitsuOk(
     function setup() {
       useAppFixture();
 
       nock('https://api.mockjitsu.com')
-        .get('/apps/tester/unknow-provider')
-        .reply(404, {}, { 'x-powered-by': 'Nodejitsu' })
+      .get('/apps/tester/example-app')
+      .reply(200, {
+        app: {
+          name: 'example-app',
+          maxDrones: 2,
+          subdomain: 'example-app',
+          config: {
+            cloud: [{
+              provider: 'joyent',
+              datacenter: 'us-east-1',
+              drones: 1
+            }]
+          }
+        }
+      }, { 'x-powered-by': 'Nodejitsu' })
+      .get('/endpoints')
+        .reply(200, endpoints, { 'x-powered-by': 'Nodejitsu' })
     },
     'should fail',
     function assertion (err, ignore) {
