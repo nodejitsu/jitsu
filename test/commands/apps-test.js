@@ -18,11 +18,11 @@ var shouldNodejitsuOk = macros.shouldNodejitsuOk,
 
 var mainDirectory = process.cwd();
 
-var cloud = [{ drones: 0, provider: 'jitsu', datacenter: 'foobar' }],
+var cloud = [{ drones: 0, provider: 'joyent', datacenter: 'us-east-1' }],
     endpoints = {
       "endpoints": {
-        "jitsu": {
-          "foobar": "api.mockjitsu.com"
+        "joyent": {
+          "us-east-1": "api.mockjitsu.com"
         }
       }
     };
@@ -637,6 +637,33 @@ vows.describe('jitsu/commands/apps').addBatch({
     function assertion (err, ignore) {
       process.chdir(mainDirectory);
       assert.isNull(err);
+    }
+  )
+}).addBatch({
+  'cloud example-app joyent us-east-1': shouldNodejitsuOk(
+    function setup() {
+      nock('https://api.mockjitsu.com')
+        .get('/apps/tester/example-app')
+        .reply(200, {
+          app: {
+            name: 'example-app',
+            maxDrones: 2,
+            config: {
+              cloud: [{
+                provider: 'joyent',
+                datacenter: 'us-east-1',
+                drones: 2
+              }]
+            }
+          }
+        }, { 'x-powered-by': 'Nodejitsu' })
+        .get('/endpoints')
+          .reply(200, endpoints, { 'x-powered-by': 'Nodejitsu' })
+        .post('/apps/tester/example-app/cloud', [{
+          datacenter: 'us-east-1',
+          provider: 'joyent',
+          drones: 2
+        }]).reply(200, cloud, { 'x-powered-by': 'Nodejitsu' })
     }
   )
 }).export(module);
