@@ -412,6 +412,8 @@ vows.describe('jitsu/commands/apps').addBatch({
           authorized: true,
           role: 'user'
         }, { 'x-powered-by': 'Nodejitsu 0.6.14' })
+      .put('/users/tester/tokens/jitsu', {})
+        .reply(201, {"operation":"insert"}, { 'x-powered-by': 'Nodejitsu' })
       .post('/apps/tester/example-app/available', {
         name: 'example-app',
         subdomain: 'example-app',
