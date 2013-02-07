@@ -36,19 +36,31 @@ var fixturesDir = path.join(__dirname, '..', 'fixtures'),
 // argv combination of `--ram` and `--drones`.
 //
 function shouldAcceptAllCloudOptions(suite, command) {
-  ['with no options',
+  var combinations = ['with no options',
    '--drones 2',
    '--ram 512',
    '--drones 2 --ram 512'
-  ].forEach(function (argv) {
+  ];
+
+  if (jitsu.argv._[0] === 'deploy') {
+    combinations.push('--provider joyent');
+    combinations.push('--datacenter us-east-1');
+    combinations.push('--provider joyent --datacenter us-east-1');
+  }
+
+  combinations.forEach(function (argv) {
     var drones  = /--drones\s(\d{1})/.exec(argv),
         ram     = /--ram\s(\d{3})/.exec(argv),
+        provider = /--provider\s(\w{6})/.exec(argv),
+        datacenter = /--datacenter\s(\w{2}\-\w{4}\-\d{1})/.exec(argv),
         context = {},
         options;
 
     context[argv] = {};
 
     options = {
+      datacenter: datacenter ? datacenter[1] : 'us-east-1',
+      provider: provider ? provider[1] : 'joyent',
       drones: drones ? parseInt(drones[1], 10) : 1,
       ram:    ram    ? parseInt(ram[1], 10)    : 256
     };
@@ -61,7 +73,7 @@ function shouldAcceptAllCloudOptions(suite, command) {
         //
         // Accomodate for `cloud joyent us-east-1`.
         //
-        if (jitsu.argv._[1] === 'joyent') {
+        if (jitsu.argv._[1] === 'joyent' || jitsu.argv._[0] === 'deploy') {
           useAppFixture();
         }
 
@@ -84,12 +96,7 @@ function shouldAcceptAllCloudOptions(suite, command) {
           }, { 'x-powered-by': 'Nodejitsu' })
           .get('/endpoints')
             .reply(200, endpoints, { 'x-powered-by': 'Nodejitsu' })
-          .post('/apps/tester/example-app/cloud', [{
-            datacenter: 'us-east-1',
-            provider: 'joyent',
-            drones: options.drones,
-            ram: options.ram
-          }]).reply(200, {
+          .post('/apps/tester/example-app/cloud', [options]).reply(200, {
             datacenter: 'us-east-1',
             provider: 'joyent',
             drones: options.drones,
@@ -763,6 +770,11 @@ shouldAcceptAllCloudOptions(
 shouldAcceptAllCloudOptions(
   suite,
   'cloud joyent us-east-1'
+);
+
+shouldAcceptAllCloudOptions(
+  suite,
+  'deploy'
 );
 
 suite.export(module);
