@@ -42,11 +42,13 @@ function shouldAcceptAllCloudOptions(suite, command) {
    '--drones 2 --ram 512'
   ];
 
-  if (jitsu.argv._[0] === 'deploy') {
+  if (command === 'deploy') {
     combinations.push('--provider joyent');
     combinations.push('--datacenter us-east-1');
     combinations.push('--provider joyent --datacenter us-east-1');
   }
+
+  var setupFn  = (command === 'deploy') ? setupDeploy : setupCloud;
 
   combinations.forEach(function (argv) {
     var drones  = /--drones\s(\d{1})/.exec(argv),
@@ -66,43 +68,7 @@ function shouldAcceptAllCloudOptions(suite, command) {
     };
 
     context[argv][command] = shouldNodejitsuOk(
-      function setup() {
-        jitsu.argv.drones = options.drones;
-        jitsu.argv.ram = options.ram;
-
-        //
-        // Accomodate for `cloud joyent us-east-1`.
-        //
-        if (jitsu.argv._[1] === 'joyent' || jitsu.argv._[0] === 'deploy') {
-          useAppFixture();
-        }
-
-        nock('https://api.mockjitsu.com')
-          .get('/apps/tester/example-app')
-          .reply(200, {
-            app: {
-              name: 'example-app',
-              maxDrones: options.drones,
-              subdomain: 'example-app',
-              config: {
-                cloud: [{
-                  provider: 'joyent',
-                  datacenter: 'us-east-1',
-                  drones: options.drones,
-                  ram: 256
-                }]
-              }
-            }
-          }, { 'x-powered-by': 'Nodejitsu' })
-          .get('/endpoints')
-            .reply(200, endpoints, { 'x-powered-by': 'Nodejitsu' })
-          .post('/apps/tester/example-app/cloud', [options]).reply(200, {
-            datacenter: 'us-east-1',
-            provider: 'joyent',
-            drones: options.drones,
-            ram: options.ram
-          }, { 'x-powered-by': 'Nodejitsu' })
-      },
+      setupFn(options),
       'should show cloud info',
       function assertion (err, ignore) {
         process.chdir(mainDirectory);
@@ -112,6 +78,135 @@ function shouldAcceptAllCloudOptions(suite, command) {
 
     suite.addBatch(context);
   });
+
+  function setupCloud (options) {
+    return function setup () {
+      jitsu.argv.drones = options.drones;
+      jitsu.argv.ram = options.ram;
+
+      //
+      // Accomodate for `cloud joyent us-east-1`.
+      //
+      if (jitsu.argv._[1] === 'joyent') {
+        useAppFixture();
+      }
+
+      nock('https://api.mockjitsu.com')
+        .get('/apps/tester/example-app')
+        .reply(200, {
+          app: {
+            name: 'example-app',
+            maxDrones: options.drones,
+            subdomain: 'example-app',
+            config: {
+              cloud: [{
+                provider: 'joyent',
+                datacenter: 'us-east-1',
+                drones: options.drones,
+                ram: 256
+              }]
+            }
+          }
+        }, { 'x-powered-by': 'Nodejitsu' })
+        .get('/endpoints')
+          .reply(200, endpoints, { 'x-powered-by': 'Nodejitsu' })
+        .post('/apps/tester/example-app/cloud', [options]).reply(200, {
+          datacenter: 'us-east-1',
+          provider: 'joyent',
+          drones: options.drones,
+          ram: options.ram
+        }, { 'x-powered-by': 'Nodejitsu' })
+    }
+  }
+
+  function setupDeploy (options) {
+    return function setup () {
+      jitsu.argv.drones = options.drones;
+      jitsu.argv.ram = options.ram;
+      useAppFixture();
+
+      nock('https://api.mockjitsu.com')
+        .get('/apps/tester/example-app')
+        .reply(200, {
+          app: {
+            name: 'example-app',
+            maxDrones: options.drones,
+            subdomain: 'example-app',
+            config: {
+              cloud: [{
+                provider: 'joyent',
+                datacenter: 'us-east-1',
+                drones: options.drones,
+                ram: 256
+              }]
+            },
+            version: '0.0.0'
+          }
+        }, { 'x-powered-by': 'Nodejitsu' })
+        .put('/apps/tester/example-app', {
+          name: 'example-app',
+          subdomain: 'example-app',
+          scripts: {
+            start: 'server.js'
+          },
+          version: '0.0.0-1',
+          engines: { node: '0.6.x' },
+          analyzed: true
+        })
+        .reply(200, {
+          app: { state: 'stopped' }
+        }, { 'x-powered-by': 'Nodejitsu' })
+
+      nock('https://api.mockjitsu.com')
+        .filteringRequestBody(function (route) {
+          return '*';
+        })
+        .post('/apps/tester/example-app/snapshots/0.0.0-1', '*')
+          .reply(200, {
+            app: { state: 'stopped' }
+          }, { 'x-powered-by': 'Nodejitsu' });
+
+      nock('https://api.mockjitsu.com')
+        .post('/apps/tester/example-app/snapshots/0.0.0-1/activate', {})
+        .reply(200, {
+          app: {
+            name: 'example-app',
+            subdomain: 'example-app',
+            scripts: { start: 'server.js' },
+            version: '0.0.0-1'
+          }
+        }, { 'x-powered-by': 'Nodejitsu' })
+        .get('/endpoints')
+        .reply(200, endpoints, { 'x-powered-by': 'Nodejitsu' })
+        .post('/apps/tester/example-app/stop', {})
+        .reply(200, {
+          app: {
+            name: 'example-app',
+            subdomain: 'example-app',
+            scripts: { start: 'server.js' },
+            version: '0.0.0-1'
+          }
+        }, { 'x-powered-by': 'Nodejitsu' })
+        .post('/apps/tester/example-app/start', {})
+        .reply(200, {
+          app: {
+            name: 'example-app',
+            subdomain: 'example-app',
+            scripts: { start: 'server.js' },
+            version: '0.0.0-1'
+          }
+        }, { 'x-powered-by': 'Nodejitsu' })
+        .get('/apps/tester/example-app')
+        .reply(200, {
+          app: {
+            name: 'example-app',
+            subdomain: 'example-app',
+            scripts: { start: 'server.js' },
+            version: '0.0.0-1'
+          }
+        }, { 'x-powered-by': 'Nodejitsu' });
+    }
+  }
 
   return suite;
 }
