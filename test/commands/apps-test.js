@@ -29,7 +29,7 @@ var cloud = [{ drones: 2, provider: 'joyent', datacenter: 'us-east-1' }],
 
 var fixturesDir = path.join(__dirname, '..', 'fixtures'),
     loggedOutFile = path.join(fixturesDir, 'logged-out-jitsuconf')
-    loggedOutConf = fs.readFileSync(loggedOutFile, 'utf8');  
+    loggedOutConf = fs.readFileSync(loggedOutFile, 'utf8');
 
 //
 // Test macro which calls `.addBatch` for every possible
@@ -731,7 +731,7 @@ var suite = vows.describe('jitsu/commands/apps').addBatch({
       process.chdir(mainDirectory);
       assert.isNull(err);
       fs.writeFileSync(loggedOutFile, loggedOutConf, 'utf8');
-    }    
+    }
   )
 }).addBatch({
   'cloud example-app': shouldNodejitsuOk(
@@ -853,6 +853,19 @@ var suite = vows.describe('jitsu/commands/apps').addBatch({
     function assertion (err, ignore) {
       process.chdir(mainDirectory);
       assert.ok(!!err);
+    }
+  )
+}).addBatch({
+  'cloud list': shouldNodejitsuOk(
+    function setup() {
+      nock('https://api.mockjitsu.com')
+      .get('/endpoints')
+        .reply(200, endpoints, { 'x-powered-by': 'Nodejitsu' });
+    },
+    'should show the endpoints',
+    function assertion (err, ignore) {
+      process.chdir(mainDirectory);
+      assert.isNull(err);
     }
   )
 });
