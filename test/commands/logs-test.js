@@ -18,13 +18,18 @@ var shouldNodejitsuOk = macros.shouldNodejitsuOk,
 
 var mainDirectory = process.cwd();
 
+
+var fixturesDir = path.join(__dirname, '..', 'fixtures'),
+    loggedOutFile = path.join(fixturesDir, 'logged-out-jitsuconf')
+    loggedOutConf = fs.readFileSync(loggedOutFile, 'utf8');
+
 // Snapshots tests with specified app names
 vows.describe('jitsu/commands/logs').addBatch({
   'logs': shouldNodejitsuOk(function setup() {
 
     useAppFixture();
     
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .post('/logs/tester/example-app', {
         from: "NOW-1DAY",
         until: "NOW",
@@ -89,13 +94,13 @@ vows.describe('jitsu/commands/logs').addBatch({
 
     useAppFixture();
 
-    jitsu.config.stores.file.file = path.join(__dirname, '..', 'fixtures', 'logged-out-jitsuconf');
+    jitsu.config.stores.file.file = loggedOutFile;
     jitsu.config.stores.file.loadSync();
 
     jitsu.prompt.override.username = 'tester';
     jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
     
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .post('/logs/tester/example-app', {
         from: "NOW-1DAY",
         until: "NOW",
@@ -160,7 +165,7 @@ vows.describe('jitsu/commands/logs').addBatch({
 
     useAppFixture();
     
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .post('/logs/tester/example-app', {
         from: "NOW-1DAY",
         until: "NOW",
@@ -225,13 +230,13 @@ vows.describe('jitsu/commands/logs').addBatch({
 
     useAppFixture();
 
-    jitsu.config.stores.file.file = path.join(__dirname, '..', 'fixtures', 'logged-out-jitsuconf');
+    jitsu.config.stores.file.file = loggedOutFile;
     jitsu.config.stores.file.loadSync();
 
     jitsu.prompt.override.username = 'tester';
     jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
     
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .post('/logs/tester/example-app', {
         from: "NOW-1DAY",
         until: "NOW",
@@ -294,7 +299,7 @@ vows.describe('jitsu/commands/logs').addBatch({
 }).addBatch({
   'logs app application': shouldNodejitsuOk(function setup() {
     
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .post('/logs/tester/application', {
         from: "NOW-1DAY",
         until: "NOW",
@@ -354,13 +359,13 @@ vows.describe('jitsu/commands/logs').addBatch({
 }).addBatch({
   'logs app application': shouldNodejitsuOk('should prompt for credentials', function setup() {
 
-    jitsu.config.stores.file.file = path.join(__dirname, '..', 'fixtures', 'logged-out-jitsuconf');
+    jitsu.config.stores.file.file = loggedOutFile;
     jitsu.config.stores.file.loadSync();
 
     jitsu.prompt.override.username = 'tester';
     jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
     
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .post('/logs/tester/application', {
         from: "NOW-1DAY",
         until: "NOW",
@@ -420,7 +425,7 @@ vows.describe('jitsu/commands/logs').addBatch({
 }).addBatch({
   'logs app application 10': shouldNodejitsuOk(function setup() {
     
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .post('/logs/tester/application', {
         from: "NOW-1DAY",
         until: "NOW",

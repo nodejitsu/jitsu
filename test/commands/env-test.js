@@ -8,6 +8,7 @@
 var assert = require('assert'),
     fs = require('fs'),
     path = require('path'),
+    async = require('flatiron').common.async,
     nock = require('nock'),
     vows = require('vows'),
     jitsu = require('../../lib/jitsu'),
@@ -15,9 +16,13 @@ var assert = require('assert'),
 
 var shouldNodejitsuOk = macros.shouldNodejitsuOk;
 
+var fixturesDir = path.join(__dirname, '..', 'fixtures'),
+    loggedOutFile = path.join(fixturesDir, 'logged-out-jitsuconf')
+    loggedOutConf = fs.readFileSync(loggedOutFile, 'utf8');
+
 vows.describe('jitsu/commands/env').addBatch({
   'env list': shouldNodejitsuOk(function setup() {
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/apps/tester/jitsu')
       .reply(200, {
         app: { 
@@ -33,13 +38,13 @@ vows.describe('jitsu/commands/env').addBatch({
 }).addBatch({
   'env list': shouldNodejitsuOk('should prompt for credentials', function setup() {
 
-    jitsu.config.stores.file.file = path.join(__dirname, '..', 'fixtures', 'logged-out-jitsuconf');
+    jitsu.config.stores.file.file = loggedOutFile;
     jitsu.config.stores.file.loadSync();
 
     jitsu.prompt.override.username = 'tester';
     jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
 
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/apps/tester/jitsu')
       .reply(200, {
         app: { 
@@ -54,7 +59,7 @@ vows.describe('jitsu/commands/env').addBatch({
   })
 }).addBatch({
   'env list foobar': shouldNodejitsuOk(function setup() {
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/apps/tester/foobar')
       .reply(200, {
         app: { 
@@ -69,7 +74,7 @@ vows.describe('jitsu/commands/env').addBatch({
   })
 }).addBatch({
   'env list barbaz': shouldNodejitsuOk(function setup() {
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/apps/tester/barbaz')
       .reply(200, {
         app: { 
@@ -84,7 +89,7 @@ vows.describe('jitsu/commands/env').addBatch({
   })
 }).addBatch({
   'env get foo': shouldNodejitsuOk(function setup() {
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/apps/tester/jitsu')
       .reply(200, {
         app: { 
@@ -100,13 +105,13 @@ vows.describe('jitsu/commands/env').addBatch({
 }).addBatch({
   'env get foo': shouldNodejitsuOk('should prompt for credentials', function setup() {
 
-    jitsu.config.stores.file.file = path.join(__dirname, '..', 'fixtures', 'logged-out-jitsuconf');
+    jitsu.config.stores.file.file = loggedOutFile;
     jitsu.config.stores.file.loadSync();
 
     jitsu.prompt.override.username = 'tester';
     jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
 
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/apps/tester/jitsu')
       .reply(200, {
         app: { 
@@ -121,7 +126,7 @@ vows.describe('jitsu/commands/env').addBatch({
   })
 }).addBatch({
   'env get barbaz ping': shouldNodejitsuOk(function setup() {
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/apps/tester/barbaz')
       .reply(200, {
         app: { 
@@ -144,7 +149,7 @@ vows.describe('jitsu/commands/env').addBatch({
   )
 }).addBatch({
   'env set test truthy': shouldNodejitsuOk(function setup() {
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/apps/tester/jitsu')
         .reply(200, {
           app: { 
@@ -162,13 +167,13 @@ vows.describe('jitsu/commands/env').addBatch({
 }).addBatch({
   'env set test truthy': shouldNodejitsuOk('should prompt for credentials', function setup() {
 
-    jitsu.config.stores.file.file = path.join(__dirname, '..', 'fixtures', 'logged-out-jitsuconf');
+    jitsu.config.stores.file.file = loggedOutFile;
     jitsu.config.stores.file.loadSync();
 
     jitsu.prompt.override.username = 'tester';
     jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
 
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/apps/tester/jitsu')
         .reply(200, {
           app: { 
@@ -185,7 +190,7 @@ vows.describe('jitsu/commands/env').addBatch({
   })
 }).addBatch({
   'env set barbaz delete test': shouldNodejitsuOk(function setup() {
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/apps/tester/barbaz')
         .reply(200, {
           app: { 
@@ -202,7 +207,7 @@ vows.describe('jitsu/commands/env').addBatch({
   })
 }).addBatch({
   'env set delete test': shouldNodejitsuOk(function setup() {
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/apps/tester/jitsu')
         .reply(200, {
           app: { 
@@ -219,7 +224,7 @@ vows.describe('jitsu/commands/env').addBatch({
   })
 }).addBatch({
   'env delete delete': shouldNodejitsuOk(function setup () {
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/apps/tester/jitsu')
         .reply(200, {
           app: { 
@@ -237,14 +242,14 @@ vows.describe('jitsu/commands/env').addBatch({
 }).addBatch({
   'env delete delete': shouldNodejitsuOk('should prompt for credentials', function setup () {
 
-    jitsu.config.stores.file.file = path.join(__dirname, '..', 'fixtures', 'logged-out-jitsuconf');
+    jitsu.config.stores.file.file = loggedOutFile;
     jitsu.config.stores.file.loadSync();
 
     jitsu.prompt.override.username = 'tester';
     jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
 
 
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/apps/tester/jitsu')
         .reply(200, {
           app: { 
@@ -261,7 +266,7 @@ vows.describe('jitsu/commands/env').addBatch({
   })
 }).addBatch({
   'env delete barbaz delete': shouldNodejitsuOk(function setup () {
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .get('/apps/tester/barbaz')
         .reply(200, {
           app: { 
@@ -280,7 +285,7 @@ vows.describe('jitsu/commands/env').addBatch({
   'env clear': shouldNodejitsuOk('The current app should have an empty env',
     function setup() {
       jitsu.prompt.override.confirm = 'yes';
-      nock('http://api.mockjitsu.com')
+      nock('https://api.mockjitsu.com')
         .get('/apps/tester/jitsu')
           .reply(200, {
               app: { 
@@ -300,7 +305,7 @@ vows.describe('jitsu/commands/env').addBatch({
   'env clear barbaz': shouldNodejitsuOk('The specified app should have an empty env',
     function setup() {
       jitsu.prompt.override.confirm = 'yes';
-      nock('http://api.mockjitsu.com')
+      nock('https://api.mockjitsu.com')
         .get('/apps/tester/barbaz')
           .reply(200, {
               app: {
@@ -320,7 +325,7 @@ vows.describe('jitsu/commands/env').addBatch({
   'env save': shouldNodejitsuOk('The current app should save enviroment variables',
     function setup() {
       jitsu.prompt.override.confirm = 'yes';
-      nock('http://api.mockjitsu.com')
+      nock('https://api.mockjitsu.com')
         .get('/apps/tester/jitsu')
           .reply(200, {
               app: {
@@ -340,7 +345,7 @@ vows.describe('jitsu/commands/env').addBatch({
   'env save barbaz': shouldNodejitsuOk('The specified app should save enviroment variables',
     function setup() {
       jitsu.prompt.override.confirm = 'yes';
-      nock('http://api.mockjitsu.com')
+      nock('https://api.mockjitsu.com')
         .get('/apps/tester/barbaz')
           .reply(200, {
               app: {
@@ -361,7 +366,7 @@ vows.describe('jitsu/commands/env').addBatch({
   'env save env_vars.json': shouldNodejitsuOk('The current app should save enviroment variables to the specified filename',
     function setup() {
       jitsu.prompt.override.confirm = 'yes';
-      nock('http://api.mockjitsu.com')
+      nock('https://api.mockjitsu.com')
         .get('/apps/tester/env_vars.json')
           .reply(400, {
               result: {
@@ -388,7 +393,7 @@ vows.describe('jitsu/commands/env').addBatch({
   'env save barbaz env_vars.json': shouldNodejitsuOk('The specified app should save enviroment variables to the specified filename',
     function setup() {
       jitsu.prompt.override.confirm = 'yes';
-      nock('http://api.mockjitsu.com')
+      nock('https://api.mockjitsu.com')
         .get('/apps/tester/barbaz')
           .reply(200, {
               app: {
@@ -410,7 +415,7 @@ vows.describe('jitsu/commands/env').addBatch({
     function setup() {
       jitsu.prompt.override.confirm = 'yes';
       fs.writeFileSync('env.json', JSON.stringify({ foo: 'bar', baz: 'buzz', test: 'truthy1' }, null, 2), 'utf8');
-      nock('http://api.mockjitsu.com')
+      nock('https://api.mockjitsu.com')
         .get('/apps/tester/jitsu')
           .reply(200, {
               app: {
@@ -431,7 +436,7 @@ vows.describe('jitsu/commands/env').addBatch({
     function setup() {
       jitsu.prompt.override.confirm = 'yes';
       fs.writeFileSync('env.json', JSON.stringify({ foo: 'bar', baz: 'buzz', test: 'truthy1' }, null, 2), 'utf8');
-      nock('http://api.mockjitsu.com')
+      nock('https://api.mockjitsu.com')
         .get('/apps/tester/barbaz')
           .reply(200, {
               app: {
@@ -452,7 +457,7 @@ vows.describe('jitsu/commands/env').addBatch({
     function setup() {
       jitsu.prompt.override.confirm = 'yes';
       fs.writeFileSync('env_vars.json', JSON.stringify({ foo: 'bar', baz: 'buzz', test: 'truthy2' }, null, 2), 'utf8');
-      nock('http://api.mockjitsu.com')
+      nock('https://api.mockjitsu.com')
         .get('/apps/tester/env_vars.json')
           .reply(400, {
               result: {
@@ -479,7 +484,7 @@ vows.describe('jitsu/commands/env').addBatch({
     function setup() {
       jitsu.prompt.override.confirm = 'yes';
       fs.writeFileSync('env_vars.json', JSON.stringify({ foo: 'bar', baz: 'buzz', test: 'truthy2' }, null, 2), 'utf8');
-      nock('http://api.mockjitsu.com')
+      nock('https://api.mockjitsu.com')
         .get('/apps/tester/barbaz')
           .reply(200, {
               app: {
@@ -495,4 +500,17 @@ vows.describe('jitsu/commands/env').addBatch({
           .reply(200, '', { 'x-powered-by': 'Nodejitsu' });
     }
   )
+}).addBatch({
+  "Remove": {
+    topic: function () {
+      async.forEach(
+        ['env.json', 'env_vars.json'],
+        fs.unlink,
+        this.callback
+      );
+    },
+    "test envvar .json files": function (err, _) {
+      assert.isNull(err);
+    }
+  }
 }).export(module);
