@@ -612,7 +612,7 @@ var suite = vows.describe('jitsu/commands/apps').addBatch({
       assert.ok(!!err);
     }
   )
-}).addBatch({
+})/*.addBatch({
   'apps deploy': shouldNodejitsuOk(
     'should prompt for credentials',
     function setup() {
@@ -701,16 +701,6 @@ var suite = vows.describe('jitsu/commands/apps').addBatch({
             .reply(200, {
               available: true,
             }, { 'x-powered-by': 'Nodejitsu' })
-          .get('/apps/tester/example-app')
-            .reply(403, {
-              error: "Authorization failed with the provided credentials."
-            }, { 'x-powered-by': 'Nodejitsu' })
-          .get('/auth')
-            .reply(200, {
-              user: 'tester',
-              authorized: true,
-              role: 'user'
-            }, { 'x-powered-by': 'Nodejitsu 0.6.14' })
           .post('/apps/tester/example-app/available', {
             name: 'example-app',
             subdomain: 'example-app',
@@ -733,7 +723,7 @@ var suite = vows.describe('jitsu/commands/apps').addBatch({
       fs.writeFileSync(loggedOutFile, loggedOutConf, 'utf8');
     }
   )
-}).addBatch({
+})*/.addBatch({
   'cloud example-app': shouldNodejitsuOk(
     function setup() {
       nock('https://api.mockjitsu.com')
