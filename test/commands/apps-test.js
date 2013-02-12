@@ -28,7 +28,7 @@ var cloud = [{ drones: 2, provider: 'joyent', datacenter: 'us-east-1' }],
     };
 
 var fixturesDir = path.join(__dirname, '..', 'fixtures'),
-    loggedOutFile = path.join(fixturesDir, 'logged-out-jitsuconf')
+    loggedOutFile = path.join(fixturesDir, 'logged-out-jitsuconf'),
     loggedOutConf = fs.readFileSync(loggedOutFile, 'utf8');
 
 //
