@@ -38,7 +38,7 @@ vows.describe('jitsu/commands/users').addBatch({
     function setup() {
       jitsu.prompt.override['invite code'] = 'f4387f4';
     
-      nock('http://api.mockjitsu.com')
+      nock('https://api.mockjitsu.com')
         .post('/users/jimmy/confirm', { username: 'jimmy', 'inviteCode': 'f4387f4' })
         .reply(400, {
           result: {
@@ -52,7 +52,7 @@ vows.describe('jitsu/commands/users').addBatch({
     jitsu.prompt.override['invite code'] = 'f4387f4';
     jitsu.prompt.override['login'] = 'no';
   
-    nock('http://api.mockjitsu.com')
+    nock('https://api.mockjitsu.com')
       .post('/users/elvis/confirm', { username: 'elvis', 'inviteCode': 'f4387f4' })
       .reply(200, {
         message: 'Ninja status has been confirmed!',
