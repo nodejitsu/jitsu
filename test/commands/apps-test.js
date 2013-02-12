@@ -42,13 +42,13 @@ function shouldAcceptAllCloudOptions(suite, command) {
    '--drones 2 --ram 512'
   ];
 
-  if (command === 'deploy') {
+  if (/^deploy/.test(command)) {
     combinations.push('--provider joyent');
     combinations.push('--datacenter us-east-1');
     combinations.push('--provider joyent --datacenter us-east-1');
   }
 
-  var setupFn  = (command === 'deploy') ? setupDeploy : setupCloud;
+  var setupFn  = (/^deploy/.test(command)) ? setupDeploy : setupCloud;
 
   combinations.forEach(function (argv) {
     var drones  = /--drones\s(\d{1})/.exec(argv),
@@ -873,6 +873,11 @@ shouldAcceptAllCloudOptions(
 shouldAcceptAllCloudOptions(
   suite,
   'deploy'
+);
+
+shouldAcceptAllCloudOptions(
+  suite,
+  'deploy joyent us-east-1'
 );
 
 suite.export(module);
