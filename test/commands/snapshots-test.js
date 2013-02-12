@@ -103,6 +103,8 @@ vows.describe('jitsu/commands/snapshots').addBatch({
         .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
       .post('/apps/tester/application2/start', {})
         .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
+      .get('/endpoints')
+        .reply(200, endpoints, { 'x-powered-by': 'Nodejitsu' })
       .get('/apps/tester/application2', '')
         .reply(200, { app: {
           subdomain: "tester.application2"
