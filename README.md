@@ -197,4 +197,4 @@ Which results in the following output when deploying:
 ### Need more?
 The documentation for `jitsu` and the [Nodejitsu](http://nodejitsu.com) APIs is open-source and a work in-progress. For more information checkout the [Nodejitsu Handbook](https://github.com/nodejitsu/handbook)
 
-#### (C) Copyright 2010, [Nodejitsu](http://nodejitsu.com) Inc.
+#### (C) Copyright 2013, [Nodejitsu](http://nodejitsu.com) Inc.
