@@ -177,7 +177,18 @@ function shouldAcceptAllCloudOptions(suite, command) {
           }
         }, { 'x-powered-by': 'Nodejitsu' })
         .get('/endpoints')
-        .reply(200, endpoints, { 'x-powered-by': 'Nodejitsu' })
+        .reply(200, endpoints, { 'x-powered-by': 'Nodejitsu' });
+
+      if (jitsu.argv._[1] === 'joyent')
+        nock('https://api.mockjitsu.com')
+          .post('/apps/tester/example-app/cloud', [options]).reply(200, {
+            datacenter: 'us-east-1',
+            provider: 'joyent',
+            drones: options.drones,
+            ram: options.ram
+          }, { 'x-powered-by': 'Nodejitsu' });
+
+      nock('https://api.mockjitsu.com')
         .post('/apps/tester/example-app/stop', {})
         .reply(200, {
           app: {
