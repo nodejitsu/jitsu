@@ -849,6 +849,21 @@ var suite = vows.describe('jitsu/commands/apps').addBatch({
       }, { 'x-powered-by': 'Nodejitsu' })
       .get('/endpoints')
         .reply(200, endpoints, { 'x-powered-by': 'Nodejitsu' })
+      .get('/apps/tester/example-app')
+      .reply(200, {
+        app: {
+          name: 'example-app',
+          maxDrones: 2,
+          subdomain: 'example-app',
+          config: {
+            cloud: [{
+              provider: 'joyent',
+              datacenter: 'us-east-1',
+              drones: 1
+            }]
+          }
+        }
+      }, { 'x-powered-by': 'Nodejitsu' });
     },
     'should fail',
     function assertion (err, ignore) {
@@ -871,24 +886,24 @@ var suite = vows.describe('jitsu/commands/apps').addBatch({
   )
 });
 
-shouldAcceptAllCloudOptions(
-  suite,
-  'cloud example-app joyent us-east-1'
-);
+// shouldAcceptAllCloudOptions(
+//   suite,
+//   'cloud example-app joyent us-east-1'
+// );
 
-shouldAcceptAllCloudOptions(
-  suite,
-  'cloud joyent us-east-1'
-);
+// shouldAcceptAllCloudOptions(
+//   suite,
+//   'cloud joyent us-east-1'
+// );
 
-shouldAcceptAllCloudOptions(
-  suite,
-  'deploy'
-);
+// shouldAcceptAllCloudOptions(
+//   suite,
+//   'deploy'
+// );
 
-shouldAcceptAllCloudOptions(
-  suite,
-  'deploy joyent us-east-1'
-);
+// shouldAcceptAllCloudOptions(
+//   suite,
+//   'deploy joyent us-east-1'
+// );
 
 suite.export(module);
