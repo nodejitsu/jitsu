@@ -1,5 +1,5 @@
 /*
- * apps-test.js: Tests for `jitsu apps *` command(s).
+ * package-test.js: Tests for `jitsu.package` functions.
  *
  * (C) 2010, Nodejitsu Inc.
  *
