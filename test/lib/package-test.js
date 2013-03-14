@@ -51,7 +51,14 @@ var suite = vows.describe('jitsu/package').addBatch({
       topic: setupPackage({ name: '.example-app' }),
 
       'should be invalid': function (topic) {
-        assert.ok(isValid('name', topic.name));
+        assert.ok(!isValid('name', topic.name));
+      }
+    },
+    'starting with _': {
+      topic: setupPackage({ name: '_example-app' }),
+
+      'should be invalid': function (topic) {
+        assert.ok(!isValid('name', topic.name));
       }
     },
     'containing -': {
