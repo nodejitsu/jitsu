@@ -50,7 +50,7 @@
   },
   "main": "./lib/jitsu",
   "scripts": {
-    "test": "vows test/commands/*-test.js --spec -i"
+    "test": "vows test/commands/*-test.js test/lib/*-test.js --spec -i"
   },
   "engines": {
     "node": ">= 0.6.0"
