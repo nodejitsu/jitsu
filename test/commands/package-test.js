@@ -4,7 +4,7 @@
  * (C) 2010, Nodejitsu Inc.
  *
  */
- 
+
 var assert = require('assert'),
     fs = require('fs'),
     path = require('path'),
@@ -16,13 +16,13 @@ var assert = require('assert'),
 
 var shouldNodejitsuOk = macros.shouldNodejitsuOk;
 
-vows.describe('jitsu/commands/package').addBatch({
+var suite = vows.describe('jitsu/commands/package').addBatch({
   'package create': shouldNodejitsuOk(
     'should create the target tarball',
     function (_, err) {
       var tmproot = jitsu.config.get('tmproot'),
           targetPackage = path.join(tmproot, 'tester-example-app-0.0.0-1.tgz');
-      
+
       try {
         fs.statSync(targetPackage);
       }
@@ -34,10 +34,10 @@ vows.describe('jitsu/commands/package').addBatch({
       var tmproot = jitsu.config.get('tmproot'),
           targetPackage = path.join(tmproot, 'tester-example-app-0.0.0-1.tgz'),
           packageFile = path.join(__dirname, '..', 'fixtures', 'example-app', 'package.json');;
-      
+
       jitsu.argv.noanalyze = true;
       jitsu.prompt.override['invite code'] = 'f4387f4';
-      
+
       //
       // Change directory to the sample app
       //
@@ -52,7 +52,7 @@ vows.describe('jitsu/commands/package').addBatch({
       };
 
       fs.writeFileSync(packageFile, JSON.stringify(pkg, true, 2))
-      
+
       //
       // Attempt to remove any existing tarballs
       //
