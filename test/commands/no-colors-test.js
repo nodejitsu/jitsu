@@ -5,7 +5,8 @@
  *
  */
 
-var assert = require('assert'),
+var path = require('path'),
+    assert = require('assert'),
     vows = require('vows'),
     colors = require('colors'),
     spawn = require('child_process').spawn;
@@ -13,7 +14,7 @@ var assert = require('assert'),
 vows.describe('jitsu/commands/no-colors').addBatch({
   'when using the --no-colors flag': {
     topic: function () {
-      var jitsu = spawn('jitsu', [ '--no-colors' ]),
+      var jitsu = spawn(path.join(__dirname, '..', '..', 'bin', 'jitsu'), [ '--no-colors' ]),
           text = '',
           callback = this.callback;
 
