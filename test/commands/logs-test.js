@@ -23,6 +23,9 @@ var fixturesDir = path.join(__dirname, '..', 'fixtures'),
     loggedOutFile = path.join(fixturesDir, 'logged-out-jitsuconf')
     loggedOutConf = fs.readFileSync(loggedOutFile, 'utf8');
 
+var exampleApp = { app: { _id: 'tester/example-app', config: { cloud: [] } } },
+    application = { app: { _id: 'tester/application', config: { cloud: [] } } };
+
 // Snapshots tests with specified app names
 vows.describe('jitsu/commands/logs').addBatch({
   'logs': shouldNodejitsuOk(function setup() {
@@ -30,6 +33,8 @@ vows.describe('jitsu/commands/logs').addBatch({
     useAppFixture();
     
     nock('https://api.mockjitsu.com')
+      .get('/apps/tester/example-app')
+        .reply(200, exampleApp, { 'x-powered-by': 'Nodejitsu' })
       .post('/logs/tester/example-app', {
         from: "NOW-1DAY",
         until: "NOW",
@@ -101,6 +106,8 @@ vows.describe('jitsu/commands/logs').addBatch({
     jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
     
     nock('https://api.mockjitsu.com')
+      .get('/apps/tester/example-app')
+        .reply(200, exampleApp, { 'x-powered-by': 'Nodejitsu' })
       .post('/logs/tester/example-app', {
         from: "NOW-1DAY",
         until: "NOW",
@@ -166,6 +173,8 @@ vows.describe('jitsu/commands/logs').addBatch({
     useAppFixture();
     
     nock('https://api.mockjitsu.com')
+      .get('/apps/tester/example-app')
+        .reply(200, exampleApp, { 'x-powered-by': 'Nodejitsu' })
       .post('/logs/tester/example-app', {
         from: "NOW-1DAY",
         until: "NOW",
@@ -237,6 +246,8 @@ vows.describe('jitsu/commands/logs').addBatch({
     jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
     
     nock('https://api.mockjitsu.com')
+      .get('/apps/tester/example-app')
+        .reply(200, exampleApp, { 'x-powered-by': 'Nodejitsu' })
       .post('/logs/tester/example-app', {
         from: "NOW-1DAY",
         until: "NOW",
@@ -300,6 +311,8 @@ vows.describe('jitsu/commands/logs').addBatch({
   'logs app application': shouldNodejitsuOk(function setup() {
     
     nock('https://api.mockjitsu.com')
+      .get('/apps/tester/application')
+        .reply(200, application, { 'x-powered-by': 'Nodejitsu' })
       .post('/logs/tester/application', {
         from: "NOW-1DAY",
         until: "NOW",
@@ -366,6 +379,8 @@ vows.describe('jitsu/commands/logs').addBatch({
     jitsu.prompt.override.password = 'EXAMPLE-PASSWORD';
     
     nock('https://api.mockjitsu.com')
+      .get('/apps/tester/application')
+        .reply(200, application, { 'x-powered-by': 'Nodejitsu' })
       .post('/logs/tester/application', {
         from: "NOW-1DAY",
         until: "NOW",
@@ -426,6 +441,8 @@ vows.describe('jitsu/commands/logs').addBatch({
   'logs app application 10': shouldNodejitsuOk(function setup() {
     
     nock('https://api.mockjitsu.com')
+      .get('/apps/tester/application')
+        .reply(200, application, { 'x-powered-by': 'Nodejitsu' })
       .post('/logs/tester/application', {
         from: "NOW-1DAY",
         until: "NOW",
