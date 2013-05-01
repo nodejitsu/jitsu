@@ -2,6 +2,8 @@
 
 require('../lib/jitsu/completion');
 
+process.title = 'jitsu';
+
 var jitsu = require('../lib/jitsu');
 
 jitsu.start(function (err) {
