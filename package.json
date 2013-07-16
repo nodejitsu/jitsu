@@ -8,7 +8,7 @@
     "platform-as-a-service",
     "deployment"
   ],
-  "version": "0.12.12",
+  "version": "0.12.13",
   "author": "Nodejitsu Inc. <info@nodejitsu.com>",
   "maintainers": [
     "AvianFlu <avianflu@nodejitsu.com>",
