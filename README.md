@@ -20,7 +20,7 @@
  - Allows for seamless deployment of your Node.js applications to the cloud
  - Ships with use-full boilerplates and sample applications through [Node Apps](https://github.com/nodeapps) project integration
  - Fully supports `npm` dependency resolution on deployment to [Nodejitsu](http://nodejitsu.com)
- - Full support of [Nodejitu's API](https://github.com/nodejitsu/nodejitsu-api) ( a plethora of node.js goodies )
+ - Full support of [Nodejitsu's API](https://github.com/nodejitsu/nodejitsu-api) ( a plethora of node.js goodies )
  - Integrated multi-level multi-transport logging support via [Winston](https://github.com/flatiron/winston)
  - Too many to list... seek [further knowledge ](https://github.com/nodejitsu/handbook) or just try it out!
 
