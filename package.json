@@ -39,7 +39,8 @@
     "spawn-command": "0.0.2",
     "semver": "1.0.14",
     "tar": "0.1.17",
-    "wizard": "0.0.1"
+    "wizard": "0.0.1",
+    "preacher-api": "0.0.x"
   },
   "devDependencies": {
     "nock": "0.15.x",
