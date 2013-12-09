@@ -4,7 +4,7 @@
  * (C) 2010, Nodejitsu Inc.
  *
  */
- 
+
 var nock = require('nock'),
     assert = require('assert'),
     vows = require('vows'),
@@ -21,7 +21,7 @@ var mainDirectory = process.cwd();
 var fixturesDir = path.join(__dirname, '..', 'fixtures'),
     loggedOutFile = path.join(fixturesDir, 'logged-out-jitsuconf')
     loggedOutConf = fs.readFileSync(loggedOutFile, 'utf8');
-    
+
 var cloud = [{ drones: 0, provider: 'jitsu', datacenter: 'foobar' }],
     endpoints = {
       "endpoints": {
@@ -29,7 +29,7 @@ var cloud = [{ drones: 0, provider: 'jitsu', datacenter: 'foobar' }],
           "foobar": "api.mockjitsu.com"
         }
       }
-    };    
+    };
 
 // Snapshots tests with specified app names
 vows.describe('jitsu/commands/snapshots').addBatch({
@@ -38,10 +38,10 @@ vows.describe('jitsu/commands/snapshots').addBatch({
       .get('/apps/tester/application/snapshots')
       .reply(200, {
         snapshots: [{
-          id: '0.0.0', 
-          ctime: new Date(), 
+          id: '0.0.0',
+          ctime: new Date(),
           md5: 'q34rq43r5t5g4w56t45t'
-        }] 
+        }]
       }, { 'x-powered-by': 'Nodejitsu' });
   })
 }).addBatch({
@@ -57,10 +57,10 @@ vows.describe('jitsu/commands/snapshots').addBatch({
       .get('/apps/tester/application/snapshots')
       .reply(200, {
         snapshots: [{
-          id: '0.0.0', 
-          ctime: new Date(), 
+          id: '0.0.0',
+          ctime: new Date(),
           md5: 'q34rq43r5t5g4w56t45t'
-        }] 
+        }]
       }, { 'x-powered-by': 'Nodejitsu' });
   })
 }).addBatch({
@@ -69,10 +69,10 @@ vows.describe('jitsu/commands/snapshots').addBatch({
       .get('/apps/tester/application2/snapshots')
       .reply(200, {
         snapshots: [{
-          id: '0.0.0', 
-          ctime: new Date(), 
+          id: '0.0.0',
+          ctime: new Date(),
           md5: 'q34rq43r5t5g4w56t45t'
-        }] 
+        }]
       }, { 'x-powered-by': 'Nodejitsu' });
   })
 }).addBatch({
@@ -90,8 +90,8 @@ vows.describe('jitsu/commands/snapshots').addBatch({
       .get('/apps/tester/application2/snapshots')
         .reply(200, {
           snapshots: [{
-            id: '0.0.0-1', 
-            ctime: new Date(), 
+            id: '0.0.0-1',
+            ctime: new Date(),
             md5: 'q34rq43r5t5g4w56t45t'
           }]
         }, { 'x-powered-by': 'Nodejitsu' })
@@ -120,8 +120,8 @@ vows.describe('jitsu/commands/snapshots').addBatch({
       .get('/apps/tester/application2/snapshots')
         .reply(200, {
           snapshots: [{
-            id: '0.0.0-1', 
-            ctime: new Date(), 
+            id: '0.0.0-1',
+            ctime: new Date(),
             md5: 'q34rq43r5t5g4w56t45t'
           }]
         }, { 'x-powered-by': 'Nodejitsu' })
@@ -142,6 +142,33 @@ vows.describe('jitsu/commands/snapshots').addBatch({
       }, { 'x-powered-by': 'Nodejitsu' });
   })
 }).addBatch({
+  'snapshots activate application1 0.0.0-1': shouldNodejitsuOk(function setup() {
+    nock('https://api.mockjitsu.com')
+      .get('/apps/tester/application2/snapshots')
+        .reply(200, {
+          snapshots: [{
+            id: '0.0.0-1',
+            ctime: new Date(),
+            md5: 'q34rq43r5t5g4w56t45t'
+          }]
+        }, { 'x-powered-by': 'Nodejitsu' })
+      .post('/apps/tester/application1/snapshots/0.0.0-1/activate', {})
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
+      .get('/endpoints')
+        .reply(200, endpoints, { 'x-powered-by': 'Nodejitsu' })
+      .get('/apps/tester/application1/cloud')
+        .reply(200, cloud, { 'x-powered-by': 'Nodejitsu' })
+      .post('/apps/tester/application1/snapshots/0.0.0-1/activate', {})
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
+      .post('/apps/tester/application1/start', {})
+        .reply(200, '', { 'x-powered-by': 'Nodejitsu' })
+      .get('/apps/tester/application1', '')
+        .reply(200, { app: {
+          subdomain: "tester.application1"
+        }
+      }, { 'x-powered-by': 'Nodejitsu' });
+  })
+}).addBatch({
   'snapshots activate application2': shouldNodejitsuOk('should prompt for credentials', function setup() {
 
     jitsu.config.stores.file.file = loggedOutFile;
@@ -155,8 +182,8 @@ vows.describe('jitsu/commands/snapshots').addBatch({
       .get('/apps/tester/application2/snapshots')
         .reply(200, {
           snapshots: [{
-            id: '0.0.0-1', 
-            ctime: new Date(), 
+            id: '0.0.0-1',
+            ctime: new Date(),
             md5: 'q34rq43r5t5g4w56t45t'
           }]
         }, { 'x-powered-by': 'Nodejitsu' })
@@ -181,13 +208,13 @@ vows.describe('jitsu/commands/snapshots').addBatch({
     jitsu.prompt.override.answer = 'yes';
     jitsu.prompt.override.snapshot = '0.0.0-1';
     jitsu.prompt.override.destroy = 'yes';
-    
+
     nock('https://api.mockjitsu.com')
       .get('/apps/tester/application3/snapshots')
         .reply(200, {
           snapshots: [{
-            id: '0.0.0-1', 
-            ctime: new Date(), 
+            id: '0.0.0-1',
+            ctime: new Date(),
             md5: 'q34rq43r5t5g4w56t45t'
           }]
         }, { 'x-powered-by': 'Nodejitsu' })
@@ -205,13 +232,13 @@ vows.describe('jitsu/commands/snapshots').addBatch({
     jitsu.prompt.override.answer = 'yes';
     jitsu.prompt.override.snapshot = '0.0.0-1';
     jitsu.prompt.override.destroy = 'yes';
-    
+
     nock('https://api.mockjitsu.com')
       .get('/apps/tester/application3/snapshots')
         .reply(200, {
           snapshots: [{
-            id: '0.0.0-1', 
-            ctime: new Date(), 
+            id: '0.0.0-1',
+            ctime: new Date(),
             md5: 'q34rq43r5t5g4w56t45t'
           }]
         }, { 'x-powered-by': 'Nodejitsu' })
@@ -228,10 +255,10 @@ vows.describe('jitsu/commands/snapshots').addBatch({
       .get('/apps/tester/example-app/snapshots')
       .reply(200, {
         snapshots: [{
-          id: '0.0.0', 
-          ctime: new Date(), 
+          id: '0.0.0',
+          ctime: new Date(),
           md5: 'q34rq43r5t5g4w56t45t'
-        }] 
+        }]
       }, { 'x-powered-by': 'Nodejitsu' });
   }, function assertion (err) {
     process.chdir(mainDirectory);
@@ -247,8 +274,8 @@ vows.describe('jitsu/commands/snapshots').addBatch({
       .get('/apps/tester/example-app/snapshots')
         .reply(200, {
           snapshots: [{
-            id: '0.0.0-1', 
-            ctime: new Date(), 
+            id: '0.0.0-1',
+            ctime: new Date(),
             md5: 'q34rq43r5t5g4w56t45t'
           }]
         }, { 'x-powered-by': 'Nodejitsu' })
@@ -277,13 +304,13 @@ vows.describe('jitsu/commands/snapshots').addBatch({
     jitsu.prompt.override.destroy = 'yes';
 
     useAppFixture();
-    
+
     nock('https://api.mockjitsu.com')
       .get('/apps/tester/example-app/snapshots')
         .reply(200, {
           snapshots: [{
-            id: '0.0.0-1', 
-            ctime: new Date(), 
+            id: '0.0.0-1',
+            ctime: new Date(),
             md5: 'q34rq43r5t5g4w56t45t'
           }]
         }, { 'x-powered-by': 'Nodejitsu' })
